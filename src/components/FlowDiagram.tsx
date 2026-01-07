@@ -354,34 +354,6 @@ export function FlowDiagram() {
           Next →
         </button>
       </div>
-
-      {/* Key insight */}
-      <div className="bg-terminal-highlight border border-terminal-border rounded-lg p-6">
-        <h4 className="text-terminal-green font-bold mb-3">The Full Picture</h4>
-        <p className="text-terminal-dim mb-4">
-          Every command you run makes a complete round trip through this stack:
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div className="space-y-2">
-            <div className="text-terminal-fg font-bold">Input path (you → program):</div>
-            <ol className="list-decimal list-inside text-terminal-dim space-y-1">
-              <li>You press keys</li>
-              <li>Terminal encodes them as bytes</li>
-              <li>PTY pipes bytes to the program</li>
-              <li>Program reads and processes input</li>
-            </ol>
-          </div>
-          <div className="space-y-2">
-            <div className="text-terminal-fg font-bold">Output path (program → you):</div>
-            <ol className="list-decimal list-inside text-terminal-dim space-y-1">
-              <li>Program writes output (with escape codes)</li>
-              <li>PTY pipes it back to the terminal</li>
-              <li>Terminal interprets escape sequences</li>
-              <li>Terminal draws to the screen grid</li>
-            </ol>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

@@ -49,24 +49,6 @@ export function App() {
         insight="Every keystroke travels down through the terminal stack to the program, then output flows back up to render on screen.">
         <FlowDiagram />
       </Section>
-
-      <Section id="history" number={6} title="A 1970s Standard"
-        insight="The VT100 terminal from 1978 defined conventions we still use today. Your terminal is basically emulating a 50-year-old machine.">
-        <div className="flex flex-col items-center gap-8">
-          <div className="bg-terminal-highlight border border-terminal-border rounded-lg p-8 max-w-lg">
-            <div className="text-center mb-6"><span className="text-6xl">🖥️</span></div>
-            <div className="space-y-4 text-terminal-dim">
-              <div className="flex items-center gap-4"><span className="text-terminal-green font-bold">1978</span><span>DEC VT100 released</span></div>
-              <div className="flex items-center gap-4"><span className="text-terminal-amber font-bold">1984</span><span>xterm created for X Window</span></div>
-              <div className="flex items-center gap-4"><span className="text-terminal-blue font-bold">2024</span><span>Your terminal still speaks VT100</span></div>
-            </div>
-          </div>
-          <p className="text-terminal-dim text-center max-w-md">
-            Run <code className="bg-terminal-bg px-2 py-1 rounded text-terminal-green">echo $TERM</code> in your terminal.
-            It probably says something like <code className="text-terminal-amber">xterm-256color</code>.
-          </p>
-        </div>
-      </Section>
     </div>
   );
 }
