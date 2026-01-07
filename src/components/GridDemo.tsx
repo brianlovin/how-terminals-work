@@ -107,7 +107,6 @@ export function GridDemo() {
         </div>
       </TerminalWindow>
 
-      <div className="flex flex-wrap items-center gap-4 text-sm">
         <div className="bg-terminal-highlight border border-terminal-border rounded px-4 py-2">
           {hoveredCell ? (
             <span>Cell: <span className="text-terminal-green">({hoveredCell.row}, {hoveredCell.col})</span></span>
@@ -115,8 +114,9 @@ export function GridDemo() {
             <span className="text-terminal-dim">Hover over a cell</span>
           )}
         </div>
+      <div className="flex flex-wrap items-center gap-4 text-sm">
         <button onClick={startTyping} className="bg-terminal-green text-terminal-bg px-4 py-2 rounded font-bold hover:opacity-90">
-          Watch text appear
+          Add text
         </button>
         <button onClick={clearGrid} className="border border-terminal-border px-4 py-2 rounded hover:bg-terminal-border">
           Clear
