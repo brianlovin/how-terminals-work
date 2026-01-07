@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { TerminalWindow } from "./TerminalWindow";
 
 const SPECIAL_KEYS: Record<string, { bytes: string; sequence: string; desc: string }> = {
@@ -30,13 +30,11 @@ export function KeyboardDemo() {
     setHistory((prev) => [keyInfo, ...prev].slice(0, 8));
   };
 
-  useEffect(() => { inputRef.current?.focus(); }, []);
-
   return (
     <div className="space-y-6">
       <TerminalWindow title="keyboard-input">
         <div className="min-h-[200px] flex flex-col items-center justify-center cursor-text" onClick={() => inputRef.current?.focus()}>
-          <input ref={inputRef} type="text" className="absolute opacity-0 pointer-events-none" onKeyDown={handleKeyDown} autoFocus />
+          <input ref={inputRef} type="text" className="absolute opacity-0 pointer-events-none" onKeyDown={handleKeyDown} />
           {lastKey ? (
             <div className="text-center space-y-4">
               <div className="text-4xl font-bold text-terminal-green">{lastKey.key === " " ? "Space" : lastKey.key}</div>
