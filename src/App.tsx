@@ -45,8 +45,8 @@ export function App() {
         </div>
       </Section>
 
-      <Section id="flow" number={5} title="How Programs Work"
-        insight="The program decides what to do with input. It can ignore arrow keys, or use them to navigate a UI like Claude Code.">
+      <Section id="flow" number={5} title="The Round Trip"
+        insight="Every keystroke travels down through the terminal stack to the program, then output flows back up to render on screen.">
         <FlowDiagram />
       </Section>
 

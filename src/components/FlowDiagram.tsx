@@ -1,95 +1,386 @@
 import { useState, useEffect } from "react";
 import { TerminalWindow } from "./TerminalWindow";
 
-type Step = "idle" | "user" | "terminal" | "pty" | "program" | "program-process" | "pty-back" | "terminal-back" | "display";
+type Phase =
+  | "idle"
+  | "keystroke"
+  | "terminal-encode"
+  | "pty-to-shell"
+  | "shell-process"
+  | "shell-output"
+  | "pty-to-terminal"
+  | "terminal-render"
+  | "done";
 
-const STEPS: { step: Step; label: string; desc: string }[] = [
-  { step: "idle", label: "Ready", desc: "Waiting for input..." },
-  { step: "user", label: "You", desc: "You press a key" },
-  { step: "terminal", label: "Terminal", desc: "Terminal converts key to bytes" },
-  { step: "pty", label: "PTY", desc: "Pseudo-terminal forwards to program" },
-  { step: "program", label: "Program", desc: "Program receives input" },
-  { step: "program-process", label: "Program", desc: "Program decides what to do" },
-  { step: "pty-back", label: "PTY", desc: "Program sends output through PTY" },
-  { step: "terminal-back", label: "Terminal", desc: "Terminal interprets escape sequences" },
-  { step: "display", label: "Display", desc: "Screen updates with new content" },
+interface Step {
+  phase: Phase;
+  title: string;
+  description: string;
+  terminalContent: string[];
+  highlight: "keyboard" | "terminal" | "pty" | "shell" | null;
+  dataPacket?: string;
+  dataDirection?: "down" | "up";
+}
+
+const STEPS: Step[] = [
+  {
+    phase: "idle",
+    title: "Ready",
+    description: "The terminal is waiting. The cursor blinks.",
+    terminalContent: ["$ ▌"],
+    highlight: null,
+  },
+  {
+    phase: "keystroke",
+    title: "You type 'ls'",
+    description: "Each keystroke is a separate event sent to the terminal.",
+    terminalContent: ["$ ls▌"],
+    highlight: "keyboard",
+    dataPacket: "l s",
+    dataDirection: "down",
+  },
+  {
+    phase: "terminal-encode",
+    title: "Terminal encodes keystrokes",
+    description: "The terminal converts your keystrokes into bytes: 'l' → 0x6C, 's' → 0x73",
+    terminalContent: ["$ ls▌"],
+    highlight: "terminal",
+    dataPacket: "0x6C 0x73",
+    dataDirection: "down",
+  },
+  {
+    phase: "pty-to-shell",
+    title: "PTY forwards to shell",
+    description: "The pseudo-terminal pipes the bytes to the shell process (like bash or zsh).",
+    terminalContent: ["$ ls▌"],
+    highlight: "pty",
+    dataPacket: "0x6C 0x73",
+    dataDirection: "down",
+  },
+  {
+    phase: "shell-process",
+    title: "Shell receives and echoes",
+    description: "The shell reads 'ls', echoes it back so you see what you typed, and waits for Enter.",
+    terminalContent: ["$ ls▌"],
+    highlight: "shell",
+  },
+  {
+    phase: "shell-output",
+    title: "You press Enter → Shell runs 'ls'",
+    description: "The shell executes 'ls', which lists files. The output is just text with escape codes for colors.",
+    terminalContent: [
+      "$ ls",
+      "\x1b[34mDocuments\x1b[0m  \x1b[34mDownloads\x1b[0m  \x1b[32mscript.sh\x1b[0m",
+      "$ ▌",
+    ],
+    highlight: "shell",
+    dataPacket: "\\x1b[34mDocuments...",
+    dataDirection: "up",
+  },
+  {
+    phase: "pty-to-terminal",
+    title: "Output flows back through PTY",
+    description: "The shell's output travels back through the PTY to the terminal.",
+    terminalContent: [
+      "$ ls",
+      "\x1b[34mDocuments\x1b[0m  \x1b[34mDownloads\x1b[0m  \x1b[32mscript.sh\x1b[0m",
+      "$ ▌",
+    ],
+    highlight: "pty",
+    dataPacket: "\\x1b[34mDocuments...",
+    dataDirection: "up",
+  },
+  {
+    phase: "terminal-render",
+    title: "Terminal renders output",
+    description: "The terminal interprets escape sequences (\\x1b[34m = blue) and draws colored text to the grid.",
+    terminalContent: [
+      "$ ls",
+      "\x1b[34mDocuments\x1b[0m  \x1b[34mDownloads\x1b[0m  \x1b[32mscript.sh\x1b[0m",
+      "$ ▌",
+    ],
+    highlight: "terminal",
+  },
+  {
+    phase: "done",
+    title: "Complete",
+    description: "The full round trip: keystroke → encode → shell → execute → output → render. Repeat!",
+    terminalContent: [
+      "$ ls",
+      "\x1b[34mDocuments\x1b[0m  \x1b[34mDownloads\x1b[0m  \x1b[32mscript.sh\x1b[0m",
+      "$ ▌",
+    ],
+    highlight: null,
+  },
 ];
 
-export function FlowDiagram() {
-  const [currentStep, setCurrentStep] = useState<Step>("idle");
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
+function renderTerminalLine(line: string) {
+  // Simple escape sequence parser for demo
+  const parts: { text: string; color?: string }[] = [];
+  let current = "";
+  let currentColor: string | undefined;
+  let i = 0;
 
-  const startAnimation = () => { if (!isAnimating) { setIsAnimating(true); setStepIndex(1); } };
+  while (i < line.length) {
+    if (line[i] === "\x1b" && line[i + 1] === "[") {
+      if (current) {
+        parts.push({ text: current, color: currentColor });
+        current = "";
+      }
+      // Find the end of escape sequence
+      let j = i + 2;
+      while (j < line.length && line[j] !== "m") j++;
+      const code = line.slice(i + 2, j);
+      if (code === "34") currentColor = "text-terminal-blue";
+      else if (code === "32") currentColor = "text-terminal-green";
+      else if (code === "0") currentColor = undefined;
+      i = j + 1;
+    } else {
+      current += line[i];
+      i++;
+    }
+  }
+  if (current) parts.push({ text: current, color: currentColor });
+
+  return parts.map((p, idx) => (
+    <span key={idx} className={p.color}>
+      {p.text.includes("▌") ? (
+        <>
+          {p.text.replace("▌", "")}
+          <span className="cursor-blink bg-terminal-green text-terminal-bg">▌</span>
+        </>
+      ) : (
+        p.text
+      )}
+    </span>
+  ));
+}
+
+export function FlowDiagram() {
+  const [stepIndex, setStepIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const currentStep = STEPS[stepIndex]!;
+
+  const startAnimation = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setStepIndex(0);
+  };
 
   useEffect(() => {
     if (!isAnimating) return;
-    if (stepIndex >= STEPS.length) { setIsAnimating(false); setStepIndex(0); setCurrentStep("idle"); return; }
-    setCurrentStep(STEPS[stepIndex]!.step);
-    const timer = setTimeout(() => setStepIndex((i) => i + 1), 800);
+    if (stepIndex >= STEPS.length - 1) {
+      setIsAnimating(false);
+      return;
+    }
+    const timer = setTimeout(() => setStepIndex((i) => i + 1), 1500);
     return () => clearTimeout(timer);
   }, [isAnimating, stepIndex]);
 
-  const currentInfo = STEPS.find((s) => s.step === currentStep) || STEPS[0];
-
-  const isActive = (box: string) => {
-    const map: Record<string, Step[]> = {
-      you: ["user"], terminal: ["terminal", "terminal-back"], pty: ["pty", "pty-back"],
-      program: ["program", "program-process"], display: ["display"],
-    };
-    return map[box]?.includes(currentStep);
+  const goToStep = (index: number) => {
+    setIsAnimating(false);
+    setStepIndex(index);
   };
 
-  const boxClass = (box: string) => `px-4 py-3 rounded-lg border-2 text-center transition-all duration-300 ${isActive(box) ? "border-terminal-green bg-terminal-green/20 scale-105" : "border-terminal-border"}`;
+  const layerClass = (layer: "keyboard" | "terminal" | "pty" | "shell") =>
+    `relative px-4 py-3 rounded border-2 transition-all duration-300 ${
+      currentStep.highlight === layer
+        ? "border-terminal-green bg-terminal-green/10 scale-[1.02]"
+        : "border-terminal-border bg-terminal-bg/50"
+    }`;
 
   return (
     <div className="space-y-8">
-      <TerminalWindow title="data-flow">
-        <div className="p-4 space-y-8">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <div className={boxClass("you")}><div className="text-2xl mb-1">👤</div><div className="text-sm">You</div></div>
-            <div className="text-2xl text-terminal-dim">→</div>
-            <div className={boxClass("terminal")}><div className="text-2xl mb-1">🖥️</div><div className="text-sm">Terminal</div></div>
-            <div className="text-2xl text-terminal-dim">→</div>
-            <div className={boxClass("pty")}><div className="text-2xl mb-1">🔌</div><div className="text-sm">PTY</div></div>
-            <div className="text-2xl text-terminal-dim">→</div>
-            <div className={boxClass("program")}><div className="text-2xl mb-1">⚙️</div><div className="text-sm">Program</div></div>
+      {/* Main visualization */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Left: The layer diagram */}
+        <div className="space-y-3">
+          <div className="text-sm text-terminal-dim mb-4">The Terminal Stack</div>
+
+          {/* Keyboard/You layer */}
+          <div className={layerClass("keyboard")}>
+            <div className="flex items-center gap-3">
+              <span className="text-lg">⌨️</span>
+              <div>
+                <div className="font-bold text-sm">You (Keyboard)</div>
+                <div className="text-xs text-terminal-dim">Physical keystrokes</div>
+              </div>
+            </div>
+            {currentStep.dataPacket && currentStep.dataDirection === "down" && currentStep.highlight === "keyboard" && (
+              <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 z-10">
+                <div className="bg-terminal-green text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                  {currentStep.dataPacket}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <div className={boxClass("display")}><div className="text-2xl mb-1">📺</div><div className="text-sm">Display</div></div>
-            <div className="text-2xl text-terminal-dim">←</div>
-            <div className="px-4 py-3 text-center text-terminal-dim text-sm">interprets</div>
-            <div className="text-2xl text-terminal-dim">←</div>
-            <div className="px-4 py-3 text-center text-terminal-dim text-sm">sends output</div>
-            <div className="text-2xl text-terminal-dim">←</div>
-            <div className="px-4 py-3 text-center text-terminal-dim text-sm">responds</div>
+          <div className="flex justify-center text-terminal-dim">
+            <span className={currentStep.dataDirection === "down" ? "text-terminal-green" : ""}>↓</span>
+            <span className="mx-2">/</span>
+            <span className={currentStep.dataDirection === "up" ? "text-terminal-green" : ""}>↑</span>
           </div>
 
-          <div className="text-center py-4">
-            <div className="text-terminal-green text-lg font-bold">{currentInfo?.label}</div>
-            <div className="text-terminal-dim">{currentInfo?.desc}</div>
+          {/* Terminal layer */}
+          <div className={layerClass("terminal")}>
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🖥️</span>
+              <div>
+                <div className="font-bold text-sm">Terminal Emulator</div>
+                <div className="text-xs text-terminal-dim">Encodes input, renders output</div>
+              </div>
+            </div>
+            {currentStep.dataPacket && currentStep.highlight === "terminal" && (
+              <div className={`absolute ${currentStep.dataDirection === "down" ? "-bottom-6" : "-top-6"} left-1/2 transform -translate-x-1/2 z-10`}>
+                <div className="bg-terminal-amber text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                  {currentStep.dataPacket}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="flex justify-center">
-            <button onClick={startAnimation} disabled={isAnimating}
-              className={`px-6 py-3 rounded-lg font-bold transition-all ${isAnimating ? "bg-terminal-dim text-terminal-bg cursor-not-allowed" : "bg-terminal-green text-terminal-bg hover:opacity-90"}`}>
-              {isAnimating ? "Animating..." : "Watch the flow"}
-            </button>
+          <div className="flex justify-center text-terminal-dim">
+            <span className={currentStep.dataDirection === "down" ? "text-terminal-green" : ""}>↓</span>
+            <span className="mx-2">/</span>
+            <span className={currentStep.dataDirection === "up" ? "text-terminal-green" : ""}>↑</span>
+          </div>
+
+          {/* PTY layer */}
+          <div className={layerClass("pty")}>
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🔌</span>
+              <div>
+                <div className="font-bold text-sm">PTY (Pseudo-Terminal)</div>
+                <div className="text-xs text-terminal-dim">Bidirectional pipe</div>
+              </div>
+            </div>
+            {currentStep.dataPacket && currentStep.highlight === "pty" && (
+              <div className={`absolute ${currentStep.dataDirection === "down" ? "-bottom-6" : "-top-6"} left-1/2 transform -translate-x-1/2 z-10`}>
+                <div className="bg-terminal-purple text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                  {currentStep.dataPacket}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-center text-terminal-dim">
+            <span className={currentStep.dataDirection === "down" ? "text-terminal-green" : ""}>↓</span>
+            <span className="mx-2">/</span>
+            <span className={currentStep.dataDirection === "up" ? "text-terminal-green" : ""}>↑</span>
+          </div>
+
+          {/* Shell layer */}
+          <div className={layerClass("shell")}>
+            <div className="flex items-center gap-3">
+              <span className="text-lg">⚙️</span>
+              <div>
+                <div className="font-bold text-sm">Shell / Program</div>
+                <div className="text-xs text-terminal-dim">bash, zsh, or any CLI program</div>
+              </div>
+            </div>
+            {currentStep.dataPacket && currentStep.dataDirection === "up" && currentStep.highlight === "shell" && (
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-10">
+                <div className="bg-terminal-cyan text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                  {currentStep.dataPacket}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </TerminalWindow>
 
+        {/* Right: What you see */}
+        <div className="space-y-4">
+          <div className="text-sm text-terminal-dim mb-4">What You See</div>
+          <TerminalWindow title="bash">
+            <div className="font-mono text-sm space-y-1 min-h-[120px]">
+              {currentStep.terminalContent.map((line, i) => (
+                <div key={i}>{renderTerminalLine(line)}</div>
+              ))}
+            </div>
+          </TerminalWindow>
+
+          {/* Step info */}
+          <div className="bg-terminal-bg border border-terminal-border rounded-lg p-4">
+            <div className="text-terminal-green font-bold mb-1">{currentStep.title}</div>
+            <div className="text-terminal-dim text-sm">{currentStep.description}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Step indicators */}
+      <div className="flex flex-wrap justify-center gap-2">
+        {STEPS.map((step, i) => (
+          <button
+            key={step.phase}
+            onClick={() => goToStep(i)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              i === stepIndex
+                ? "bg-terminal-green scale-125"
+                : i < stepIndex
+                ? "bg-terminal-green/50"
+                : "bg-terminal-border"
+            }`}
+            title={step.title}
+          />
+        ))}
+      </div>
+
+      {/* Controls */}
+      <div className="flex justify-center gap-4">
+        <button
+          onClick={() => goToStep(Math.max(0, stepIndex - 1))}
+          disabled={stepIndex === 0}
+          className="px-4 py-2 rounded border border-terminal-border text-terminal-dim hover:border-terminal-green hover:text-terminal-green disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+        >
+          ← Previous
+        </button>
+        <button
+          onClick={startAnimation}
+          disabled={isAnimating}
+          className={`px-6 py-2 rounded font-bold transition-all ${
+            isAnimating
+              ? "bg-terminal-dim text-terminal-bg cursor-not-allowed"
+              : "bg-terminal-green text-terminal-bg hover:opacity-90"
+          }`}
+        >
+          {isAnimating ? "Playing..." : "Play Animation"}
+        </button>
+        <button
+          onClick={() => goToStep(Math.min(STEPS.length - 1, stepIndex + 1))}
+          disabled={stepIndex === STEPS.length - 1}
+          className="px-4 py-2 rounded border border-terminal-border text-terminal-dim hover:border-terminal-green hover:text-terminal-green disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+        >
+          Next →
+        </button>
+      </div>
+
+      {/* Key insight */}
       <div className="bg-terminal-highlight border border-terminal-border rounded-lg p-6">
-        <h4 className="text-terminal-green font-bold mb-3">How Claude Code draws its UI</h4>
-        <p className="text-terminal-dim">When Claude Code needs to update the screen, it doesn't move things around pixel by pixel. It sends escape sequences to:</p>
-        <ol className="list-decimal list-inside mt-3 space-y-2 text-terminal-fg">
-          <li>Clear the screen or parts of it</li>
-          <li>Move the cursor to specific positions</li>
-          <li>Print text with colors and styles</li>
-          <li>Repeat for every "frame" of the UI</li>
-        </ol>
-        <p className="text-terminal-dim mt-3">It's like a video game, but the "pixels" are characters in a grid.</p>
+        <h4 className="text-terminal-green font-bold mb-3">The Full Picture</h4>
+        <p className="text-terminal-dim mb-4">
+          Every command you run makes a complete round trip through this stack:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div className="space-y-2">
+            <div className="text-terminal-fg font-bold">Input path (you → program):</div>
+            <ol className="list-decimal list-inside text-terminal-dim space-y-1">
+              <li>You press keys</li>
+              <li>Terminal encodes them as bytes</li>
+              <li>PTY pipes bytes to the program</li>
+              <li>Program reads and processes input</li>
+            </ol>
+          </div>
+          <div className="space-y-2">
+            <div className="text-terminal-fg font-bold">Output path (program → you):</div>
+            <ol className="list-decimal list-inside text-terminal-dim space-y-1">
+              <li>Program writes output (with escape codes)</li>
+              <li>PTY pipes it back to the terminal</li>
+              <li>Terminal interprets escape sequences</li>
+              <li>Terminal draws to the screen grid</li>
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
   );
