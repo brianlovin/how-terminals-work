@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --color-terminal-bg: #0d1117;
+  --color-terminal-fg: #c9d1d9;
+  --color-terminal-green: #3fb950;
+  --color-terminal-amber: #d29922;
+  --color-terminal-red: #f85149;
+  --color-terminal-blue: #58a6ff;
+  --color-terminal-purple: #bc8cff;
+  --color-terminal-cyan: #39c5cf;
+  --color-terminal-dim: #484f58;
+  --color-terminal-border: #30363d;
+  --color-terminal-highlight: #161b22;
+}
+
+@layer base {
+  html {
+    @apply bg-terminal-bg text-terminal-fg;
+    font-family: "Geist Mono", ui-monospace, monospace;
+  }
+
+  body {
+    @apply m-0 p-0 min-h-screen;
+  }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
