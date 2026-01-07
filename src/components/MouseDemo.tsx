@@ -1,14 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { TerminalWindow } from "./TerminalWindow";
 
-const GRID_COLS = 20;
 const GRID_ROWS = 10;
+const CELL_WIDTH = 20; // pixels per cell
 
 interface ClickInfo { x: number; y: number; button: number; sequence: string; bytes: string }
 
 export function MouseDemo() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [cols, setCols] = useState(20);
   const [lastClick, setLastClick] = useState<ClickInfo | null>(null);
   const [mouseEnabled, setMouseEnabled] = useState(true);
+
+  // Measure container and calculate columns
+  useEffect(() => {
+    const updateCols = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth;
+        const newCols = Math.max(10, Math.floor(width / CELL_WIDTH));
+        setCols(newCols);
+      }
+    };
+
+    updateCols();
+    const observer = new ResizeObserver(updateCols);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
 
   const handleCellClick = (row: number, col: number, e: React.MouseEvent) => {
     if (!mouseEnabled) return;
@@ -32,16 +52,16 @@ export function MouseDemo() {
             <span className="text-terminal-dim">(programs request this with <code className="text-terminal-amber">^[[?1000h</code>)</span>
           </div>
 
-          <div className={`inline-grid gap-0 border border-terminal-border rounded ${mouseEnabled ? "" : "opacity-50"}`}
-            style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)` }}>
+          <div ref={containerRef} className={`grid gap-0 border border-terminal-border rounded w-full ${mouseEnabled ? "" : "opacity-50"}`}
+            style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
             {Array(GRID_ROWS).fill(null).map((_, row) =>
-              Array(GRID_COLS).fill(null).map((_, col) => {
+              Array(cols).fill(null).map((_, col) => {
                 const isClicked = lastClick?.x === col + 1 && lastClick?.y === row + 1;
                 return (
                   <div key={`${row}-${col}`}
                     onClick={(e) => handleCellClick(row, col, e)}
                     onContextMenu={(e) => { e.preventDefault(); handleCellClick(row, col, e); }}
-                    className={`w-5 h-5 flex items-center justify-center text-xs border-r border-b border-terminal-border/30 cursor-crosshair transition-colors
+                    className={`h-5 flex items-center justify-center text-xs border-r border-b border-terminal-border/30 cursor-crosshair transition-colors
                       ${isClicked ? "bg-terminal-green text-terminal-bg" : "hover:bg-terminal-border/50"}`}
                   >{isClicked ? "X" : ""}</div>
                 );
