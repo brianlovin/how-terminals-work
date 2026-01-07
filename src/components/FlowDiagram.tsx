@@ -302,7 +302,7 @@ export function FlowDiagram() {
 
           {/* Step info */}
           <div className="bg-terminal-bg border border-terminal-border rounded-lg p-4">
-            <div className="text-terminal-green font-bold mb-1">{currentStep.title}</div>
+            <div className="text-terminal-red text-sm font-bold mb-1">{currentStep.title}</div>
             <div className="text-terminal-dim text-sm">{currentStep.description}</div>
           </div>
         </div>

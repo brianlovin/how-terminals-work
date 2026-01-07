@@ -9,7 +9,7 @@
   --color-terminal-blue: #58a6ff;
   --color-terminal-purple: #bc8cff;
   --color-terminal-cyan: #39c5cf;
-  --color-terminal-dim: #484f58;
+  --color-terminal-dim: rgba(255,255,255,0.45);
   --color-terminal-border: #30363d;
   --color-terminal-highlight: #161b22;
 }

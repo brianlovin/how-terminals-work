@@ -43,7 +43,7 @@ export function EscapeDemo() {
                   ${activeEffects.has(seq.effect) ? "border-terminal-green bg-terminal-green/10" : "border-terminal-border hover:border-terminal-dim"}`}
               >
                 <div className="flex items-center justify-between">
-                  <code className="text-terminal-amber font-bold">{seq.display}</code>
+                  <code className="text-terminal-amber font-bold text-xs">{seq.display}</code>
                   <span className="text-terminal-dim text-sm">{seq.desc}</span>
                 </div>
               </button>
@@ -69,7 +69,7 @@ export function EscapeDemo() {
       </div>
 
       <div className="text-terminal-dim text-sm">
-        <span className="text-terminal-green">^[</span> represents the <span className="text-terminal-amber">ESC</span> character (byte 0x1B). Programs send these sequences to control how text appears.
+        <span className="text-terminal-amber">^[</span> represents the <span className="text-terminal-amber">ESC</span> character (byte 0x1B). Programs send these sequences to control how text appears.
       </div>
     </div>
   );

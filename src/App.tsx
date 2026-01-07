@@ -6,19 +6,18 @@ import { EscapeDemo } from "./components/EscapeDemo";
 import { KeyboardDemo } from "./components/KeyboardDemo";
 import { MouseDemo } from "./components/MouseDemo";
 import { FlowDiagram } from "./components/FlowDiagram";
+import { AdvancedTUIDemo } from "./components/AdvancedTUIDemo";
 
 export function App() {
   return (
     <div className="min-h-screen px-4 lg:px-8">
       {/* Hero */}
-      <header className="py-12 flex flex-col max-w-2xl mx-auto">
-        <h1 className="font-bold mb-6">
-          <span className="text-terminal-green">How Terminals Work</span>
+      <header className="pt-12 flex flex-col max-w-3xl mx-auto">
+        <h1 className="font-bold text-xl mb-2">
+          <span className="text-terminal-blue">How Terminals Work</span>
         </h1>
-        <p className="text-terminal-dim max-w-2xl mb-8">
+        <p className="text-terminal-fg max-w-3xl mb-8">
           An interactive guide to understanding terminal UIs.
-          <br />
-          No code required.
         </p>
       </header>
 
@@ -48,6 +47,11 @@ export function App() {
       <Section id="flow" number={5} title="The Round Trip"
         insight="Every keystroke travels down through the terminal stack to the program, then output flows back up to render on screen.">
         <FlowDiagram />
+      </Section>
+
+      <Section id="advanced-tui" number={6} title="Building Complex TUIs"
+        insight="Advanced terminal apps like htop or vim divide the screen into regions—each with its own focus, content, and resize behavior. It's like building a GUI, but with characters instead of pixels.">
+        <AdvancedTUIDemo />
       </Section>
     </div>
   );
