@@ -763,6 +763,33 @@ export function VocabularyDemo() {
               controls aliases, PATH, and prompt.
             </p>
           </div>
+
+          <div className="bg-terminal-highlight p-4 space-y-2">
+            <div className="text-terminal-fg font-bold text-sm">
+              "How does Up arrow recall previous commands?"
+            </div>
+            <p className="text-terminal-muted text-sm">
+              That's your{' '}
+              <span className="text-terminal-green">shell</span>, not your
+              terminal. The shell keeps a history file (like{' '}
+              <span className="text-terminal-cyan">~/.zsh_history</span>) and
+              sends recalled commands back to the terminal for display.
+            </p>
+          </div>
+
+          <div className="bg-terminal-highlight p-4 space-y-2">
+            <div className="text-terminal-fg font-bold text-sm">
+              "Why restart terminal after editing .zshrc?"
+            </div>
+            <p className="text-terminal-muted text-sm">
+              Your shell reads{' '}
+              <span className="text-terminal-cyan">.zshrc</span> once at startup.
+              Existing shells already loaded their config. Opening a new terminal
+              starts a fresh shell that reads your updated file. (Or run{' '}
+              <span className="text-terminal-green">source ~/.zshrc</span> to
+              reload without restarting.)
+            </p>
+          </div>
         </div>
       </div>
 
