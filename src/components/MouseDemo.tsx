@@ -99,10 +99,10 @@ export function MouseDemo() {
                           e.preventDefault();
                           handleCellClick(row, col, e);
                         }}
-                        className={`h-5 flex items-center justify-center text-xs border-r border-b border-terminal-border/30 cursor-crosshair transition-colors
-                      ${isClicked ? 'bg-terminal-fg text-terminal-bg' : 'hover:bg-terminal-border/50'}`}
+                        className={`h-5 flex items-center justify-center text-xs border-r border-b border-terminal-border/80 cursor-crosshair transition-colors
+                      ${isClicked ? 'bg-terminal-fg text-terminal-bg' : 'hover:bg-terminal-border'}`}
                       >
-                        {isClicked ? 'X' : ''}
+                        {isClicked ? '×' : ''}
                       </div>
                     );
                   })
@@ -113,19 +113,25 @@ export function MouseDemo() {
             <div className="bg-terminal-bg p-4 space-y-3">
               <div className="grid grid-cols-3 gap-4 text-center text-sm">
                 <div>
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Position</div>
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                    Position
+                  </div>
                   <div className="text-terminal-fg">
                     ({lastClick.x}, {lastClick.y})
                   </div>
                 </div>
                 <div>
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Button</div>
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                    Button
+                  </div>
                   <div className="text-terminal-yellow">
                     {['Left', 'Middle', 'Right'][lastClick.button]}
                   </div>
                 </div>
                 <div>
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Sequence</div>
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                    Sequence
+                  </div>
                   <code className="text-terminal-cyan">
                     {lastClick.sequence}
                   </code>

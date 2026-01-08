@@ -68,23 +68,23 @@ export function KeyboardDemo() {
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="bg-terminal-bg p-3">
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Bytes</div>
-                  <code className="text-terminal-yellow">
-                    {lastKey.bytes}
-                  </code>
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                    Bytes
+                  </div>
+                  <code className="text-terminal-yellow">{lastKey.bytes}</code>
                 </div>
                 <div className="bg-terminal-bg p-3">
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Sequence</div>
-                  <code className="text-terminal-cyan">
-                    {lastKey.sequence}
-                  </code>
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                    Sequence
+                  </div>
+                  <code className="text-terminal-cyan">{lastKey.sequence}</code>
                 </div>
               </div>
               <div className="text-terminal-muted text-sm">{lastKey.desc}</div>
             </div>
           ) : (
             <div className="text-terminal-muted text-center">
-              <div className="text-lg mb-1">Press any key</div>
+              <div className="text-base mb-1">Press any key</div>
               <div className="text-sm text-terminal-dim">
                 Try arrow keys, Enter, Tab, or letters
               </div>

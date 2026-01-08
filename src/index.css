@@ -7,7 +7,7 @@
   --color-terminal-muted: #a3a3a3;
   --color-terminal-dim: #737373;
   --color-terminal-border: #262626;
-  --color-terminal-highlight: #171717;
+  --color-terminal-highlight: rgba(255, 255, 255, 0.05);
   --color-terminal-surface: #141414;
 
   /* Standard 16-color ANSI palette */

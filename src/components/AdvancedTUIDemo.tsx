@@ -387,17 +387,6 @@ export function AdvancedTUIDemo() {
               Size: {terminalSize.cols}x{terminalSize.rows}
             </span>
           </div>
-
-          <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
-            <span className="text-terminal-magenta">Try it:</span> Click to
-            focus a region. Use{' '}
-            <kbd className="bg-terminal-highlight px-1 rounded">Tab</kbd> to
-            cycle focus. Use{' '}
-            <kbd className="bg-terminal-highlight px-1 rounded">↑↓</kbd> in
-            sidebar,
-            <kbd className="bg-terminal-highlight px-1 rounded">←→</kbd> in
-            tabs.
-          </div>
         </div>
 
         {/* Right: Explanation */}
@@ -581,7 +570,7 @@ export function AdvancedTUIDemo() {
       </div>
 
       {/* Detailed breakdown: How regions work */}
-      <div className="border border-terminal-border p-6 space-y-6">
+      <div className="border bg-terminal-highlight border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Under the Hood: TUI Architecture
         </h3>
@@ -625,7 +614,7 @@ export function AdvancedTUIDemo() {
         </div>
 
         {/* Box drawing character reference */}
-        <div className="bg-terminal-bg border border-terminal-border p-4 space-y-3">
+        <div className="bg-terminal-highlight border border-terminal-border p-4 space-y-3">
           <div className="text-terminal-red text-sm font-bold">
             Box Drawing Characters
           </div>
@@ -668,7 +657,7 @@ function CursorPositionDemo() {
   const GRID_COLS = 20;
 
   return (
-    <div className="border border-terminal-border p-6 space-y-4">
+    <div className="border bg-terminal-highlight border-terminal-border p-6 space-y-4">
       <h3 className="text-terminal-red text-sm font-bold">
         Cursor Positioning
       </h3>

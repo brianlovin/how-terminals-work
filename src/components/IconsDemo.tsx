@@ -620,7 +620,7 @@ export function IconsDemo() {
       </div>
 
       {/* Icon Gallery */}
-      <div className="border border-terminal-border p-6 space-y-6">
+      <div className="border bg-terminal-highlight border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Nerd Font Icon Gallery
         </h3>
@@ -727,7 +727,7 @@ export function IconsDemo() {
       </div>
 
       {/* Technical Deep Dive */}
-      <div className="border border-terminal-border p-6 space-y-6">
+      <div className="border bg-terminal-highlight border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Under the Hood: Why One Cell?
         </h3>
@@ -771,7 +771,7 @@ export function IconsDemo() {
         </div>
 
         {/* Character width comparison */}
-        <div className="bg-terminal-bg border border-terminal-border p-4 space-y-3">
+        <div className="bg-terminal-highlight border border-terminal-border p-4 space-y-3">
           <div className="text-terminal-red text-sm font-bold">
             Character Width in Terminals
           </div>
@@ -906,7 +906,7 @@ function IconSetsReference() {
   ];
 
   return (
-    <div className="border border-terminal-border p-6 space-y-4">
+    <div className="border bg-terminal-highlight border-terminal-border p-6 space-y-4">
       <h3 className="text-terminal-red text-sm font-bold">
         Icon Sets in Nerd Fonts
       </h3>

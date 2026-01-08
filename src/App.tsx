@@ -10,6 +10,7 @@ import { AdvancedTUIDemo } from './components/AdvancedTUIDemo';
 import { IconsDemo } from './components/IconsDemo';
 import { StateManagementDemo } from './components/StateManagementDemo';
 import { TextSelectionDemo } from './components/TextSelectionDemo';
+import { VocabularyDemo } from './components/VocabularyDemo';
 
 export function App() {
   return (
@@ -106,6 +107,15 @@ export function App() {
         insight="You can't click to move your cursor because the terminal handles text selection separately from the app's cursor. Option+Click works by simulating arrow keypresses—it's a hack, not native behavior."
       >
         <TextSelectionDemo />
+      </Section>
+
+      <Section
+        id="vocabulary"
+        number={10}
+        title="Terminal Vocabulary"
+        insight="Terminal, shell, console, CLI—these words get thrown around interchangeably, but they mean different things. Understanding the distinction helps you know which tool to configure when something isn't working."
+      >
+        <VocabularyDemo />
       </Section>
     </div>
   );

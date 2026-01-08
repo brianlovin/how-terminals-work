@@ -93,10 +93,10 @@ export function GridDemo() {
 
   return (
     <div className="space-y-6">
-      <TerminalWindow>
+      <TerminalWindow noPadding>
         <div ref={containerRef} className="w-full">
           <div
-            className="grid gap-0 border border-terminal-border w-full"
+            className="grid gap-0"
             style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
           >
             {grid.map((row, rowIdx) =>
@@ -108,8 +108,8 @@ export function GridDemo() {
                 return (
                   <div
                     key={`${rowIdx}-${colIdx}`}
-                    className={`h-5 flex items-center justify-center text-xs border-r border-b border-terminal-border/30 cursor-pointer transition-colors duration-75
-                      ${isHovered ? 'bg-terminal-green/20 ring-1 ring-terminal-green' : ''}
+                    className={`h-5 flex items-center justify-center text-xs border-r border-b border-terminal-border/80 cursor-pointer transition-colors duration-75
+                      ${isHovered ? 'bg-terminal-green/20 ring-1 ring-inset ring-terminal-green' : ''}
                       ${isCursor ? 'bg-terminal-green' : 'hover:bg-terminal-border/50'}`}
                     onClick={() => handleCellClick(rowIdx, colIdx)}
                     onMouseEnter={() =>
