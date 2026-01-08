@@ -324,7 +324,7 @@ export function AdvancedTUIDemo() {
               </div>
               <div>Updated: 2024-01-15 14:32:00 UTC</div>
               {selectedDeploy.status === 'running' && (
-                <div className="mt-2 text-terminal-yellow animate-pulse">
+                <div className="mt-2 text-terminal-yellow">
                   Building... ████████░░░░░░░░ 52%
                 </div>
               )}
@@ -349,7 +349,6 @@ export function AdvancedTUIDemo() {
       <div className="grid grid-cols-1 gap-6">
         {/* Left: The simulated TUI */}
         <div className="space-y-4">
-          <div className="text-sm text-terminal-dim">Interactive TUI Demo</div>
           <TerminalWindow>
             <div
               ref={containerRef}
@@ -378,7 +377,7 @@ export function AdvancedTUIDemo() {
               disabled={isResizing}
               className={`px-3 py-1.5 border transition-colors ${
                 isResizing
-                  ? 'border-terminal-yellow text-terminal-yellow animate-pulse'
+                  ? 'border-terminal-yellow text-terminal-yellow'
                   : 'border-terminal-border hover:border-terminal-green'
               }`}
             >
@@ -390,8 +389,8 @@ export function AdvancedTUIDemo() {
           </div>
 
           <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
-            <span className="text-terminal-red">Try it:</span> Click to focus a
-            region. Use{' '}
+            <span className="text-terminal-magenta">Try it:</span> Click to
+            focus a region. Use{' '}
             <kbd className="bg-terminal-highlight px-1 rounded">Tab</kbd> to
             cycle focus. Use{' '}
             <kbd className="bg-terminal-highlight px-1 rounded">↑↓</kbd> in
@@ -403,180 +402,180 @@ export function AdvancedTUIDemo() {
 
         {/* Right: Explanation */}
         <div className="space-y-4">
-          <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
+          <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4">
+            <div className="h-[260px] overflow-hidden space-y-4">
+              <div className="text-terminal-red font-medium text-sm">
+                {stepContent.title}
+              </div>
+              <p className="text-terminal-muted text-sm leading-relaxed">
+                {stepContent.description}
+              </p>
 
-          <div className="bg-terminal-highlight border min-h-[340px] border-terminal-border px-4 py-4 space-y-4">
-            <div className="text-terminal-fg font-medium text-sm">
-              {stepContent.title}
-            </div>
-            <p className="text-terminal-muted text-sm leading-relaxed">
-              {stepContent.description}
-            </p>
-
-            {/* Step-specific visualizations */}
-            {currentStep === 'layout-system' && (
-              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-                <div className="text-terminal-dim">
-                  // Region data structure
+              {/* Step-specific visualizations */}
+              {currentStep === 'layout-system' && (
+                <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                  <div className="text-terminal-dim">
+                    // Region data structure
+                  </div>
+                  <div className="text-terminal-fg">
+                    {regions.map((r) => (
+                      <div key={r.id} className="ml-2">
+                        <span className={`text-${r.color}`}>{r.name}</span>:
+                        <span className="text-terminal-yellow">
+                          {' '}
+                          x={r.x}, y={r.y}, w={r.width}, h={r.height}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="text-terminal-fg">
-                  {regions.map((r) => (
-                    <div key={r.id} className="ml-2">
-                      <span className={`text-${r.color}`}>{r.name}</span>:
-                      <span className="text-terminal-yellow">
-                        {' '}
-                        x={r.x}, y={r.y}, w={r.width}, h={r.height}
+              )}
+
+              {currentStep === 'focus-management' && (
+                <div className="bg-terminal-highlight p-3 space-y-2">
+                  <div className="text-xs space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded border-2 border-terminal-green bg-terminal-green/20"></span>
+                      <span>
+                        Currently focused:{' '}
+                        <span className="text-terminal-green">
+                          {focusedRegion}
+                        </span>
                       </span>
                     </div>
-                  ))}
+                    <div className="text-terminal-dim mt-2">
+                      Focus determines where keystrokes go. The cursor (if any)
+                      lives in the focused region.
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {currentStep === 'focus-management' && (
-              <div className="bg-terminal-highlight p-3 space-y-2">
-                <div className="text-xs space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded border-2 border-terminal-green bg-terminal-green/20"></span>
-                    <span>
-                      Currently focused:{' '}
+              {currentStep === 'resize-handling' && (
+                <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                  <div className="text-terminal-dim">
+                    // Terminal resize sequence
+                  </div>
+                  <div className="space-y-1">
+                    <div>
+                      <span className="text-terminal-yellow">1.</span> User
+                      drags window edge
+                    </div>
+                    <div>
+                      <span className="text-terminal-yellow">2.</span> OS sends{' '}
+                      <span className="text-terminal-cyan">SIGWINCH</span>{' '}
+                      signal
+                    </div>
+                    <div>
+                      <span className="text-terminal-yellow">3.</span> App calls{' '}
                       <span className="text-terminal-green">
-                        {focusedRegion}
+                        ioctl(TIOCGWINSZ)
                       </span>
-                    </span>
-                  </div>
-                  <div className="text-terminal-dim mt-2">
-                    Focus determines where keystrokes go. The cursor (if any)
-                    lives in the focused region.
+                    </div>
+                    <div>
+                      <span className="text-terminal-yellow">4.</span> Gets new
+                      size:{' '}
+                      <span className="text-terminal-magenta">
+                        {terminalSize.cols}×{terminalSize.rows}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-yellow">5.</span>{' '}
+                      Recalculate all region bounds
+                    </div>
+                    <div>
+                      <span className="text-terminal-yellow">6.</span> Clear
+                      screen + redraw everything
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {currentStep === 'resize-handling' && (
-              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-                <div className="text-terminal-dim">
-                  // Terminal resize sequence
+              {currentStep === 'rendering' && (
+                <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                  <div className="text-terminal-dim">
+                    // Escape sequences for TUI rendering
+                  </div>
+                  <div className="space-y-1">
+                    <div>
+                      <span className="text-terminal-cyan">\x1b[?1049h</span>{' '}
+                      <span className="text-terminal-dim">
+                        — Enter alternate screen
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-cyan">\x1b[2J</span>{' '}
+                      <span className="text-terminal-dim">
+                        — Clear entire screen
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-cyan">\x1b[H</span>{' '}
+                      <span className="text-terminal-dim">
+                        — Move cursor to (1,1)
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-cyan">
+                        \x1b[{'{row}'};{'{col}'}H
+                      </span>{' '}
+                      <span className="text-terminal-dim">
+                        — Move cursor to position
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-cyan">\x1b[?25l</span>{' '}
+                      <span className="text-terminal-dim">
+                        — Hide cursor while drawing
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-cyan">\x1b[?25h</span>{' '}
+                      <span className="text-terminal-dim">
+                        — Show cursor when done
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <div>
-                    <span className="text-terminal-yellow">1.</span> User drags
-                    window edge
-                  </div>
-                  <div>
-                    <span className="text-terminal-yellow">2.</span> OS sends{' '}
-                    <span className="text-terminal-cyan">SIGWINCH</span> signal
-                  </div>
-                  <div>
-                    <span className="text-terminal-yellow">3.</span> App calls{' '}
-                    <span className="text-terminal-green">
-                      ioctl(TIOCGWINSZ)
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-yellow">4.</span> Gets new
-                    size:{' '}
-                    <span className="text-terminal-magenta">
-                      {terminalSize.cols}×{terminalSize.rows}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-yellow">5.</span> Recalculate
-                    all region bounds
-                  </div>
-                  <div>
-                    <span className="text-terminal-yellow">6.</span> Clear
-                    screen + redraw everything
-                  </div>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
 
-            {currentStep === 'rendering' && (
-              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-                <div className="text-terminal-dim">
-                  // Escape sequences for TUI rendering
-                </div>
-                <div className="space-y-1">
-                  <div>
-                    <span className="text-terminal-cyan">\x1b[?1049h</span>{' '}
-                    <span className="text-terminal-dim">
-                      — Enter alternate screen
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-cyan">\x1b[2J</span>{' '}
-                    <span className="text-terminal-dim">
-                      — Clear entire screen
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-cyan">\x1b[H</span>{' '}
-                    <span className="text-terminal-dim">
-                      — Move cursor to (1,1)
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-cyan">
-                      \x1b[{'{row}'};{'{col}'}H
-                    </span>{' '}
-                    <span className="text-terminal-dim">
-                      — Move cursor to position
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-cyan">\x1b[?25l</span>{' '}
-                    <span className="text-terminal-dim">
-                      — Hide cursor while drawing
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-cyan">\x1b[?25h</span>{' '}
-                    <span className="text-terminal-dim">
-                      — Show cursor when done
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Step navigation */}
-          <div className="flex items-center gap-2">
-            {steps.map((step, i) => (
+            {/* Step navigation */}
+            <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
               <button
-                key={step}
-                onClick={() => setCurrentStep(step)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  step === currentStep
-                    ? 'bg-terminal-fg scale-125'
-                    : 'bg-terminal-border hover:bg-terminal-dim'
-                }`}
-              />
-            ))}
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() =>
-                setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-              }
-              disabled={currentStepIndex === 0}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={() =>
-                setCurrentStep(
-                  steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-                )
-              }
-              disabled={currentStepIndex === steps.length - 1}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-            >
-              Next →
-            </button>
+                onClick={() =>
+                  setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
+                }
+                disabled={currentStepIndex === 0}
+                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              >
+                Previous
+              </button>
+              <div className="flex items-center gap-2">
+                {steps.map((step) => (
+                  <button
+                    key={step}
+                    onClick={() => setCurrentStep(step)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      step === currentStep
+                        ? 'bg-terminal-fg scale-125'
+                        : 'bg-terminal-border hover:bg-terminal-dim'
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={() =>
+                  setCurrentStep(
+                    steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
+                  )
+                }
+                disabled={currentStepIndex === steps.length - 1}
+                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -589,7 +588,7 @@ export function AdvancedTUIDemo() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-magenta font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
               <span>1</span>
               <span>Layout Engine</span>
             </div>
@@ -601,7 +600,7 @@ export function AdvancedTUIDemo() {
           </div>
 
           <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-blue font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
               <span>2</span>
               <span>Event Dispatch</span>
             </div>
@@ -613,7 +612,7 @@ export function AdvancedTUIDemo() {
           </div>
 
           <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-cyan font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
               <span>3</span>
               <span>Render Loop</span>
             </div>

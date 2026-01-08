@@ -381,9 +381,6 @@ export function IconsDemo() {
       <div className="grid grid-cols-1 gap-6">
         {/* File Explorer Demo */}
         <div className="space-y-4">
-          <div className="text-sm text-terminal-dim">
-            File Explorer with Icons
-          </div>
           <TerminalWindow>
             <div className="font-mono text-sm min-h-[280px]">
               {/* Toggle */}
@@ -444,10 +441,7 @@ export function IconsDemo() {
 
               {/* Hovered file info */}
               {hoveredFile !== null && (
-                <div className="mt-4 pt-3 border-t border-terminal-border text-xs">
-                  <div className="text-terminal-dim mb-2">
-                    This icon is a single Unicode character:
-                  </div>
+                <div className="absolute bottom-4 right-4 border bg-terminal-highlight border-terminal-border text-xs">
                   <div className="flex items-center gap-4 bg-terminal-highlight rounded p-2">
                     <div className="w-8 h-8 flex items-center justify-center bg-terminal-bg rounded border border-terminal-border">
                       {renderIcon(
@@ -479,146 +473,148 @@ export function IconsDemo() {
 
         {/* Explanation */}
         <div className="space-y-4">
-          <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
-          <div className="bg-terminal-highlight border min-h-[260px] border-terminal-border px-4 py-4 space-y-4">
-            <div className="text-terminal-fg font-medium text-sm">
-              {stepContent.title}
-            </div>
-            <p className="text-terminal-muted text-sm leading-relaxed">
-              {stepContent.description}
-            </p>
-
-            {/* Step-specific content */}
-            {currentStep === 'pua' && (
-              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-                <div className="text-terminal-dim">
-                  // Unicode Private Use Area ranges
-                </div>
-                <div className="space-y-1">
-                  <div>
-                    <span className="text-terminal-cyan">U+E000 - U+F8FF</span>{' '}
-                    <span className="text-terminal-dim">
-                      — Basic Multilingual Plane PUA
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-cyan">
-                      U+F0000 - U+FFFFD
-                    </span>{' '}
-                    <span className="text-terminal-dim">
-                      — Supplementary PUA-A
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-terminal-cyan">
-                      U+100000 - U+10FFFD
-                    </span>{' '}
-                    <span className="text-terminal-dim">
-                      — Supplementary PUA-B
-                    </span>
-                  </div>
-                </div>
-                <div className="text-terminal-yellow mt-2">
-                  Nerd Fonts uses ~3,600 codepoints in these ranges
-                </div>
+          <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4">
+            <div className="h-[180px] overflow-hidden space-y-4">
+              <div className="text-terminal-red font-medium text-sm">
+                {stepContent.title}
               </div>
-            )}
+              <p className="text-terminal-muted text-sm leading-relaxed">
+                {stepContent.description}
+              </p>
 
-            {currentStep === 'rendering' && (
-              <div className="bg-terminal-highlight p-3 space-y-3">
-                <div className="flex flex-wrap items-center gap-3 text-sm">
-                  <div className="flex flex-col items-center">
-                    <span className="text-terminal-cyan font-mono text-xs">
-                      App outputs
-                    </span>
-                    <span className="text-terminal-yellow font-mono">
-                      U+E628
-                    </span>
+              {/* Step-specific content */}
+              {currentStep === 'pua' && (
+                <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                  <div className="text-terminal-dim">
+                    // Unicode Private Use Area ranges
                   </div>
-                  <span className="text-terminal-dim">→</span>
-                  <div className="flex flex-col items-center">
-                    <span className="text-terminal-cyan font-mono text-xs">
-                      Font lookup
-                    </span>
-                    <span className="text-terminal-green">Nerd Font</span>
+                  <div className="space-y-1">
+                    <div>
+                      <span className="text-terminal-cyan">
+                        U+E000 - U+F8FF
+                      </span>{' '}
+                      <span className="text-terminal-dim">
+                        — Basic Multilingual Plane PUA
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-cyan">
+                        U+F0000 - U+FFFFD
+                      </span>{' '}
+                      <span className="text-terminal-dim">
+                        — Supplementary PUA-A
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-terminal-cyan">
+                        U+100000 - U+10FFFD
+                      </span>{' '}
+                      <span className="text-terminal-dim">
+                        — Supplementary PUA-B
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-terminal-dim">→</span>
-                  <div className="flex flex-col items-center">
-                    <span className="text-terminal-cyan font-mono text-xs">
-                      Rendered
-                    </span>
-                    <div className="w-6 h-6">
-                      {renderIcon('typescript', 'text-terminal-blue')}
+                  <div className="text-terminal-yellow mt-2">
+                    Nerd Fonts uses ~3,600 codepoints in these ranges
+                  </div>
+                </div>
+              )}
+
+              {currentStep === 'rendering' && (
+                <div className="bg-terminal-highlight p-3 space-y-3">
+                  <div className="flex flex-wrap items-center gap-3 text-sm">
+                    <div className="flex flex-col items-center">
+                      <span className="text-terminal-cyan font-mono text-xs">
+                        App outputs
+                      </span>
+                      <span className="text-terminal-yellow font-mono">
+                        U+E628
+                      </span>
+                    </div>
+                    <span className="text-terminal-dim">→</span>
+                    <div className="flex flex-col items-center">
+                      <span className="text-terminal-cyan font-mono text-xs">
+                        Font lookup
+                      </span>
+                      <span className="text-terminal-green">Nerd Font</span>
+                    </div>
+                    <span className="text-terminal-dim">→</span>
+                    <div className="flex flex-col items-center">
+                      <span className="text-terminal-cyan font-mono text-xs">
+                        Rendered
+                      </span>
+                      <div className="w-6 h-6">
+                        {renderIcon('typescript', 'text-terminal-blue')}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {currentStep === 'fonts' && (
-              <div className="bg-terminal-highlight p-3 text-xs space-y-2">
-                <div className="text-terminal-dim">Popular Nerd Fonts:</div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex items-center gap-2 text-terminal-fg">
-                    {renderIcon('check', 'text-terminal-green')}
-                    <span>JetBrainsMono Nerd Font</span>
+              {currentStep === 'fonts' && (
+                <div className="bg-terminal-highlight p-3 text-xs space-y-2">
+                  <div className="text-terminal-dim">Popular Nerd Fonts:</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="flex items-center gap-2 text-terminal-fg">
+                      {renderIcon('check', 'text-terminal-green')}
+                      <span>JetBrainsMono Nerd Font</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-terminal-fg">
+                      {renderIcon('check', 'text-terminal-green')}
+                      <span>FiraCode Nerd Font</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-terminal-fg">
+                      {renderIcon('check', 'text-terminal-green')}
+                      <span>Hack Nerd Font</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-terminal-fg">
+                      {renderIcon('check', 'text-terminal-green')}
+                      <span>CaskaydiaCove Nerd Font</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-terminal-fg">
-                    {renderIcon('check', 'text-terminal-green')}
-                    <span>FiraCode Nerd Font</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-terminal-fg">
-                    {renderIcon('check', 'text-terminal-green')}
-                    <span>Hack Nerd Font</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-terminal-fg">
-                    {renderIcon('check', 'text-terminal-green')}
-                    <span>CaskaydiaCove Nerd Font</span>
+                  <div className="text-terminal-cyan mt-2">
+                    Download: nerdfonts.com
                   </div>
                 </div>
-                <div className="text-terminal-cyan mt-2">
-                  Download: nerdfonts.com
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          {/* Step navigation */}
-          <div className="flex items-center gap-2">
-            {steps.map((step) => (
+            {/* Step navigation */}
+            <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
               <button
-                key={step}
-                onClick={() => setCurrentStep(step)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  step === currentStep
-                    ? 'bg-terminal-fg scale-125'
-                    : 'bg-terminal-border hover:bg-terminal-dim'
-                }`}
-              />
-            ))}
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() =>
-                setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-              }
-              disabled={currentStepIndex === 0}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={() =>
-                setCurrentStep(
-                  steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-                )
-              }
-              disabled={currentStepIndex === steps.length - 1}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-            >
-              Next →
-            </button>
+                onClick={() =>
+                  setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
+                }
+                disabled={currentStepIndex === 0}
+                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              >
+                Previous
+              </button>
+              <div className="flex items-center gap-2">
+                {steps.map((step) => (
+                  <button
+                    key={step}
+                    onClick={() => setCurrentStep(step)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      step === currentStep
+                        ? 'bg-terminal-fg scale-125'
+                        : 'bg-terminal-border hover:bg-terminal-dim'
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={() =>
+                  setCurrentStep(
+                    steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
+                  )
+                }
+                disabled={currentStepIndex === steps.length - 1}
+                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -666,7 +662,7 @@ export function IconsDemo() {
           <div className="bg-terminal-highlight p-4 space-y-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 flex items-center justify-center bg-terminal-bg border border-terminal-border">
-                <div className="w-8 h-8">
+                <div className="w-8 h-8 flex items-center justify-center">
                   {renderIcon(
                     selectedIcon.icon as IconName,
                     selectedIcon.color
@@ -738,7 +734,7 @@ export function IconsDemo() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-magenta font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
               <span>1</span>
               <span>Single Codepoint</span>
             </div>
@@ -750,7 +746,7 @@ export function IconsDemo() {
           </div>
 
           <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-blue font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
               <span>2</span>
               <span>Font Glyphs</span>
             </div>
@@ -762,7 +758,7 @@ export function IconsDemo() {
           </div>
 
           <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-cyan font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
               <span>3</span>
               <span>Cell-Sized Design</span>
             </div>
