@@ -7,6 +7,7 @@ import { KeyboardDemo } from "./components/KeyboardDemo";
 import { MouseDemo } from "./components/MouseDemo";
 import { FlowDiagram } from "./components/FlowDiagram";
 import { AdvancedTUIDemo } from "./components/AdvancedTUIDemo";
+import { IconsDemo } from "./components/IconsDemo";
 
 export function App() {
   return (
@@ -52,6 +53,11 @@ export function App() {
       <Section id="advanced-tui" number={6} title="Building Complex TUIs"
         insight="Advanced terminal apps like htop or vim divide the screen into regions—each with its own focus, content, and resize behavior. It's like building a GUI, but with characters instead of pixels.">
         <AdvancedTUIDemo />
+      </Section>
+
+      <Section id="icons" number={7} title="Terminal Icons"
+        insight="Those file icons in your terminal? They're just Unicode characters from special fonts called Nerd Fonts—thousands of icons mapped to the Private Use Area.">
+        <IconsDemo />
       </Section>
     </div>
   );
