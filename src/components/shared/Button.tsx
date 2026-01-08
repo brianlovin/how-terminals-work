@@ -26,7 +26,7 @@ export function Button({
 
   return (
     <button
-      className={`transition-colors disabled:opacity-30 disabled:cursor-not-allowed ${sizeClasses} ${variantClasses[variant]} ${className}`}
+      className={`transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${sizeClasses} ${variantClasses[variant]} ${className}`}
       {...props}
     >
       {children}

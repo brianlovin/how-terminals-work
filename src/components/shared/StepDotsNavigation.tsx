@@ -34,7 +34,7 @@ export function StepDotsNavigation<T extends string>({
             className={`w-2 h-2 rounded-full transition-all ${
               step === currentStep
                 ? 'bg-terminal-fg scale-125'
-                : 'bg-terminal-border hover:bg-terminal-dim'
+                : 'bg-terminal-dim hover:bg-terminal-muted'
             }`}
           />
         ))}

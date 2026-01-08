@@ -427,7 +427,7 @@ export function FlowDiagram() {
         <button
           onClick={() => goToStep(Math.max(0, stepIndex - 1))}
           disabled={stepIndex === 0}
-          className="px-4 py-2 border border-terminal-border text-terminal-muted text-sm hover:border-terminal-dim hover:text-terminal-fg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="px-4 py-2 border border-terminal-border text-terminal-muted text-sm hover:border-terminal-dim hover:text-terminal-fg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           Previous
         </button>
@@ -445,7 +445,7 @@ export function FlowDiagram() {
         <button
           onClick={() => goToStep(Math.min(STEPS.length - 1, stepIndex + 1))}
           disabled={stepIndex === STEPS.length - 1}
-          className="px-4 py-2 border border-terminal-border text-terminal-muted text-sm hover:border-terminal-dim hover:text-terminal-fg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="px-4 py-2 border border-terminal-border text-terminal-muted text-sm hover:border-terminal-dim hover:text-terminal-fg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           Next
         </button>

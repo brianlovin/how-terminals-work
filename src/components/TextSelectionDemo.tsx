@@ -540,7 +540,7 @@ export function TextSelectionDemo() {
                 setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
               }
               disabled={currentStepIndex === 0}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               Previous
             </button>
@@ -552,7 +552,7 @@ export function TextSelectionDemo() {
                   className={`w-2 h-2 rounded-full transition-all ${
                     step === currentStep
                       ? 'bg-terminal-fg scale-125'
-                      : 'bg-terminal-border hover:bg-terminal-dim'
+                      : 'bg-terminal-dim hover:bg-terminal-muted'
                   }`}
                 />
               ))}
@@ -564,7 +564,7 @@ export function TextSelectionDemo() {
                 )
               }
               disabled={currentStepIndex === steps.length - 1}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               Next
             </button>
