@@ -214,21 +214,21 @@ export function FlowDiagram() {
   };
 
   const layerClass = (layer: 'keyboard' | 'terminal' | 'pty' | 'shell') =>
-    `relative px-4 py-3 rounded border-2 transition-all duration-300 ${
+    `relative px-4 py-3 border transition-all duration-300 ${
       currentStep.highlight === layer
-        ? 'border-terminal-green bg-terminal-green/10 scale-[1.02]'
+        ? 'border-terminal-fg bg-terminal-fg/5'
         : 'border-terminal-border bg-terminal-bg/50'
     }`;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Main visualization */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: The layer diagram */}
         <div className="space-y-3">
-          <div className="text-sm text-terminal-dim mb-4">
-            The Terminal Stack
-          </div>
+          <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-3">
+            Terminal Stack
+          </label>
 
           {/* Keyboard/You layer */}
           <div className={layerClass('keyboard')}>
@@ -245,7 +245,7 @@ export function FlowDiagram() {
               currentStep.dataDirection === 'down' &&
               currentStep.highlight === 'keyboard' && (
                 <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-terminal-green text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                  <div className="bg-terminal-green text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
                     {currentStep.dataPacket}
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export function FlowDiagram() {
               <div
                 className={`absolute ${currentStep.dataDirection === 'down' ? '-bottom-6' : '-top-6'} left-1/2 transform -translate-x-1/2 z-10`}
               >
-                <div className="bg-terminal-yellow text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                <div className="bg-terminal-yellow text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
                   {currentStep.dataPacket}
                 </div>
               </div>
@@ -329,7 +329,7 @@ export function FlowDiagram() {
               <div
                 className={`absolute ${currentStep.dataDirection === 'down' ? '-bottom-6' : '-top-6'} left-1/2 transform -translate-x-1/2 z-10`}
               >
-                <div className="bg-terminal-magenta text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                <div className="bg-terminal-magenta text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
                   {currentStep.dataPacket}
                 </div>
               </div>
@@ -371,7 +371,7 @@ export function FlowDiagram() {
               currentStep.dataDirection === 'up' &&
               currentStep.highlight === 'shell' && (
                 <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-terminal-cyan text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                  <div className="bg-terminal-cyan text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
                     {currentStep.dataPacket}
                   </div>
                 </div>
@@ -381,8 +381,10 @@ export function FlowDiagram() {
 
         {/* Right: What you see */}
         <div className="space-y-4">
-          <div className="text-sm text-terminal-dim mb-4">What You See</div>
-          <TerminalWindow title="bash">
+          <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-3">
+            Output
+          </label>
+          <TerminalWindow>
             <div className="font-mono text-sm space-y-1 min-h-[120px]">
               {currentStep.terminalContent.map((line, i) => (
                 <div key={i}>{renderTerminalLine(line)}</div>
@@ -391,11 +393,11 @@ export function FlowDiagram() {
           </TerminalWindow>
 
           {/* Step info */}
-          <div className="bg-terminal-bg border border-terminal-border rounded-lg p-4">
-            <div className="text-terminal-red text-sm font-bold mb-1">
+          <div className="bg-terminal-highlight border border-terminal-border px-4 py-3">
+            <div className="text-terminal-fg text-sm font-medium mb-1">
               {currentStep.title}
             </div>
-            <div className="text-terminal-dim text-sm">
+            <div className="text-terminal-muted text-sm">
               {currentStep.description}
             </div>
           </div>
@@ -403,16 +405,16 @@ export function FlowDiagram() {
       </div>
 
       {/* Step indicators */}
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-1.5">
         {STEPS.map((step, i) => (
           <button
             key={step.phase}
             onClick={() => goToStep(i)}
-            className={`w-3 h-3 rounded-full transition-all ${
+            className={`w-2 h-2 rounded-full transition-all ${
               i === stepIndex
-                ? 'bg-terminal-green scale-125'
+                ? 'bg-terminal-fg scale-125'
                 : i < stepIndex
-                  ? 'bg-terminal-green/50'
+                  ? 'bg-terminal-muted'
                   : 'bg-terminal-border'
             }`}
             title={step.title}
@@ -421,31 +423,31 @@ export function FlowDiagram() {
       </div>
 
       {/* Controls */}
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-3">
         <button
           onClick={() => goToStep(Math.max(0, stepIndex - 1))}
           disabled={stepIndex === 0}
-          className="px-4 py-2 rounded border border-terminal-border text-terminal-dim hover:border-terminal-green hover:text-terminal-green disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="px-4 py-2 border border-terminal-border text-terminal-muted text-sm hover:border-terminal-dim hover:text-terminal-fg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
         >
-          ← Previous
+          Previous
         </button>
         <button
           onClick={startAnimation}
           disabled={isAnimating}
-          className={`px-6 py-2 rounded font-bold transition-all ${
+          className={`px-5 py-2 text-sm font-medium transition-all ${
             isAnimating
               ? 'bg-terminal-dim text-terminal-bg cursor-not-allowed'
-              : 'bg-terminal-green text-terminal-bg hover:opacity-90'
+              : 'bg-terminal-fg text-terminal-bg hover:bg-terminal-bright-white'
           }`}
         >
-          {isAnimating ? 'Playing...' : 'Play Animation'}
+          {isAnimating ? 'Playing...' : 'Play'}
         </button>
         <button
           onClick={() => goToStep(Math.min(STEPS.length - 1, stepIndex + 1))}
           disabled={stepIndex === STEPS.length - 1}
-          className="px-4 py-2 rounded border border-terminal-border text-terminal-dim hover:border-terminal-green hover:text-terminal-green disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="px-4 py-2 border border-terminal-border text-terminal-muted text-sm hover:border-terminal-dim hover:text-terminal-fg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
         >
-          Next →
+          Next
         </button>
       </div>
     </div>

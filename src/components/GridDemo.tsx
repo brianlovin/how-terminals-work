@@ -93,7 +93,7 @@ export function GridDemo() {
 
   return (
     <div className="space-y-6">
-      <TerminalWindow title="grid-demo">
+      <TerminalWindow>
         <div ref={containerRef} className="w-full">
           <div
             className="grid gap-0 border border-terminal-border w-full"
@@ -128,11 +128,11 @@ export function GridDemo() {
         </div>
       </TerminalWindow>
 
-      <div className="bg-terminal-highlight border border-terminal-border rounded px-4 py-2">
+      <div className="bg-terminal-highlight border border-terminal-border px-4 py-3 text-sm">
         {hoveredCell ? (
-          <span>
-            Cell:{' '}
-            <span className="text-terminal-green">
+          <span className="text-terminal-muted">
+            Cell{' '}
+            <span className="text-terminal-fg font-medium">
               ({hoveredCell.row}, {hoveredCell.col})
             </span>
           </span>
@@ -140,20 +140,20 @@ export function GridDemo() {
           <span className="text-terminal-dim">Hover over a cell</span>
         )}
       </div>
-      <div className="flex flex-wrap items-center gap-4 text-sm">
+      <div className="flex flex-wrap items-center gap-3 text-sm">
         <button
           onClick={startTyping}
-          className="bg-terminal-green text-terminal-bg px-4 py-2 rounded font-bold hover:opacity-90"
+          className="bg-terminal-fg text-terminal-bg px-4 py-2 font-medium hover:bg-terminal-bright-white transition-colors"
         >
           Add text
         </button>
         <button
           onClick={clearGrid}
-          className="border border-terminal-border px-4 py-2 rounded hover:bg-terminal-border"
+          className="border border-terminal-border px-4 py-2 text-terminal-muted hover:text-terminal-fg hover:border-terminal-dim transition-colors"
         >
           Clear
         </button>
-        <span className="text-terminal-dim">Click cells to draw</span>
+        <span className="text-terminal-dim text-sm">Click cells to draw</span>
       </div>
     </div>
   );

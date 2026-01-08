@@ -114,7 +114,7 @@ export function StateManagementDemo() {
     <div className="space-y-8">
       {/* Interactive Demo */}
       <div className="space-y-4">
-        <TerminalWindow title="claude-code">
+        <TerminalWindow>
           <div
             className="min-h-[280px] font-mono text-sm cursor-text"
             onClick={() => inputRef.current?.focus()}
@@ -170,13 +170,13 @@ export function StateManagementDemo() {
         <div className="flex flex-wrap gap-2 text-sm">
           <button
             onClick={cycleMode}
-            className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green transition-colors"
+            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green transition-colors"
           >
             Cycle Mode (Shift+Tab)
           </button>
           <button
             onClick={() => setShowStateInspector(!showStateInspector)}
-            className={`px-3 py-1.5 rounded border transition-colors ${
+            className={`px-3 py-1.5 border transition-colors ${
               showStateInspector
                 ? 'bg-terminal-green/20 border-terminal-green text-terminal-green'
                 : 'border-terminal-border hover:border-terminal-green'
@@ -188,12 +188,12 @@ export function StateManagementDemo() {
 
         {/* State Inspector */}
         {showStateInspector && (
-          <div className="bg-terminal-bg border border-terminal-border rounded-lg p-4 space-y-4">
+          <div className="bg-terminal-bg border border-terminal-border p-4 space-y-4">
             <div className="text-terminal-red text-sm font-bold">
               State Inspector (What the App Remembers)
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
-              <div className="bg-terminal-highlight rounded p-3 space-y-2">
+              <div className="bg-terminal-highlight p-3 space-y-2">
                 <div className="text-terminal-dim">
                   // Current state variables
                 </div>
@@ -212,7 +212,7 @@ export function StateManagementDemo() {
                   <span className="text-terminal-yellow">{history.length}</span>
                 </div>
               </div>
-              <div className="bg-terminal-highlight rounded p-3 space-y-2">
+              <div className="bg-terminal-highlight p-3 space-y-2">
                 <div className="text-terminal-dim">
                   // Render output for mode indicator
                 </div>
@@ -236,7 +236,7 @@ export function StateManagementDemo() {
           </div>
         )}
 
-        <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border rounded p-3">
+        <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
           <span className="text-terminal-red">Try it:</span> Press{' '}
           <kbd className="bg-terminal-highlight px-1 rounded">Shift+Tab</kbd> to
           cycle between modes. Type something and press{' '}
@@ -247,18 +247,18 @@ export function StateManagementDemo() {
 
       {/* How it works explanation */}
       <div className="space-y-4">
-        <div className="text-sm text-terminal-dim">How It Works</div>
+        <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
 
-        <div className="bg-terminal-bg border border-terminal-border rounded-lg p-4 space-y-4 min-h-[200px]">
-          <div className="text-terminal-red font-bold text-sm">
+        <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4 min-h-[200px]">
+          <div className="text-terminal-fg font-medium text-sm">
             {stepContent.title}
           </div>
-          <p className="text-terminal-fg text-sm leading-relaxed">
+          <p className="text-terminal-muted text-sm leading-relaxed">
             {stepContent.description}
           </p>
 
           {currentStep === 'memory' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">
                 // App's internal state (in memory)
               </div>
@@ -288,7 +288,7 @@ export function StateManagementDemo() {
           )}
 
           {currentStep === 'rendering' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">// On mode change:</div>
               <div className="space-y-1">
                 <div>
@@ -327,7 +327,7 @@ export function StateManagementDemo() {
           )}
 
           {currentStep === 'input-handling' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">
                 // Shift+Tab byte sequence
               </div>
@@ -367,7 +367,7 @@ export function StateManagementDemo() {
           )}
 
           {currentStep === 'persistence' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">
                 // State persistence options
               </div>
@@ -407,9 +407,9 @@ export function StateManagementDemo() {
             <button
               key={step}
               onClick={() => setCurrentStep(step)}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${
+              className={`w-2 h-2 rounded-full transition-all ${
                 step === currentStep
-                  ? 'bg-terminal-green scale-125'
+                  ? 'bg-terminal-fg scale-125'
                   : 'bg-terminal-border hover:bg-terminal-dim'
               }`}
             />
@@ -422,7 +422,7 @@ export function StateManagementDemo() {
               setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
             }
             disabled={currentStepIndex === 0}
-            className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
           >
             Back
           </button>
@@ -433,7 +433,7 @@ export function StateManagementDemo() {
               )
             }
             disabled={currentStepIndex === steps.length - 1}
-            className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
           >
             Next
           </button>
@@ -441,13 +441,13 @@ export function StateManagementDemo() {
       </div>
 
       {/* The data flow breakdown */}
-      <div className="border border-terminal-border rounded-lg p-6 space-y-6">
+      <div className="border border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           The State Update Cycle
         </h3>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="bg-terminal-highlight rounded p-4 text-center flex-1">
+          <div className="bg-terminal-highlight p-4 text-center flex-1">
             <div className="text-terminal-magenta font-bold text-sm mb-2">
               1. Input
             </div>
@@ -459,7 +459,7 @@ export function StateManagementDemo() {
             </div>
           </div>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
-          <div className="bg-terminal-highlight rounded p-4 text-center flex-1">
+          <div className="bg-terminal-highlight p-4 text-center flex-1">
             <div className="text-terminal-blue font-bold text-sm mb-2">
               2. Process
             </div>
@@ -471,7 +471,7 @@ export function StateManagementDemo() {
             </div>
           </div>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
-          <div className="bg-terminal-highlight rounded p-4 text-center flex-1">
+          <div className="bg-terminal-highlight p-4 text-center flex-1">
             <div className="text-terminal-green font-bold text-sm mb-2">
               3. Render
             </div>
@@ -492,13 +492,13 @@ export function StateManagementDemo() {
       </div>
 
       {/* Real-world examples */}
-      <div className="border border-terminal-border rounded-lg p-6 space-y-4">
+      <div className="border border-terminal-border p-6 space-y-4">
         <h3 className="text-terminal-red text-sm font-bold">
           State in Real Terminal Apps
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-cyan font-bold text-sm">
               Vim Modes
             </div>
@@ -511,7 +511,7 @@ export function StateManagementDemo() {
             </div>
           </div>
 
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-magenta font-bold text-sm">
               Shell Prompt
             </div>
@@ -522,7 +522,7 @@ export function StateManagementDemo() {
             </div>
           </div>
 
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-yellow font-bold text-sm">
               tmux Windows
             </div>
@@ -533,7 +533,7 @@ export function StateManagementDemo() {
             </div>
           </div>
 
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-green font-bold text-sm">
               Claude Code Modes
             </div>

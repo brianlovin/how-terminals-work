@@ -384,13 +384,13 @@ export function IconsDemo() {
           <div className="text-sm text-terminal-dim">
             File Explorer with Icons
           </div>
-          <TerminalWindow title="file-explorer">
+          <TerminalWindow>
             <div className="font-mono text-sm min-h-[280px]">
               {/* Toggle */}
               <div className="flex items-center gap-4 mb-3 pb-2 border-b border-terminal-border">
                 <button
                   onClick={() => setShowWithIcons(!showWithIcons)}
-                  className={`px-2 py-1 rounded text-xs transition-colors ${
+                  className={`px-2 py-1 text-xs transition-colors ${
                     showWithIcons
                       ? 'bg-terminal-green/20 text-terminal-green'
                       : 'text-terminal-dim hover:text-terminal-fg'
@@ -479,18 +479,18 @@ export function IconsDemo() {
 
         {/* Explanation */}
         <div className="space-y-4">
-          <div className="text-sm text-terminal-dim">How It Works</div>
-          <div className="bg-terminal-bg border min-h-[260px] border-terminal-border rounded-lg p-4 space-y-4">
-            <div className="text-terminal-red font-bold text-sm">
+          <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
+          <div className="bg-terminal-highlight border min-h-[260px] border-terminal-border px-4 py-4 space-y-4">
+            <div className="text-terminal-fg font-medium text-sm">
               {stepContent.title}
             </div>
-            <p className="text-terminal-fg text-sm leading-relaxed">
+            <p className="text-terminal-muted text-sm leading-relaxed">
               {stepContent.description}
             </p>
 
             {/* Step-specific content */}
             {currentStep === 'pua' && (
-              <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
                 <div className="text-terminal-dim">
                   // Unicode Private Use Area ranges
                 </div>
@@ -525,7 +525,7 @@ export function IconsDemo() {
             )}
 
             {currentStep === 'rendering' && (
-              <div className="bg-terminal-highlight rounded p-3 space-y-3">
+              <div className="bg-terminal-highlight p-3 space-y-3">
                 <div className="flex flex-wrap items-center gap-3 text-sm">
                   <div className="flex flex-col items-center">
                     <span className="text-terminal-cyan font-mono text-xs">
@@ -556,7 +556,7 @@ export function IconsDemo() {
             )}
 
             {currentStep === 'fonts' && (
-              <div className="bg-terminal-highlight rounded p-3 text-xs space-y-2">
+              <div className="bg-terminal-highlight p-3 text-xs space-y-2">
                 <div className="text-terminal-dim">Popular Nerd Fonts:</div>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="flex items-center gap-2 text-terminal-fg">
@@ -589,9 +589,9 @@ export function IconsDemo() {
               <button
                 key={step}
                 onClick={() => setCurrentStep(step)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                className={`w-2 h-2 rounded-full transition-all ${
                   step === currentStep
-                    ? 'bg-terminal-green scale-125'
+                    ? 'bg-terminal-fg scale-125'
                     : 'bg-terminal-border hover:bg-terminal-dim'
                 }`}
               />
@@ -604,7 +604,7 @@ export function IconsDemo() {
                 setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
               }
               disabled={currentStepIndex === 0}
-              className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
             >
               ← Back
             </button>
@@ -615,7 +615,7 @@ export function IconsDemo() {
                 )
               }
               disabled={currentStepIndex === steps.length - 1}
-              className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
             >
               Next →
             </button>
@@ -624,7 +624,7 @@ export function IconsDemo() {
       </div>
 
       {/* Icon Gallery */}
-      <div className="border border-terminal-border rounded-lg p-6 space-y-6">
+      <div className="border border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Nerd Font Icon Gallery
         </h3>
@@ -646,7 +646,7 @@ export function IconsDemo() {
                       <button
                         key={item.codepoint}
                         onClick={() => setSelectedIcon(item)}
-                        className={`w-10 h-10 flex items-center justify-center rounded border transition-all ${
+                        className={`w-10 h-10 flex items-center justify-center border transition-all ${
                           selectedIcon.codepoint === item.codepoint
                             ? 'border-terminal-green bg-terminal-green/20 scale-110'
                             : 'border-terminal-border hover:border-terminal-dim'
@@ -663,9 +663,9 @@ export function IconsDemo() {
           </div>
 
           {/* Selected icon details */}
-          <div className="bg-terminal-highlight rounded-lg p-4 space-y-4">
+          <div className="bg-terminal-highlight p-4 space-y-4">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 flex items-center justify-center bg-terminal-bg rounded-lg border border-terminal-border">
+              <div className="w-16 h-16 flex items-center justify-center bg-terminal-bg border border-terminal-border">
                 <div className="w-8 h-8">
                   {renderIcon(
                     selectedIcon.icon as IconName,
@@ -684,7 +684,7 @@ export function IconsDemo() {
             </div>
 
             <div className="space-y-3">
-              <div className="bg-terminal-bg rounded p-3 font-mono text-xs">
+              <div className="bg-terminal-bg p-3 font-mono text-xs">
                 <div className="text-terminal-dim mb-1">
                   // In shell (with Nerd Font)
                 </div>
@@ -695,7 +695,7 @@ export function IconsDemo() {
                 </div>
               </div>
 
-              <div className="bg-terminal-bg rounded p-3 font-mono text-xs">
+              <div className="bg-terminal-bg p-3 font-mono text-xs">
                 <div className="text-terminal-dim mb-1">
                   // In code (escape sequence)
                 </div>
@@ -710,7 +710,7 @@ export function IconsDemo() {
                 </div>
               </div>
 
-              <div className="bg-terminal-bg rounded p-3 font-mono text-xs">
+              <div className="bg-terminal-bg p-3 font-mono text-xs">
                 <div className="text-terminal-dim mb-1">// Character info</div>
                 <div className="text-terminal-fg">
                   Codepoint:{' '}
@@ -731,13 +731,13 @@ export function IconsDemo() {
       </div>
 
       {/* Technical Deep Dive */}
-      <div className="border border-terminal-border rounded-lg p-6 space-y-6">
+      <div className="border border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Under the Hood: Why One Cell?
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="flex text-sm items-center gap-2 text-terminal-magenta font-bold">
               <span>1</span>
               <span>Single Codepoint</span>
@@ -749,7 +749,7 @@ export function IconsDemo() {
             </p>
           </div>
 
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="flex text-sm items-center gap-2 text-terminal-blue font-bold">
               <span>2</span>
               <span>Font Glyphs</span>
@@ -761,7 +761,7 @@ export function IconsDemo() {
             </p>
           </div>
 
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="flex text-sm items-center gap-2 text-terminal-cyan font-bold">
               <span>3</span>
               <span>Cell-Sized Design</span>
@@ -775,7 +775,7 @@ export function IconsDemo() {
         </div>
 
         {/* Character width comparison */}
-        <div className="bg-terminal-bg border border-terminal-border rounded p-4 space-y-3">
+        <div className="bg-terminal-bg border border-terminal-border p-4 space-y-3">
           <div className="text-terminal-red text-sm font-bold">
             Character Width in Terminals
           </div>
@@ -910,7 +910,7 @@ function IconSetsReference() {
   ];
 
   return (
-    <div className="border border-terminal-border rounded-lg p-6 space-y-4">
+    <div className="border border-terminal-border p-6 space-y-4">
       <h3 className="text-terminal-red text-sm font-bold">
         Icon Sets in Nerd Fonts
       </h3>
@@ -923,7 +923,7 @@ function IconSetsReference() {
         {iconSets.map((set) => (
           <div
             key={set.name}
-            className="flex flex-col md:flex-row md:items-center gap-3 bg-terminal-highlight rounded p-3"
+            className="flex flex-col md:flex-row md:items-center gap-3 bg-terminal-highlight p-3"
           >
             <div className="md:w-32">
               <div className="text-terminal-fg font-bold text-sm">

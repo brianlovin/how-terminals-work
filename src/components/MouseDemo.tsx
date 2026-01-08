@@ -52,7 +52,7 @@ export function MouseDemo() {
 
   return (
     <div className="space-y-6">
-      <TerminalWindow title="mouse-tracking">
+      <TerminalWindow>
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-sm">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -60,28 +60,27 @@ export function MouseDemo() {
                 type="checkbox"
                 checked={mouseEnabled}
                 onChange={(e) => setMouseEnabled(e.target.checked)}
-                className="w-4 h-4 accent-terminal-green"
+                className="w-4 h-4 accent-terminal-fg"
               />
-              <span>
+              <span className="text-terminal-muted">
                 Mouse tracking{' '}
                 <span
                   className={
-                    mouseEnabled ? 'text-terminal-green' : 'text-terminal-red'
+                    mouseEnabled ? 'text-terminal-fg' : 'text-terminal-dim'
                   }
                 >
                   {mouseEnabled ? 'enabled' : 'disabled'}
                 </span>
               </span>
             </label>
-            <span className="text-terminal-dim">
-              (programs request this with{' '}
-              <code className="text-terminal-yellow">^[[?1000h</code>)
+            <span className="text-terminal-dim text-xs">
+              <code className="text-terminal-yellow">^[[?1000h</code>
             </span>
           </div>
 
           <div
             ref={containerRef}
-            className={`grid gap-0 border border-terminal-border rounded w-full ${mouseEnabled ? '' : 'opacity-50'}`}
+            className={`grid gap-0 border border-terminal-border w-full ${mouseEnabled ? '' : 'opacity-50'}`}
             style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
           >
             {Array(GRID_ROWS)
@@ -101,7 +100,7 @@ export function MouseDemo() {
                           handleCellClick(row, col, e);
                         }}
                         className={`h-5 flex items-center justify-center text-xs border-r border-b border-terminal-border/30 cursor-crosshair transition-colors
-                      ${isClicked ? 'bg-terminal-green text-terminal-bg' : 'hover:bg-terminal-border/50'}`}
+                      ${isClicked ? 'bg-terminal-fg text-terminal-bg' : 'hover:bg-terminal-border/50'}`}
                       >
                         {isClicked ? 'X' : ''}
                       </div>
@@ -111,46 +110,45 @@ export function MouseDemo() {
           </div>
 
           {lastClick && mouseEnabled ? (
-            <div className="bg-terminal-bg rounded p-4 space-y-3">
-              <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="bg-terminal-bg p-4 space-y-3">
+              <div className="grid grid-cols-3 gap-4 text-center text-sm">
                 <div>
-                  <div className="text-terminal-dim text-sm">Position</div>
-                  <div className="text-terminal-green text-xl">
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Position</div>
+                  <div className="text-terminal-fg">
                     ({lastClick.x}, {lastClick.y})
                   </div>
                 </div>
                 <div>
-                  <div className="text-terminal-dim text-sm">Button</div>
-                  <div className="text-terminal-yellow text-xl">
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Button</div>
+                  <div className="text-terminal-yellow">
                     {['Left', 'Middle', 'Right'][lastClick.button]}
                   </div>
                 </div>
                 <div>
-                  <div className="text-terminal-dim text-sm">Sequence</div>
-                  <code className="text-terminal-cyan text-lg">
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Sequence</div>
+                  <code className="text-terminal-cyan">
                     {lastClick.sequence}
                   </code>
                 </div>
               </div>
-              <div className="text-center">
-                <span className="text-terminal-dim text-sm">Raw bytes: </span>
+              <div className="text-center text-sm">
+                <span className="text-terminal-dim">Bytes: </span>
                 <code className="text-terminal-yellow">{lastClick.bytes}</code>
               </div>
             </div>
           ) : (
-            <div className="text-terminal-dim text-center py-4">
+            <div className="text-terminal-muted text-center text-sm py-4">
               {mouseEnabled
-                ? 'Click anywhere in the grid (try right-click too!)'
+                ? 'Click anywhere in the grid'
                 : 'Enable mouse tracking to capture clicks'}
             </div>
           )}
         </div>
       </TerminalWindow>
 
-      <div className="text-terminal-dim text-sm">
-        By default, terminals don't send mouse events. Programs like Claude Code
-        request mouse tracking, then clicks become escape sequences with
-        coordinates. That's how CLI tools can have clickable UIs!
+      <div className="text-terminal-muted text-sm">
+        By default, terminals don't send mouse events. Programs request mouse
+        tracking, then clicks become escape sequences with coordinates.
       </div>
     </div>
   );

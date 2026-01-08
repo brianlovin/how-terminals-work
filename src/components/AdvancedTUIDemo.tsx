@@ -350,7 +350,7 @@ export function AdvancedTUIDemo() {
         {/* Left: The simulated TUI */}
         <div className="space-y-4">
           <div className="text-sm text-terminal-dim">Interactive TUI Demo</div>
-          <TerminalWindow title="deployment-dashboard">
+          <TerminalWindow>
             <div
               ref={containerRef}
               tabIndex={0}
@@ -365,7 +365,7 @@ export function AdvancedTUIDemo() {
           <div className="flex flex-wrap gap-2 text-sm">
             <button
               onClick={() => setShowCoordinates(!showCoordinates)}
-              className={`px-3 py-1.5 rounded border transition-colors ${
+              className={`px-3 py-1.5 border transition-colors ${
                 showCoordinates
                   ? 'bg-terminal-green/20 border-terminal-green text-terminal-green'
                   : 'border-terminal-border hover:border-terminal-green'
@@ -376,7 +376,7 @@ export function AdvancedTUIDemo() {
             <button
               onClick={simulateResize}
               disabled={isResizing}
-              className={`px-3 py-1.5 rounded border transition-colors ${
+              className={`px-3 py-1.5 border transition-colors ${
                 isResizing
                   ? 'border-terminal-yellow text-terminal-yellow animate-pulse'
                   : 'border-terminal-border hover:border-terminal-green'
@@ -389,7 +389,7 @@ export function AdvancedTUIDemo() {
             </span>
           </div>
 
-          <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border rounded p-3">
+          <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
             <span className="text-terminal-red">Try it:</span> Click to focus a
             region. Use{' '}
             <kbd className="bg-terminal-highlight px-1 rounded">Tab</kbd> to
@@ -403,19 +403,19 @@ export function AdvancedTUIDemo() {
 
         {/* Right: Explanation */}
         <div className="space-y-4">
-          <div className="text-sm text-terminal-dim">How It Works</div>
+          <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
 
-          <div className="bg-terminal-bg border min-h-[340px] border-terminal-border rounded-lg p-4 space-y-4">
-            <div className="text-terminal-red font-bold text-sm">
+          <div className="bg-terminal-highlight border min-h-[340px] border-terminal-border px-4 py-4 space-y-4">
+            <div className="text-terminal-fg font-medium text-sm">
               {stepContent.title}
             </div>
-            <p className="text-terminal-fg text-sm leading-relaxed">
+            <p className="text-terminal-muted text-sm leading-relaxed">
               {stepContent.description}
             </p>
 
             {/* Step-specific visualizations */}
             {currentStep === 'layout-system' && (
-              <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
                 <div className="text-terminal-dim">
                   // Region data structure
                 </div>
@@ -434,7 +434,7 @@ export function AdvancedTUIDemo() {
             )}
 
             {currentStep === 'focus-management' && (
-              <div className="bg-terminal-highlight rounded p-3 space-y-2">
+              <div className="bg-terminal-highlight p-3 space-y-2">
                 <div className="text-xs space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded border-2 border-terminal-green bg-terminal-green/20"></span>
@@ -454,7 +454,7 @@ export function AdvancedTUIDemo() {
             )}
 
             {currentStep === 'resize-handling' && (
-              <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
                 <div className="text-terminal-dim">
                   // Terminal resize sequence
                 </div>
@@ -493,7 +493,7 @@ export function AdvancedTUIDemo() {
             )}
 
             {currentStep === 'rendering' && (
-              <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
                 <div className="text-terminal-dim">
                   // Escape sequences for TUI rendering
                 </div>
@@ -547,9 +547,9 @@ export function AdvancedTUIDemo() {
               <button
                 key={step}
                 onClick={() => setCurrentStep(step)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                className={`w-2 h-2 rounded-full transition-all ${
                   step === currentStep
-                    ? 'bg-terminal-green scale-125'
+                    ? 'bg-terminal-fg scale-125'
                     : 'bg-terminal-border hover:bg-terminal-dim'
                 }`}
               />
@@ -562,7 +562,7 @@ export function AdvancedTUIDemo() {
                 setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
               }
               disabled={currentStepIndex === 0}
-              className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
             >
               ← Back
             </button>
@@ -573,7 +573,7 @@ export function AdvancedTUIDemo() {
                 )
               }
               disabled={currentStepIndex === steps.length - 1}
-              className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
             >
               Next →
             </button>
@@ -582,13 +582,13 @@ export function AdvancedTUIDemo() {
       </div>
 
       {/* Detailed breakdown: How regions work */}
-      <div className="border border-terminal-border rounded-lg p-6 space-y-6">
+      <div className="border border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Under the Hood: TUI Architecture
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="flex text-sm items-center gap-2 text-terminal-magenta font-bold">
               <span>1</span>
               <span>Layout Engine</span>
@@ -600,7 +600,7 @@ export function AdvancedTUIDemo() {
             </p>
           </div>
 
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="flex text-sm items-center gap-2 text-terminal-blue font-bold">
               <span>2</span>
               <span>Event Dispatch</span>
@@ -612,7 +612,7 @@ export function AdvancedTUIDemo() {
             </p>
           </div>
 
-          <div className="bg-terminal-highlight rounded p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="flex text-sm items-center gap-2 text-terminal-cyan font-bold">
               <span>3</span>
               <span>Render Loop</span>
@@ -626,7 +626,7 @@ export function AdvancedTUIDemo() {
         </div>
 
         {/* Box drawing character reference */}
-        <div className="bg-terminal-bg border border-terminal-border rounded p-4 space-y-3">
+        <div className="bg-terminal-bg border border-terminal-border p-4 space-y-3">
           <div className="text-terminal-red text-sm font-bold">
             Box Drawing Characters
           </div>
@@ -669,7 +669,7 @@ function CursorPositionDemo() {
   const GRID_COLS = 20;
 
   return (
-    <div className="border border-terminal-border rounded-lg p-6 space-y-4">
+    <div className="border border-terminal-border p-6 space-y-4">
       <h3 className="text-terminal-red text-sm font-bold">
         Cursor Positioning
       </h3>
@@ -714,7 +714,7 @@ function CursorPositionDemo() {
         </div>
 
         <div className="flex-1 space-y-3">
-          <div className="bg-terminal-highlight rounded p-3 font-mono text-sm">
+          <div className="bg-terminal-highlight p-3 font-mono text-sm">
             <div className="text-terminal-dim text-xs mb-2">
               Escape sequence to move cursor:
             </div>
@@ -722,7 +722,7 @@ function CursorPositionDemo() {
               \x1b[{cursorPos.row};{cursorPos.col}H
             </div>
           </div>
-          <div className="bg-terminal-highlight rounded p-3 font-mono text-sm">
+          <div className="bg-terminal-highlight p-3 font-mono text-sm">
             <div className="text-terminal-dim text-xs mb-2">In code:</div>
             <div className="text-terminal-fg">
               <span className="text-terminal-magenta">printf</span>

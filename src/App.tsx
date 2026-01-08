@@ -13,13 +13,13 @@ import { TextSelectionDemo } from './components/TextSelectionDemo';
 
 export function App() {
   return (
-    <div className="min-h-screen px-4 lg:px-8">
+    <div className="min-h-screen px-5 md:px-8">
       {/* Hero */}
-      <header className="pt-12 flex flex-col max-w-3xl mx-auto">
-        <h1 className="font-bold text-xl mb-2">
-          <span className="text-terminal-blue">How Terminals Work</span>
+      <header className="pt-16 pb-12 max-w-2xl mx-auto border-b border-terminal-border mb-16">
+        <h1 className="text-2xl font-medium tracking-tight text-terminal-fg mb-3">
+          How Terminals Work
         </h1>
-        <p className="text-terminal-fg max-w-3xl mb-8">
+        <p className="text-terminal-muted text-[15px] leading-relaxed max-w-lg">
           An interactive guide to understanding terminal UIs.
         </p>
       </header>

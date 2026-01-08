@@ -50,9 +50,9 @@ export function KeyboardDemo() {
 
   return (
     <div className="space-y-6">
-      <TerminalWindow title="keyboard-input">
+      <TerminalWindow>
         <div
-          className="min-h-[200px] flex flex-col items-center justify-center cursor-text"
+          className="min-h-[180px] flex flex-col items-center justify-center cursor-text"
           onClick={() => inputRef.current?.focus()}
         >
           <input
@@ -63,30 +63,30 @@ export function KeyboardDemo() {
           />
           {lastKey ? (
             <div className="text-center space-y-4">
-              <div className="text-4xl font-bold text-terminal-green">
+              <div className="text-3xl font-medium text-terminal-fg">
                 {lastKey.key === ' ' ? 'Space' : lastKey.key}
               </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="bg-terminal-bg rounded p-3">
-                  <div className="text-terminal-dim mb-1">Bytes (hex)</div>
-                  <code className="text-terminal-yellow text-lg">
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="bg-terminal-bg p-3">
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Bytes</div>
+                  <code className="text-terminal-yellow">
                     {lastKey.bytes}
                   </code>
                 </div>
-                <div className="bg-terminal-bg rounded p-3">
-                  <div className="text-terminal-dim mb-1">Escape Sequence</div>
-                  <code className="text-terminal-cyan text-lg">
+                <div className="bg-terminal-bg p-3">
+                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">Sequence</div>
+                  <code className="text-terminal-cyan">
                     {lastKey.sequence}
                   </code>
                 </div>
               </div>
-              <div className="text-terminal-dim">{lastKey.desc}</div>
+              <div className="text-terminal-muted text-sm">{lastKey.desc}</div>
             </div>
           ) : (
-            <div className="text-terminal-dim text-center">
-              <div className="text-2xl mb-2">Press any key</div>
-              <div className="text-sm">
-                Try arrow keys, Enter, Tab, or regular letters
+            <div className="text-terminal-muted text-center">
+              <div className="text-lg mb-1">Press any key</div>
+              <div className="text-sm text-terminal-dim">
+                Try arrow keys, Enter, Tab, or letters
               </div>
             </div>
           )}
@@ -98,10 +98,10 @@ export function KeyboardDemo() {
           {history.map((k, i) => (
             <div
               key={i}
-              className="bg-terminal-highlight border border-terminal-border rounded px-3 py-1 text-sm"
+              className="bg-terminal-highlight border border-terminal-border px-3 py-1.5 text-sm"
               style={{ opacity: 1 - i * 0.1 }}
             >
-              <span className="text-terminal-green">
+              <span className="text-terminal-fg">
                 {k.key === ' ' ? '␣' : k.key}
               </span>
               <span className="text-terminal-dim mx-2">→</span>
@@ -111,7 +111,7 @@ export function KeyboardDemo() {
         </div>
       )}
 
-      <div className="text-terminal-dim text-sm">
+      <div className="text-terminal-muted text-sm">
         When you press an arrow key, your terminal doesn't send "arrow up" — it
         sends <code className="text-terminal-yellow">ESC [ A</code> (three
         bytes). Programs that don't understand this will print{' '}
