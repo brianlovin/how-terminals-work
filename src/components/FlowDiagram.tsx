@@ -226,14 +226,14 @@ export function FlowDiagram() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: The layer diagram */}
         <div className="space-y-3">
-          <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-3">
+          <label className="block text-terminal-yellow text-xs uppercase tracking-wider mb-3">
             Terminal Stack
           </label>
 
           {/* Keyboard/You layer */}
           <div className={layerClass('keyboard')}>
             <div className="flex items-center gap-3">
-              <span className="text-lg">⌨️</span>
+              <span className="text-terminal-dim">[kbd]</span>
               <div>
                 <div className="font-bold text-sm">You (Keyboard)</div>
                 <div className="text-xs text-terminal-dim">
@@ -245,7 +245,7 @@ export function FlowDiagram() {
               currentStep.dataDirection === 'down' &&
               currentStep.highlight === 'keyboard' && (
                 <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-terminal-green text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
+                  <div className="bg-terminal-green text-terminal-bg px-2 py-1 text-xs font-mono">
                     {currentStep.dataPacket}
                   </div>
                 </div>
@@ -275,7 +275,7 @@ export function FlowDiagram() {
           {/* Terminal layer */}
           <div className={layerClass('terminal')}>
             <div className="flex items-center gap-3">
-              <span className="text-lg">🖥️</span>
+              <span className="text-terminal-dim">[tty]</span>
               <div>
                 <div className="font-bold text-sm">Terminal Emulator</div>
                 <div className="text-xs text-terminal-dim">
@@ -287,7 +287,7 @@ export function FlowDiagram() {
               <div
                 className={`absolute ${currentStep.dataDirection === 'down' ? '-bottom-6' : '-top-6'} left-1/2 transform -translate-x-1/2 z-10`}
               >
-                <div className="bg-terminal-yellow text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
+                <div className="bg-terminal-yellow text-terminal-bg px-2 py-1 text-xs font-mono">
                   {currentStep.dataPacket}
                 </div>
               </div>
@@ -317,7 +317,7 @@ export function FlowDiagram() {
           {/* PTY layer */}
           <div className={layerClass('pty')}>
             <div className="flex items-center gap-3">
-              <span className="text-lg">🔌</span>
+              <span className="text-terminal-dim">[pty]</span>
               <div>
                 <div className="font-bold text-sm">PTY (Pseudo-Terminal)</div>
                 <div className="text-xs text-terminal-dim">
@@ -329,7 +329,7 @@ export function FlowDiagram() {
               <div
                 className={`absolute ${currentStep.dataDirection === 'down' ? '-bottom-6' : '-top-6'} left-1/2 transform -translate-x-1/2 z-10`}
               >
-                <div className="bg-terminal-magenta text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
+                <div className="bg-terminal-magenta text-terminal-bg px-2 py-1 text-xs font-mono">
                   {currentStep.dataPacket}
                 </div>
               </div>
@@ -359,7 +359,7 @@ export function FlowDiagram() {
           {/* Shell layer */}
           <div className={layerClass('shell')}>
             <div className="flex items-center gap-3">
-              <span className="text-lg">⚙️</span>
+              <span className="text-terminal-dim">[sh]</span>
               <div>
                 <div className="font-bold text-sm">Shell / Program</div>
                 <div className="text-xs text-terminal-dim">
@@ -371,7 +371,7 @@ export function FlowDiagram() {
               currentStep.dataDirection === 'up' &&
               currentStep.highlight === 'shell' && (
                 <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-terminal-cyan text-terminal-bg px-2 py-1 text-xs font-mono animate-pulse">
+                  <div className="bg-terminal-cyan text-terminal-bg px-2 py-1 text-xs font-mono">
                     {currentStep.dataPacket}
                   </div>
                 </div>
@@ -381,7 +381,7 @@ export function FlowDiagram() {
 
         {/* Right: What you see */}
         <div className="space-y-4">
-          <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-3">
+          <label className="block text-terminal-yellow text-xs uppercase tracking-wider mb-3">
             Output
           </label>
           <TerminalWindow>
@@ -394,7 +394,7 @@ export function FlowDiagram() {
 
           {/* Step info */}
           <div className="bg-terminal-highlight border border-terminal-border px-4 py-3">
-            <div className="text-terminal-fg text-sm font-medium mb-1">
+            <div className="text-terminal-red text-sm font-medium mb-1">
               {currentStep.title}
             </div>
             <div className="text-terminal-muted text-sm">

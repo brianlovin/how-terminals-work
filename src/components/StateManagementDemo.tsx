@@ -237,7 +237,7 @@ export function StateManagementDemo() {
         )}
 
         <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
-          <span className="text-terminal-red">Try it:</span> Press{' '}
+          <span className="text-terminal-magenta">Try it:</span> Press{' '}
           <kbd className="bg-terminal-highlight px-1 rounded">Shift+Tab</kbd> to
           cycle between modes. Type something and press{' '}
           <kbd className="bg-terminal-highlight px-1 rounded">Enter</kbd> to see
@@ -247,196 +247,202 @@ export function StateManagementDemo() {
 
       {/* How it works explanation */}
       <div className="space-y-4">
-        <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
-
-        <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4 min-h-[200px]">
-          <div className="text-terminal-fg font-medium text-sm">
-            {stepContent.title}
-          </div>
-          <p className="text-terminal-muted text-sm leading-relaxed">
-            {stepContent.description}
-          </p>
-
-          {currentStep === 'memory' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">
-                // App's internal state (in memory)
-              </div>
-              <div className="space-y-1">
-                <div>
-                  <span className="text-terminal-cyan">struct</span> AppState{' '}
-                  {'{'}
-                </div>
-                <div className="ml-4">
-                  <span className="text-terminal-yellow">mode</span>: Mode,
-                </div>
-                <div className="ml-4">
-                  <span className="text-terminal-yellow">input_buffer</span>:
-                  String,
-                </div>
-                <div className="ml-4">
-                  <span className="text-terminal-yellow">history</span>:
-                  Vec&lt;Entry&gt;,
-                </div>
-                <div className="ml-4">
-                  <span className="text-terminal-yellow">cursor_pos</span>:
-                  (u16, u16),
-                </div>
-                <div>{'}'}</div>
-              </div>
+        <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4">
+          <div className="h-[280px] overflow-y-auto space-y-4">
+            <div className="text-terminal-red font-medium text-sm">
+              {stepContent.title}
             </div>
-          )}
+            <p className="text-terminal-muted text-sm leading-relaxed">
+              {stepContent.description}
+            </p>
 
-          {currentStep === 'rendering' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">// On mode change:</div>
-              <div className="space-y-1">
-                <div>
-                  <span className="text-terminal-yellow">1.</span>{' '}
-                  <span className="text-terminal-cyan">state.mode</span> =
-                  new_mode;
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">2.</span>{' '}
-                  <span className="text-terminal-green">
-                    print!("\x1b[3;1H")
-                  </span>
-                  ; <span className="text-terminal-dim">// move to line 3</span>
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">3.</span>{' '}
-                  <span className="text-terminal-green">print!("\x1b[2K")</span>
-                  ; <span className="text-terminal-dim">// clear line</span>
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">4.</span>{' '}
-                  <span className="text-terminal-green">
-                    print!("\x1b[35m")
-                  </span>
-                  ; <span className="text-terminal-dim">// set color</span>
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">5. </span>{' '}
-                  <span className="text-terminal-green">
-                    print!("{'>> accept edits on'}")
-                  </span>
-                  ;
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 'input-handling' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">
-                // Shift+Tab byte sequence
-              </div>
-              <div className="space-y-1">
-                <div>
-                  Bytes received:{' '}
-                  <span className="text-terminal-yellow">1b 5b 5a</span>
-                </div>
-                <div>
-                  Sequence: <span className="text-terminal-cyan">ESC [ Z</span>{' '}
-                  (CSI Z = Shift+Tab)
-                </div>
-                <div className="mt-2 text-terminal-dim">
-                  // App's key handler:
-                </div>
-                <div>
-                  <span className="text-terminal-magenta">match</span> key {'{'}
-                </div>
-                <div className="ml-4">
-                  ShiftTab =&gt;{' '}
-                  <span className="text-terminal-cyan">cycle_mode()</span>,
-                </div>
-                <div className="ml-4">
-                  Enter =&gt;{' '}
-                  <span className="text-terminal-cyan">submit_input()</span>,
-                </div>
-                <div className="ml-4">
-                  _ =&gt;{' '}
-                  <span className="text-terminal-cyan">
-                    append_to_buffer(key)
-                  </span>
-                  ,
-                </div>
-                <div>{'}'}</div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 'persistence' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">
-                // State persistence options
-              </div>
-              <div className="space-y-1">
-                <div>
-                  <span className="text-terminal-green">
-                    ~/.config/app/settings.json
-                  </span>{' '}
-                  <span className="text-terminal-dim">— user preferences</span>
-                </div>
-                <div>
-                  <span className="text-terminal-green">
-                    ~/.local/state/app/history
-                  </span>{' '}
-                  <span className="text-terminal-dim">— command history</span>
-                </div>
-                <div>
-                  <span className="text-terminal-green">/tmp/app.sock</span>{' '}
-                  <span className="text-terminal-dim">
-                    — inter-process state
-                  </span>
-                </div>
-                <div className="mt-2 text-terminal-dim">
-                  // But current mode? Just in memory.
-                </div>
+            {currentStep === 'memory' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
                 <div className="text-terminal-dim">
-                  // When you restart, it resets to default.
+                  // App's internal state (in memory)
+                </div>
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-terminal-cyan">struct</span> AppState{' '}
+                    {'{'}
+                  </div>
+                  <div className="ml-4">
+                    <span className="text-terminal-yellow">mode</span>: Mode,
+                  </div>
+                  <div className="ml-4">
+                    <span className="text-terminal-yellow">input_buffer</span>:
+                    String,
+                  </div>
+                  <div className="ml-4">
+                    <span className="text-terminal-yellow">history</span>:
+                    Vec&lt;Entry&gt;,
+                  </div>
+                  <div className="ml-4">
+                    <span className="text-terminal-yellow">cursor_pos</span>:
+                    (u16, u16),
+                  </div>
+                  <div>{'}'}</div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
 
-        {/* Step navigation */}
-        <div className="flex items-center gap-2">
-          {steps.map((step) => (
+            {currentStep === 'rendering' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                <div className="text-terminal-dim">// On mode change:</div>
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-terminal-yellow">1.</span>{' '}
+                    <span className="text-terminal-cyan">state.mode</span> =
+                    new_mode;
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">2.</span>{' '}
+                    <span className="text-terminal-green">
+                      print!("\x1b[3;1H")
+                    </span>
+                    ;{' '}
+                    <span className="text-terminal-dim">// move to line 3</span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">3.</span>{' '}
+                    <span className="text-terminal-green">
+                      print!("\x1b[2K")
+                    </span>
+                    ; <span className="text-terminal-dim">// clear line</span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">4.</span>{' '}
+                    <span className="text-terminal-green">
+                      print!("\x1b[35m")
+                    </span>
+                    ; <span className="text-terminal-dim">// set color</span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">5. </span>{' '}
+                    <span className="text-terminal-green">
+                      print!("{'>> accept edits on'}")
+                    </span>
+                    ;
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 'input-handling' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                <div className="text-terminal-dim">
+                  // Shift+Tab byte sequence
+                </div>
+                <div className="space-y-1">
+                  <div>
+                    Bytes received:{' '}
+                    <span className="text-terminal-yellow">1b 5b 5a</span>
+                  </div>
+                  <div>
+                    Sequence:{' '}
+                    <span className="text-terminal-cyan">ESC [ Z</span> (CSI Z =
+                    Shift+Tab)
+                  </div>
+                  <div className="mt-2 text-terminal-dim">
+                    // App's key handler:
+                  </div>
+                  <div>
+                    <span className="text-terminal-magenta">match</span> key{' '}
+                    {'{'}
+                  </div>
+                  <div className="ml-4">
+                    ShiftTab =&gt;{' '}
+                    <span className="text-terminal-cyan">cycle_mode()</span>,
+                  </div>
+                  <div className="ml-4">
+                    Enter =&gt;{' '}
+                    <span className="text-terminal-cyan">submit_input()</span>,
+                  </div>
+                  <div className="ml-4">
+                    _ =&gt;{' '}
+                    <span className="text-terminal-cyan">
+                      append_to_buffer(key)
+                    </span>
+                    ,
+                  </div>
+                  <div>{'}'}</div>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 'persistence' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                <div className="text-terminal-dim">
+                  // State persistence options
+                </div>
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-terminal-green">
+                      ~/.config/app/settings.json
+                    </span>{' '}
+                    <span className="text-terminal-dim">
+                      — user preferences
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-green">
+                      ~/.local/state/app/history
+                    </span>{' '}
+                    <span className="text-terminal-dim">— command history</span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-green">/tmp/app.sock</span>{' '}
+                    <span className="text-terminal-dim">
+                      — inter-process state
+                    </span>
+                  </div>
+                  <div className="mt-2 text-terminal-dim">
+                    // But current mode? Just in memory.
+                  </div>
+                  <div className="text-terminal-dim">
+                    // When you restart, it resets to default.
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Step navigation */}
+          <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
             <button
-              key={step}
-              onClick={() => setCurrentStep(step)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                step === currentStep
-                  ? 'bg-terminal-fg scale-125'
-                  : 'bg-terminal-border hover:bg-terminal-dim'
-              }`}
-            />
-          ))}
-        </div>
-
-        <div className="flex gap-2">
-          <button
-            onClick={() =>
-              setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-            }
-            disabled={currentStepIndex === 0}
-            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-          >
-            Back
-          </button>
-          <button
-            onClick={() =>
-              setCurrentStep(
-                steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-              )
-            }
-            disabled={currentStepIndex === steps.length - 1}
-            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-          >
-            Next
-          </button>
+              onClick={() =>
+                setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
+              }
+              disabled={currentStepIndex === 0}
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            >
+              Previous
+            </button>
+            <div className="flex items-center gap-2">
+              {steps.map((step) => (
+                <button
+                  key={step}
+                  onClick={() => setCurrentStep(step)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    step === currentStep
+                      ? 'bg-terminal-fg scale-125'
+                      : 'bg-terminal-border hover:bg-terminal-dim'
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() =>
+                setCurrentStep(
+                  steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
+                )
+              }
+              disabled={currentStepIndex === steps.length - 1}
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
 
@@ -448,7 +454,7 @@ export function StateManagementDemo() {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="bg-terminal-highlight p-4 text-center flex-1">
-            <div className="text-terminal-magenta font-bold text-sm mb-2">
+            <div className="text-terminal-fg font-bold text-sm mb-2">
               1. Input
             </div>
             <div className="text-terminal-dim text-xs">
@@ -460,7 +466,7 @@ export function StateManagementDemo() {
           </div>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
           <div className="bg-terminal-highlight p-4 text-center flex-1">
-            <div className="text-terminal-blue font-bold text-sm mb-2">
+            <div className="text-terminal-fg font-bold text-sm mb-2">
               2. Process
             </div>
             <div className="text-terminal-dim text-xs">
@@ -472,7 +478,7 @@ export function StateManagementDemo() {
           </div>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
           <div className="bg-terminal-highlight p-4 text-center flex-1">
-            <div className="text-terminal-green font-bold text-sm mb-2">
+            <div className="text-terminal-fg font-bold text-sm mb-2">
               3. Render
             </div>
             <div className="text-terminal-dim text-xs">
@@ -488,61 +494,6 @@ export function StateManagementDemo() {
           The terminal never "knows" about modes. It just displays whatever
           characters the app sends. All the intelligence—tracking state,
           responding to input, deciding what to draw—lives in the app.
-        </div>
-      </div>
-
-      {/* Real-world examples */}
-      <div className="border border-terminal-border p-6 space-y-4">
-        <h3 className="text-terminal-red text-sm font-bold">
-          State in Real Terminal Apps
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="text-terminal-cyan font-bold text-sm">
-              Vim Modes
-            </div>
-            <div className="text-terminal-dim text-xs">
-              Normal, Insert, Visual, Command... Vim tracks this in a variable
-              and shows it in the status line. Press{' '}
-              <code className="text-terminal-yellow">i</code> and Vim sets{' '}
-              <code className="text-terminal-green">mode = INSERT</code>, then
-              redraws "-- INSERT --" at the bottom.
-            </div>
-          </div>
-
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="text-terminal-magenta font-bold text-sm">
-              Shell Prompt
-            </div>
-            <div className="text-terminal-dim text-xs">
-              Your shell tracks current directory, git branch, exit codes. Each
-              prompt is a fresh render using current state. The terminal just
-              displays the characters—it doesn't know you're in a git repo.
-            </div>
-          </div>
-
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="text-terminal-yellow font-bold text-sm">
-              tmux Windows
-            </div>
-            <div className="text-terminal-dim text-xs">
-              tmux maintains a list of windows and panes in memory. The status
-              bar showing "[0] bash [1] vim*" is just tmux rendering its
-              internal state to the bottom line of your terminal.
-            </div>
-          </div>
-
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="text-terminal-green font-bold text-sm">
-              Claude Code Modes
-            </div>
-            <div className="text-terminal-dim text-xs">
-              "Accept edits on" vs "plan mode"—this is a variable in the app.
-              Shift+Tab sends bytes that the app interprets as "cycle mode",
-              then it redraws the indicator with a different color and text.
-            </div>
-          </div>
         </div>
       </div>
     </div>

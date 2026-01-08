@@ -280,9 +280,7 @@ export function TextSelectionDemo() {
                           {char === '_' &&
                           row === SAMPLE_TEXT.length - 1 &&
                           col === 15 ? (
-                            <span className={isCursor ? '' : 'animate-pulse'}>
-                              _
-                            </span>
+                            <span>_</span>
                           ) : (
                             char
                           )}
@@ -348,8 +346,7 @@ export function TextSelectionDemo() {
                         {showArrowKeys.map((arrow, i) => (
                           <span
                             key={i}
-                            className="inline-block px-2 py-0.5 bg-terminal-yellow/20 text-terminal-yellow text-xs font-mono animate-pulse"
-                            style={{ animationDelay: `${i * 50}ms` }}
+                            className="inline-block px-2 py-0.5 bg-terminal-yellow/20 text-terminal-yellow text-xs font-mono"
                           >
                             {arrow}
                           </span>
@@ -377,8 +374,8 @@ export function TextSelectionDemo() {
         </TerminalWindow>
 
         <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
-          <span className="text-terminal-red">Try it:</span> In terminal mode,
-          drag to select text. In app mode, hold{' '}
+          <span className="text-terminal-magenta">Try it:</span> In terminal
+          mode, drag to select text. In app mode, hold{' '}
           <kbd className="bg-terminal-highlight px-1 rounded">Option</kbd> (Alt)
           and click to see how the terminal simulates arrow keys to move the
           cursor.
@@ -387,195 +384,199 @@ export function TextSelectionDemo() {
 
       {/* How it works explanation */}
       <div className="space-y-4">
-        <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
+        <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4">
+          <div className="h-[200px] overflow-hidden space-y-4">
+            <div className="text-terminal-red font-medium text-sm">
+              {stepContent.title}
+            </div>
+            <p className="text-terminal-muted text-sm leading-relaxed">
+              {stepContent.description}
+            </p>
 
-        <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4 min-h-[200px]">
-          <div className="text-terminal-fg font-medium text-sm">
-            {stepContent.title}
+            {currentStep === 'terminal-selection' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                <div className="text-terminal-dim">
+                  // Terminal emulator handles selection
+                </div>
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-terminal-yellow">1.</span> You click
+                    at position (5, 10)
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">2.</span> Terminal
+                    emulator stores selection start
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">3.</span> You drag to
+                    (5, 20)
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">4.</span> Terminal
+                    highlights cells &amp; stores in clipboard
+                  </div>
+                  <div className="mt-2 text-terminal-dim">
+                    // The running program sees NOTHING
+                  </div>
+                  <div className="text-terminal-dim">
+                    // (unless it enabled mouse tracking)
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 'cursor-positioning' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                <div className="text-terminal-dim">
+                  // App controls cursor with escape sequences
+                </div>
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-terminal-green">ESC[H</span>{' '}
+                    <span className="text-terminal-dim">
+                      — move cursor to (1,1)
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-green">ESC[5;10H</span>{' '}
+                    <span className="text-terminal-dim">
+                      — move to row 5, col 10
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-green">ESC[A</span>{' '}
+                    <span className="text-terminal-dim">
+                      — move cursor up one line
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-green">ESC[C</span>{' '}
+                    <span className="text-terminal-dim">
+                      — move cursor right one col
+                    </span>
+                  </div>
+                  <div className="mt-2 text-terminal-dim">
+                    // Terminal just obeys these commands
+                  </div>
+                  <div className="text-terminal-dim">
+                    // It doesn't move cursor on click!
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 'option-click' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                <div className="text-terminal-dim">
+                  // Option+Click at (5, 15), cursor at (3, 5)
+                </div>
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-terminal-yellow">1.</span> Terminal
+                    calculates: need to go down 2, right 10
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">2.</span> Terminal
+                    sends:{' '}
+                    <span className="text-terminal-cyan">ESC[B ESC[B</span>{' '}
+                    <span className="text-terminal-dim">(2x down)</span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">3.</span> Terminal
+                    sends:{' '}
+                    <span className="text-terminal-cyan">ESC[C ESC[C ...</span>{' '}
+                    <span className="text-terminal-dim">(10x right)</span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-yellow">4.</span> App
+                    receives arrow keys, moves its cursor
+                  </div>
+                  <div className="mt-2 text-terminal-dim">
+                    // It's simulating 12 keypresses!
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 'why-different' && (
+              <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
+                <div className="text-terminal-dim">
+                  // Terminal doesn't know what you're running:
+                </div>
+                <div className="space-y-1 mt-2">
+                  <div>
+                    <span className="text-terminal-cyan">$ vim file.txt</span>{' '}
+                    <span className="text-terminal-dim">
+                      ← click should move cursor
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-cyan">
+                      $ cat longfile.txt
+                    </span>{' '}
+                    <span className="text-terminal-dim">
+                      ← no cursor to move
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-cyan">$ python</span>{' '}
+                    <span className="text-terminal-dim">
+                      ← cursor in REPL prompt
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-terminal-cyan">$ htop</span>{' '}
+                    <span className="text-terminal-dim">
+                      ← click selects process
+                    </span>
+                  </div>
+                  <div className="mt-2 text-terminal-dim">
+                    // Each app handles mouse differently
+                  </div>
+                  <div className="text-terminal-dim">
+                    // So terminal can't assume anything!
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <p className="text-terminal-muted text-sm leading-relaxed">
-            {stepContent.description}
-          </p>
 
-          {currentStep === 'terminal-selection' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">
-                // Terminal emulator handles selection
-              </div>
-              <div className="space-y-1">
-                <div>
-                  <span className="text-terminal-yellow">1.</span> You click at
-                  position (5, 10)
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">2.</span> Terminal
-                  emulator stores selection start
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">3.</span> You drag to
-                  (5, 20)
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">4.</span> Terminal
-                  highlights cells &amp; stores in clipboard
-                </div>
-                <div className="mt-2 text-terminal-dim">
-                  // The running program sees NOTHING
-                </div>
-                <div className="text-terminal-dim">
-                  // (unless it enabled mouse tracking)
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 'cursor-positioning' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">
-                // App controls cursor with escape sequences
-              </div>
-              <div className="space-y-1">
-                <div>
-                  <span className="text-terminal-green">ESC[H</span>{' '}
-                  <span className="text-terminal-dim">
-                    — move cursor to (1,1)
-                  </span>
-                </div>
-                <div>
-                  <span className="text-terminal-green">ESC[5;10H</span>{' '}
-                  <span className="text-terminal-dim">
-                    — move to row 5, col 10
-                  </span>
-                </div>
-                <div>
-                  <span className="text-terminal-green">ESC[A</span>{' '}
-                  <span className="text-terminal-dim">
-                    — move cursor up one line
-                  </span>
-                </div>
-                <div>
-                  <span className="text-terminal-green">ESC[C</span>{' '}
-                  <span className="text-terminal-dim">
-                    — move cursor right one col
-                  </span>
-                </div>
-                <div className="mt-2 text-terminal-dim">
-                  // Terminal just obeys these commands
-                </div>
-                <div className="text-terminal-dim">
-                  // It doesn't move cursor on click!
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 'option-click' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">
-                // Option+Click at (5, 15), cursor at (3, 5)
-              </div>
-              <div className="space-y-1">
-                <div>
-                  <span className="text-terminal-yellow">1.</span> Terminal
-                  calculates: need to go down 2, right 10
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">2.</span> Terminal
-                  sends: <span className="text-terminal-cyan">ESC[B ESC[B</span>{' '}
-                  <span className="text-terminal-dim">(2x down)</span>
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">3.</span> Terminal
-                  sends:{' '}
-                  <span className="text-terminal-cyan">ESC[C ESC[C ...</span>{' '}
-                  <span className="text-terminal-dim">(10x right)</span>
-                </div>
-                <div>
-                  <span className="text-terminal-yellow">4.</span> App receives
-                  arrow keys, moves its cursor
-                </div>
-                <div className="mt-2 text-terminal-dim">
-                  // It's simulating 12 keypresses!
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 'why-different' && (
-            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
-              <div className="text-terminal-dim">
-                // Terminal doesn't know what you're running:
-              </div>
-              <div className="space-y-1 mt-2">
-                <div>
-                  <span className="text-terminal-cyan">$ vim file.txt</span>{' '}
-                  <span className="text-terminal-dim">
-                    ← click should move cursor
-                  </span>
-                </div>
-                <div>
-                  <span className="text-terminal-cyan">$ cat longfile.txt</span>{' '}
-                  <span className="text-terminal-dim">← no cursor to move</span>
-                </div>
-                <div>
-                  <span className="text-terminal-cyan">$ python</span>{' '}
-                  <span className="text-terminal-dim">
-                    ← cursor in REPL prompt
-                  </span>
-                </div>
-                <div>
-                  <span className="text-terminal-cyan">$ htop</span>{' '}
-                  <span className="text-terminal-dim">
-                    ← click selects process
-                  </span>
-                </div>
-                <div className="mt-2 text-terminal-dim">
-                  // Each app handles mouse differently
-                </div>
-                <div className="text-terminal-dim">
-                  // So terminal can't assume anything!
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Step navigation */}
-        <div className="flex items-center gap-2">
-          {steps.map((step) => (
+          {/* Step navigation */}
+          <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
             <button
-              key={step}
-              onClick={() => setCurrentStep(step)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                step === currentStep
-                  ? 'bg-terminal-fg scale-125'
-                  : 'bg-terminal-border hover:bg-terminal-dim'
-              }`}
-            />
-          ))}
-        </div>
-
-        <div className="flex gap-2">
-          <button
-            onClick={() =>
-              setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-            }
-            disabled={currentStepIndex === 0}
-            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-          >
-            Back
-          </button>
-          <button
-            onClick={() =>
-              setCurrentStep(
-                steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-              )
-            }
-            disabled={currentStepIndex === steps.length - 1}
-            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-          >
-            Next
-          </button>
+              onClick={() =>
+                setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
+              }
+              disabled={currentStepIndex === 0}
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            >
+              Previous
+            </button>
+            <div className="flex items-center gap-2">
+              {steps.map((step) => (
+                <button
+                  key={step}
+                  onClick={() => setCurrentStep(step)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    step === currentStep
+                      ? 'bg-terminal-fg scale-125'
+                      : 'bg-terminal-border hover:bg-terminal-dim'
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() =>
+                setCurrentStep(
+                  steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
+                )
+              }
+              disabled={currentStepIndex === steps.length - 1}
+              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
 
@@ -587,7 +588,7 @@ export function TextSelectionDemo() {
 
         <div className="flex flex-col md:flex-row items-stretch gap-4">
           <div className="bg-terminal-highlight p-4 flex-1">
-            <div className="text-terminal-blue font-bold text-sm mb-2">
+            <div className="text-terminal-fg font-bold text-sm mb-2">
               What You Expect
             </div>
             <div className="text-terminal-dim text-xs">
@@ -599,7 +600,7 @@ export function TextSelectionDemo() {
             ≠
           </div>
           <div className="bg-terminal-highlight p-4 flex-1">
-            <div className="text-terminal-yellow font-bold text-sm mb-2">
+            <div className="text-terminal-fg font-bold text-sm mb-2">
               What Actually Happens
             </div>
             <div className="text-terminal-dim text-xs">
