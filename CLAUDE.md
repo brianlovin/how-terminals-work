@@ -1,6 +1,6 @@
 ---
 description: Use Bun instead of Node.js, npm, pnpm, or vite.
-globs: "*.ts, *.tsx, *.html, *.css, *.js, *.jsx, package.json"
+globs: '*.ts, *.tsx, *.html, *.css, *.js, *.jsx, package.json'
 alwaysApply: false
 ---
 
@@ -18,11 +18,13 @@ An interactive guide that teaches people how terminals work. The site walks read
 ## Content Structure
 
 Each section has:
+
 - A number and title
 - An "insight" summary that captures the key takeaway
 - An interactive demo component
 
 Current sections:
+
 1. **The Grid Model** - Terminals are grids of fixed-size cells
 2. **What's in a Cell?** - Character + styling (color, bold, underline)
 3. **Escape Sequences** - Special byte sequences that control the terminal
@@ -34,6 +36,7 @@ Current sections:
 ## Adding New Sections
 
 When adding a new section:
+
 1. Create a demo component in `src/components/`
 2. Add it to `src/App.tsx` with a `<Section>` wrapper
 3. Include a clear "insight" that summarizes the key concept

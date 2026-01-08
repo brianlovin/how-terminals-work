@@ -1,10 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   /* UI colors */
   --color-terminal-bg: #0d1117;
   --color-terminal-fg: #c9d1d9;
-  --color-terminal-dim: rgba(255,255,255,0.45);
+  --color-terminal-dim: rgba(255, 255, 255, 0.45);
   --color-terminal-border: #30363d;
   --color-terminal-highlight: #161b22;
 
@@ -33,7 +33,7 @@
 @layer base {
   html {
     @apply bg-terminal-bg text-terminal-fg;
-    font-family: "Geist Mono", ui-monospace, monospace;
+    font-family: 'Geist Mono', ui-monospace, monospace;
   }
 
   body {
@@ -42,8 +42,14 @@
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .cursor-blink {
