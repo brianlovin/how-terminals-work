@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TerminalWindow } from './TerminalWindow';
+import { Button, InfoPanel } from './shared';
 
 const ROWS = 12;
 const CELL_WIDTH = 12; // pixels per cell
@@ -128,7 +129,7 @@ export function GridDemo() {
         </div>
       </TerminalWindow>
 
-      <div className="bg-terminal-highlight border border-terminal-border px-4 py-3 text-sm">
+      <InfoPanel>
         {hoveredCell ? (
           <span className="text-terminal-muted">
             Cell{' '}
@@ -139,20 +140,14 @@ export function GridDemo() {
         ) : (
           <span className="text-terminal-dim">Hover over a cell</span>
         )}
-      </div>
+      </InfoPanel>
       <div className="flex flex-wrap items-center gap-3 text-sm">
-        <button
-          onClick={startTyping}
-          className="bg-terminal-fg text-terminal-bg px-4 py-2 font-medium hover:bg-terminal-bright-white transition-colors"
-        >
+        <Button variant="primary" onClick={startTyping}>
           Add text
-        </button>
-        <button
-          onClick={clearGrid}
-          className="border border-terminal-border px-4 py-2 text-terminal-muted hover:text-terminal-fg hover:border-terminal-dim transition-colors"
-        >
+        </Button>
+        <Button variant="secondary" onClick={clearGrid}>
           Clear
-        </button>
+        </Button>
         <span className="text-terminal-dim text-sm">Click cells to draw</span>
       </div>
     </div>

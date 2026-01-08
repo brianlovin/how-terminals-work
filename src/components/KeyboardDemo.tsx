@@ -68,13 +68,13 @@ export function KeyboardDemo() {
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="bg-terminal-bg p-3">
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                  <div className="text-terminal-dim text-xs uppercase mb-1">
                     Bytes
                   </div>
                   <code className="text-terminal-yellow">{lastKey.bytes}</code>
                 </div>
                 <div className="bg-terminal-bg p-3">
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                  <div className="text-terminal-dim text-xs uppercase mb-1">
                     Sequence
                   </div>
                   <code className="text-terminal-cyan">{lastKey.sequence}</code>
