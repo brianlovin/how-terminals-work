@@ -41,7 +41,7 @@ export function KeyboardDemo() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="bg-terminal-bg rounded p-3">
                   <div className="text-terminal-dim mb-1">Bytes (hex)</div>
-                  <code className="text-terminal-amber text-lg">{lastKey.bytes}</code>
+                  <code className="text-terminal-yellow text-lg">{lastKey.bytes}</code>
                 </div>
                 <div className="bg-terminal-bg rounded p-3">
                   <div className="text-terminal-dim mb-1">Escape Sequence</div>
@@ -65,14 +65,14 @@ export function KeyboardDemo() {
             <div key={i} className="bg-terminal-highlight border border-terminal-border rounded px-3 py-1 text-sm" style={{ opacity: 1 - i * 0.1 }}>
               <span className="text-terminal-green">{k.key === " " ? "␣" : k.key}</span>
               <span className="text-terminal-dim mx-2">→</span>
-              <code className="text-terminal-amber">{k.bytes}</code>
+              <code className="text-terminal-yellow">{k.bytes}</code>
             </div>
           ))}
         </div>
       )}
 
       <div className="text-terminal-dim text-sm">
-        When you press an arrow key, your terminal doesn't send "arrow up" — it sends <code className="text-terminal-amber">ESC [ A</code> (three bytes).
+        When you press an arrow key, your terminal doesn't send "arrow up" — it sends <code className="text-terminal-yellow">ESC [ A</code> (three bytes).
         Programs that don't understand this will print <code className="text-terminal-cyan">^[[A</code> literally.
       </div>
     </div>
