@@ -8,6 +8,7 @@ import { MouseDemo } from "./components/MouseDemo";
 import { FlowDiagram } from "./components/FlowDiagram";
 import { AdvancedTUIDemo } from "./components/AdvancedTUIDemo";
 import { IconsDemo } from "./components/IconsDemo";
+import { StateManagementDemo } from "./components/StateManagementDemo";
 
 export function App() {
   return (
@@ -58,6 +59,11 @@ export function App() {
       <Section id="icons" number={7} title="Terminal Icons"
         insight="Those file icons in your terminal? They're just Unicode characters from special fonts called Nerd Fonts—thousands of icons mapped to the Private Use Area.">
         <IconsDemo />
+      </Section>
+
+      <Section id="state" number={8} title="State Management"
+        insight="When you press Shift+Tab to cycle modes in Claude Code, the terminal doesn't remember anything—your app tracks state in memory and redraws the UI whenever it changes.">
+        <StateManagementDemo />
       </Section>
     </div>
   );
