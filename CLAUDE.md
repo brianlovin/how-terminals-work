@@ -42,6 +42,12 @@ When adding a new section:
 3. Include a clear "insight" that summarizes the key concept
 4. Make the demo interactive—let readers explore, not just observe
 
+## Development
+
+**The dev server is always running.** Do not try to start it—it's already running on port 3000. Just make changes and they'll hot reload.
+
+To build for production: `bun run build`
+
 ---
 
 # Bun

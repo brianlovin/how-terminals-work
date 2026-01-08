@@ -85,7 +85,7 @@ export function CellZoom() {
                   <button
                     key={color}
                     onClick={() => setFg(color)}
-                    className={`w-6 h-6 transition-all ${fg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : 'hover:scale-110'}`}
+                    className={`w-6 h-6 transition-all focus:outline-none ${fg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : 'hover:scale-110'}`}
                     style={{ backgroundColor: COLORS[color] }}
                     title={color}
                   />
@@ -104,7 +104,7 @@ export function CellZoom() {
                   <button
                     key={color}
                     onClick={() => setBg(color)}
-                    className={`w-6 h-6 border transition-all ${bg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : 'border-terminal-border hover:scale-110'}`}
+                    className={`w-6 h-6 border transition-all focus:outline-none ${bg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : 'border-terminal-border hover:scale-110'}`}
                     style={{
                       backgroundColor:
                         color === 'none' ? '#0a0a0a' : BG_COLORS[color],

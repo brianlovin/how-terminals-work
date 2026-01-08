@@ -250,7 +250,7 @@ export function TextSelectionDemo() {
             {/* Terminal Grid */}
             <div
               ref={gridRef}
-              className="font-mono text-sm bg-terminal-bg rounded border border-terminal-border overflow-x-auto"
+              className="font-mono p-4 text-sm bg-terminal-bg rounded border border-terminal-border overflow-x-auto"
               style={{ userSelect: 'none' }}
             >
               {SAMPLE_TEXT.map((line, row) => (
@@ -292,7 +292,7 @@ export function TextSelectionDemo() {
             </div>
 
             {/* Status Area */}
-            <div className="bg-terminal-bg rounded p-4 min-h-[80px]">
+            <div className="rounded min-h-[80px]">
               {mode === 'terminal' ? (
                 selectedRange ? (
                   <div className="space-y-2">
@@ -322,7 +322,7 @@ export function TextSelectionDemo() {
                     )}
                   </div>
                 ) : (
-                  <div className="text-terminal-dim text-pretty text-center text-sm">
+                  <div className="text-terminal-dim p-4 text-pretty text-center text-sm">
                     Click and drag to select text. This is handled by the
                     terminal, not the running program.
                   </div>
@@ -372,14 +372,6 @@ export function TextSelectionDemo() {
             </div>
           </div>
         </TerminalWindow>
-
-        <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
-          <span className="text-terminal-magenta">Try it:</span> In terminal
-          mode, drag to select text. In app mode, hold{' '}
-          <kbd className="bg-terminal-highlight px-1 rounded">Option</kbd> (Alt)
-          and click to see how the terminal simulates arrow keys to move the
-          cursor.
-        </div>
       </div>
 
       {/* How it works explanation */}
@@ -581,7 +573,7 @@ export function TextSelectionDemo() {
       </div>
 
       {/* Key Insight Box */}
-      <div className="border border-terminal-border p-6 space-y-6">
+      <div className="border border-terminal-border bg-terminal-highlight p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Why You Can't Just Click to Move the Cursor
         </h3>

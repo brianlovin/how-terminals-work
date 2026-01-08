@@ -235,14 +235,6 @@ export function StateManagementDemo() {
             </div>
           </div>
         )}
-
-        <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
-          <span className="text-terminal-magenta">Try it:</span> Press{' '}
-          <kbd className="bg-terminal-highlight px-1 rounded">Shift+Tab</kbd> to
-          cycle between modes. Type something and press{' '}
-          <kbd className="bg-terminal-highlight px-1 rounded">Enter</kbd> to see
-          history tracking.
-        </div>
       </div>
 
       {/* How it works explanation */}
@@ -447,17 +439,17 @@ export function StateManagementDemo() {
       </div>
 
       {/* The data flow breakdown */}
-      <div className="border border-terminal-border p-6 space-y-6">
+      <div className="border bg-terminal-highlight border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           The State Update Cycle
         </h3>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="bg-terminal-highlight p-4 text-center flex-1">
+          <div className="bg-terminal-highlight p-4 flex-1">
             <div className="text-terminal-fg font-bold text-sm mb-2">
               1. Input
             </div>
-            <div className="text-terminal-dim text-xs">
+            <div className="text-terminal-dim text-sm">
               User presses Shift+Tab
             </div>
             <div className="font-mono text-xs mt-2 text-terminal-yellow">
@@ -465,11 +457,11 @@ export function StateManagementDemo() {
             </div>
           </div>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
-          <div className="bg-terminal-highlight p-4 text-center flex-1">
+          <div className="bg-terminal-highlight p-4 flex-1">
             <div className="text-terminal-fg font-bold text-sm mb-2">
               2. Process
             </div>
-            <div className="text-terminal-dim text-xs">
+            <div className="text-terminal-dim text-sm">
               App recognizes sequence
             </div>
             <div className="font-mono text-xs mt-2 text-terminal-cyan">
@@ -477,11 +469,11 @@ export function StateManagementDemo() {
             </div>
           </div>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
-          <div className="bg-terminal-highlight p-4 text-center flex-1">
+          <div className="bg-terminal-highlight p-4 flex-1">
             <div className="text-terminal-fg font-bold text-sm mb-2">
               3. Render
             </div>
-            <div className="text-terminal-dim text-xs">
+            <div className="text-terminal-dim text-sm">
               Redraw mode indicator
             </div>
             <div className="font-mono text-xs mt-2 text-terminal-green">
