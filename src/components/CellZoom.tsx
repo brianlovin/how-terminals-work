@@ -1,8 +1,28 @@
 import { useState } from "react";
 import { TerminalWindow } from "./TerminalWindow";
 
-const COLORS = { white: "#c9d1d9", green: "#3fb950", red: "#f85149", blue: "#58a6ff", amber: "#d29922", purple: "#bc8cff", cyan: "#39c5cf" };
-const BG_COLORS = { none: "transparent", dim: "#161b22", green: "#3fb95033", red: "#f8514933", blue: "#58a6ff33" };
+// Standard 16-color ANSI palette
+const COLORS = {
+  // Normal colors (0-7)
+  black: "#0d1117",
+  red: "#f85149",
+  green: "#3fb950",
+  yellow: "#d29922",
+  blue: "#58a6ff",
+  magenta: "#bc8cff",
+  cyan: "#39c5cf",
+  white: "#c9d1d9",
+  // Bright colors (8-15)
+  brightBlack: "#484f58",
+  brightRed: "#ff7b72",
+  brightGreen: "#56d364",
+  brightYellow: "#e3b341",
+  brightBlue: "#79c0ff",
+  brightMagenta: "#d2a8ff",
+  brightCyan: "#56d4dd",
+  brightWhite: "#f0f6fc",
+};
+const BG_COLORS = { none: "transparent", dim: "#161b22", green: "#3fb95033", red: "#f8514933", blue: "#58a6ff33", yellow: "#d2992233", magenta: "#bc8cff33", cyan: "#39c5cf33" };
 
 export function CellZoom() {
   const [char, setChar] = useState("A");
@@ -84,7 +104,7 @@ export function CellZoom() {
         <span className="text-terminal-dim"> with </span>
         <span style={{ color: COLORS[fg] }}>{fg}</span>
         <span className="text-terminal-dim"> foreground</span>
-        {bg !== "none" && <><span className="text-terminal-dim">, </span><span className="text-terminal-amber">{bg}</span><span className="text-terminal-dim"> background</span></>}
+        {bg !== "none" && <><span className="text-terminal-dim">, </span><span className="text-terminal-yellow">{bg}</span><span className="text-terminal-dim"> background</span></>}
         {bold && <><span className="text-terminal-dim">, </span><span className="font-bold">bold</span></>}
         {underline && <><span className="text-terminal-dim">, </span><span className="underline">underlined</span></>}
       </div>

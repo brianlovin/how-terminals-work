@@ -107,11 +107,11 @@ const Icons = {
 
 // Icon data with SVG references and codepoints
 const NERD_FONT_ICONS = [
-  { icon: "folder", name: "Folder", codepoint: "U+F07B", category: "Files", color: "text-terminal-amber" },
-  { icon: "folderOpen", name: "Folder Open", codepoint: "U+F07C", category: "Files", color: "text-terminal-amber" },
+  { icon: "folder", name: "Folder", codepoint: "U+F07B", category: "Files", color: "text-terminal-yellow" },
+  { icon: "folderOpen", name: "Folder Open", codepoint: "U+F07C", category: "Files", color: "text-terminal-yellow" },
   { icon: "file", name: "File", codepoint: "U+F15B", category: "Files", color: "text-terminal-fg" },
   { icon: "typescript", name: "TypeScript", codepoint: "U+E628", category: "Dev", color: "text-terminal-blue" },
-  { icon: "javascript", name: "JavaScript", codepoint: "U+E781", category: "Dev", color: "text-terminal-amber" },
+  { icon: "javascript", name: "JavaScript", codepoint: "U+E781", category: "Dev", color: "text-terminal-yellow" },
   { icon: "react", name: "React", codepoint: "U+E7BA", category: "Dev", color: "text-terminal-cyan" },
   { icon: "python", name: "Python", codepoint: "U+E73C", category: "Dev", color: "text-terminal-blue" },
   { icon: "rust", name: "Rust", codepoint: "U+E7A8", category: "Dev", color: "text-terminal-fg" },
@@ -120,10 +120,10 @@ const NERD_FONT_ICONS = [
   { icon: "docker", name: "Docker", codepoint: "U+F308", category: "Dev", color: "text-terminal-cyan" },
   { icon: "terminal", name: "Terminal", codepoint: "U+F489", category: "System", color: "text-terminal-green" },
   { icon: "gear", name: "Gear", codepoint: "U+F013", category: "System", color: "text-terminal-dim" },
-  { icon: "lock", name: "Lock", codepoint: "U+F023", category: "System", color: "text-terminal-amber" },
+  { icon: "lock", name: "Lock", codepoint: "U+F023", category: "System", color: "text-terminal-yellow" },
   { icon: "check", name: "Check", codepoint: "U+F00C", category: "Status", color: "text-terminal-green" },
   { icon: "error", name: "Error", codepoint: "U+F00D", category: "Status", color: "text-terminal-red" },
-  { icon: "warning", name: "Warning", codepoint: "U+F071", category: "Status", color: "text-terminal-amber" },
+  { icon: "warning", name: "Warning", codepoint: "U+F071", category: "Status", color: "text-terminal-yellow" },
   { icon: "info", name: "Info", codepoint: "U+F05A", category: "Status", color: "text-terminal-blue" },
 ] as const;
 
@@ -131,11 +131,11 @@ type IconName = keyof typeof Icons;
 
 // File tree structure for the demo
 const FILE_TREE: { name: string; type: "folder" | "file"; icon: IconName; color: string; indent: number; codepoint: string }[] = [
-  { name: "src", type: "folder", icon: "folder", color: "text-terminal-amber", indent: 0, codepoint: "U+F07B" },
-  { name: "components", type: "folder", icon: "folder", color: "text-terminal-amber", indent: 1, codepoint: "U+F07B" },
+  { name: "src", type: "folder", icon: "folder", color: "text-terminal-yellow", indent: 0, codepoint: "U+F07B" },
+  { name: "components", type: "folder", icon: "folder", color: "text-terminal-yellow", indent: 1, codepoint: "U+F07B" },
   { name: "App.tsx", type: "file", icon: "react", color: "text-terminal-cyan", indent: 2, codepoint: "U+E7BA" },
   { name: "Button.tsx", type: "file", icon: "react", color: "text-terminal-cyan", indent: 2, codepoint: "U+E7BA" },
-  { name: "utils", type: "folder", icon: "folder", color: "text-terminal-amber", indent: 1, codepoint: "U+F07B" },
+  { name: "utils", type: "folder", icon: "folder", color: "text-terminal-yellow", indent: 1, codepoint: "U+F07B" },
   { name: "index.ts", type: "file", icon: "typescript", color: "text-terminal-blue", indent: 1, codepoint: "U+E628" },
   { name: "package.json", type: "file", icon: "json", color: "text-terminal-green", indent: 0, codepoint: "U+E60B" },
   { name: ".gitignore", type: "file", icon: "git", color: "text-terminal-red", indent: 0, codepoint: "U+F1D3" },
@@ -252,7 +252,7 @@ export function IconsDemo() {
                       <div className="text-terminal-fg">
                         <span className="text-terminal-cyan">{FILE_TREE[hoveredFile].name}</span>
                       </div>
-                      <div className="text-terminal-amber font-mono">
+                      <div className="text-terminal-yellow font-mono">
                         {FILE_TREE[hoveredFile].codepoint}
                       </div>
                     </div>
@@ -284,7 +284,7 @@ export function IconsDemo() {
                   <div><span className="text-terminal-cyan">U+F0000 - U+FFFFD</span> <span className="text-terminal-dim">— Supplementary PUA-A</span></div>
                   <div><span className="text-terminal-cyan">U+100000 - U+10FFFD</span> <span className="text-terminal-dim">— Supplementary PUA-B</span></div>
                 </div>
-                <div className="text-terminal-amber mt-2">
+                <div className="text-terminal-yellow mt-2">
                   Nerd Fonts uses ~3,600 codepoints in these ranges
                 </div>
               </div>
@@ -295,7 +295,7 @@ export function IconsDemo() {
                 <div className="flex flex-wrap items-center gap-3 text-sm">
                   <div className="flex flex-col items-center">
                     <span className="text-terminal-cyan font-mono text-xs">App outputs</span>
-                    <span className="text-terminal-amber font-mono">U+E628</span>
+                    <span className="text-terminal-yellow font-mono">U+E628</span>
                   </div>
                   <span className="text-terminal-dim">→</span>
                   <div className="flex flex-col items-center">
@@ -429,10 +429,10 @@ export function IconsDemo() {
               <div className="bg-terminal-bg rounded p-3 font-mono text-xs">
                 <div className="text-terminal-dim mb-1">// In code (escape sequence)</div>
                 <div>
-                  <span className="text-terminal-purple">printf</span>
-                  <span className="text-terminal-amber">(</span>
+                  <span className="text-terminal-magenta">printf</span>
+                  <span className="text-terminal-yellow">(</span>
                   <span className="text-terminal-green">"\\u{selectedIcon.codepoint.replace("U+", "").toLowerCase()}"</span>
-                  <span className="text-terminal-amber">)</span>
+                  <span className="text-terminal-yellow">)</span>
                 </div>
               </div>
 
@@ -456,7 +456,7 @@ export function IconsDemo() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-terminal-highlight rounded p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-purple font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-magenta font-bold">
               <span>1</span>
               <span>Single Codepoint</span>
             </div>

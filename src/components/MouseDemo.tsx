@@ -49,7 +49,7 @@ export function MouseDemo() {
               <input type="checkbox" checked={mouseEnabled} onChange={(e) => setMouseEnabled(e.target.checked)} className="w-4 h-4 accent-terminal-green" />
               <span>Mouse tracking <span className={mouseEnabled ? "text-terminal-green" : "text-terminal-red"}>{mouseEnabled ? "enabled" : "disabled"}</span></span>
             </label>
-            <span className="text-terminal-dim">(programs request this with <code className="text-terminal-amber">^[[?1000h</code>)</span>
+            <span className="text-terminal-dim">(programs request this with <code className="text-terminal-yellow">^[[?1000h</code>)</span>
           </div>
 
           <div ref={containerRef} className={`grid gap-0 border border-terminal-border rounded w-full ${mouseEnabled ? "" : "opacity-50"}`}
@@ -73,10 +73,10 @@ export function MouseDemo() {
             <div className="bg-terminal-bg rounded p-4 space-y-3">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div><div className="text-terminal-dim text-sm">Position</div><div className="text-terminal-green text-xl">({lastClick.x}, {lastClick.y})</div></div>
-                <div><div className="text-terminal-dim text-sm">Button</div><div className="text-terminal-amber text-xl">{["Left", "Middle", "Right"][lastClick.button]}</div></div>
+                <div><div className="text-terminal-dim text-sm">Button</div><div className="text-terminal-yellow text-xl">{["Left", "Middle", "Right"][lastClick.button]}</div></div>
                 <div><div className="text-terminal-dim text-sm">Sequence</div><code className="text-terminal-cyan text-lg">{lastClick.sequence}</code></div>
               </div>
-              <div className="text-center"><span className="text-terminal-dim text-sm">Raw bytes: </span><code className="text-terminal-amber">{lastClick.bytes}</code></div>
+              <div className="text-center"><span className="text-terminal-dim text-sm">Raw bytes: </span><code className="text-terminal-yellow">{lastClick.bytes}</code></div>
             </div>
           ) : (
             <div className="text-terminal-dim text-center py-4">{mouseEnabled ? "Click anywhere in the grid (try right-click too!)" : "Enable mouse tracking to capture clicks"}</div>

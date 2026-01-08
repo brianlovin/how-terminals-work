@@ -114,6 +114,28 @@ const STEPS: Step[] = [
   },
 ];
 
+// Standard 16-color ANSI code to Tailwind class mapping
+const ANSI_COLOR_MAP: Record<string, string> = {
+  // Normal colors (30-37)
+  "30": "text-terminal-black",
+  "31": "text-terminal-red",
+  "32": "text-terminal-green",
+  "33": "text-terminal-yellow",
+  "34": "text-terminal-blue",
+  "35": "text-terminal-magenta",
+  "36": "text-terminal-cyan",
+  "37": "text-terminal-white",
+  // Bright colors (90-97)
+  "90": "text-terminal-bright-black",
+  "91": "text-terminal-bright-red",
+  "92": "text-terminal-bright-green",
+  "93": "text-terminal-bright-yellow",
+  "94": "text-terminal-bright-blue",
+  "95": "text-terminal-bright-magenta",
+  "96": "text-terminal-bright-cyan",
+  "97": "text-terminal-bright-white",
+};
+
 function renderTerminalLine(line: string) {
   // Simple escape sequence parser for demo
   const parts: { text: string; color?: string }[] = [];
@@ -131,9 +153,8 @@ function renderTerminalLine(line: string) {
       let j = i + 2;
       while (j < line.length && line[j] !== "m") j++;
       const code = line.slice(i + 2, j);
-      if (code === "34") currentColor = "text-terminal-blue";
-      else if (code === "32") currentColor = "text-terminal-green";
-      else if (code === "0") currentColor = undefined;
+      if (code === "0") currentColor = undefined;
+      else if (ANSI_COLOR_MAP[code]) currentColor = ANSI_COLOR_MAP[code];
       i = j + 1;
     } else {
       current += line[i];
@@ -233,7 +254,7 @@ export function FlowDiagram() {
             </div>
             {currentStep.dataPacket && currentStep.highlight === "terminal" && (
               <div className={`absolute ${currentStep.dataDirection === "down" ? "-bottom-6" : "-top-6"} left-1/2 transform -translate-x-1/2 z-10`}>
-                <div className="bg-terminal-amber text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                <div className="bg-terminal-yellow text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
                   {currentStep.dataPacket}
                 </div>
               </div>
@@ -257,7 +278,7 @@ export function FlowDiagram() {
             </div>
             {currentStep.dataPacket && currentStep.highlight === "pty" && (
               <div className={`absolute ${currentStep.dataDirection === "down" ? "-bottom-6" : "-top-6"} left-1/2 transform -translate-x-1/2 z-10`}>
-                <div className="bg-terminal-purple text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
+                <div className="bg-terminal-magenta text-terminal-bg px-2 py-1 rounded text-xs font-mono animate-pulse">
                   {currentStep.dataPacket}
                 </div>
               </div>

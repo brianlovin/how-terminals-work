@@ -154,7 +154,7 @@ export function AdvancedTUIDemo() {
         y: 0,
         width: terminalSize.cols,
         height: tabHeight,
-        color: "terminal-purple",
+        color: "terminal-magenta",
         focusable: true,
       },
       {
@@ -191,7 +191,7 @@ export function AdvancedTUIDemo() {
     // Generate status content
     const statusColor = {
       success: "text-terminal-green",
-      running: "text-terminal-amber",
+      running: "text-terminal-yellow",
       failed: "text-terminal-red",
       pending: "text-terminal-dim",
     }[selectedDeploy.status];
@@ -220,7 +220,7 @@ export function AdvancedTUIDemo() {
             </button>
           ))}
           {showCoordinates && (
-            <span className="ml-auto text-terminal-purple text-[10px] pr-2 self-center">
+            <span className="ml-auto text-terminal-magenta text-[10px] pr-2 self-center">
               Region: tabs (0,0) {terminalSize.cols}x3
             </span>
           )}
@@ -249,7 +249,7 @@ export function AdvancedTUIDemo() {
                 }[item.status];
                 const itemStatusColor = {
                   success: "text-terminal-green",
-                  running: "text-terminal-amber",
+                  running: "text-terminal-yellow",
                   failed: "text-terminal-red",
                   pending: "text-terminal-dim",
                 }[item.status];
@@ -287,7 +287,7 @@ export function AdvancedTUIDemo() {
               <div>Status: <span className={statusColor}>{selectedDeploy.status}</span></div>
               <div>Updated: 2024-01-15 14:32:00 UTC</div>
               {selectedDeploy.status === "running" && (
-                <div className="mt-2 text-terminal-amber animate-pulse">
+                <div className="mt-2 text-terminal-yellow animate-pulse">
                   Building... ████████░░░░░░░░ 52%
                 </div>
               )}
@@ -341,7 +341,7 @@ export function AdvancedTUIDemo() {
               disabled={isResizing}
               className={`px-3 py-1.5 rounded border transition-colors ${
                 isResizing
-                  ? "border-terminal-amber text-terminal-amber animate-pulse"
+                  ? "border-terminal-yellow text-terminal-yellow animate-pulse"
                   : "border-terminal-border hover:border-terminal-green"
               }`}
             >
@@ -378,7 +378,7 @@ export function AdvancedTUIDemo() {
                   {regions.map(r => (
                     <div key={r.id} className="ml-2">
                       <span className={`text-${r.color}`}>{r.name}</span>:
-                      <span className="text-terminal-amber"> x={r.x}, y={r.y}, w={r.width}, h={r.height}</span>
+                      <span className="text-terminal-yellow"> x={r.x}, y={r.y}, w={r.width}, h={r.height}</span>
                     </div>
                   ))}
                 </div>
@@ -403,12 +403,12 @@ export function AdvancedTUIDemo() {
               <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
                 <div className="text-terminal-dim">// Terminal resize sequence</div>
                 <div className="space-y-1">
-                  <div><span className="text-terminal-amber">1.</span> User drags window edge</div>
-                  <div><span className="text-terminal-amber">2.</span> OS sends <span className="text-terminal-cyan">SIGWINCH</span> signal</div>
-                  <div><span className="text-terminal-amber">3.</span> App calls <span className="text-terminal-green">ioctl(TIOCGWINSZ)</span></div>
-                  <div><span className="text-terminal-amber">4.</span> Gets new size: <span className="text-terminal-purple">{terminalSize.cols}×{terminalSize.rows}</span></div>
-                  <div><span className="text-terminal-amber">5.</span> Recalculate all region bounds</div>
-                  <div><span className="text-terminal-amber">6.</span> Clear screen + redraw everything</div>
+                  <div><span className="text-terminal-yellow">1.</span> User drags window edge</div>
+                  <div><span className="text-terminal-yellow">2.</span> OS sends <span className="text-terminal-cyan">SIGWINCH</span> signal</div>
+                  <div><span className="text-terminal-yellow">3.</span> App calls <span className="text-terminal-green">ioctl(TIOCGWINSZ)</span></div>
+                  <div><span className="text-terminal-yellow">4.</span> Gets new size: <span className="text-terminal-magenta">{terminalSize.cols}×{terminalSize.rows}</span></div>
+                  <div><span className="text-terminal-yellow">5.</span> Recalculate all region bounds</div>
+                  <div><span className="text-terminal-yellow">6.</span> Clear screen + redraw everything</div>
                 </div>
               </div>
             )}
@@ -468,7 +468,7 @@ export function AdvancedTUIDemo() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-terminal-highlight rounded p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-purple font-bold">
+            <div className="flex text-sm items-center gap-2 text-terminal-magenta font-bold">
               <span>1</span>
               <span>Layout Engine</span>
             </div>
@@ -576,10 +576,10 @@ function CursorPositionDemo() {
           <div className="bg-terminal-highlight rounded p-3 font-mono text-sm">
             <div className="text-terminal-dim text-xs mb-2">In code:</div>
             <div className="text-terminal-fg">
-              <span className="text-terminal-purple">printf</span>
-              <span className="text-terminal-amber">(</span>
+              <span className="text-terminal-magenta">printf</span>
+              <span className="text-terminal-yellow">(</span>
               <span className="text-terminal-green">"\033[{cursorPos.row};{cursorPos.col}H"</span>
-              <span className="text-terminal-amber">)</span>
+              <span className="text-terminal-yellow">)</span>
             </div>
           </div>
           <p className="text-terminal-dim text-xs">
