@@ -633,67 +633,41 @@ export function IconsDemo() {
           </div>
 
           {/* Selected icon details */}
-          <div className="bg-terminal-highlight p-4 space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 flex items-center justify-center bg-terminal-bg border border-terminal-border">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  {renderIcon(
-                    selectedIcon.icon as IconName,
-                    selectedIcon.color
-                  )}
-                </div>
+          <div className="bg-terminal-bg border border-terminal-border p-4 space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 flex items-center justify-center bg-terminal-highlight border border-terminal-border">
+                {renderIcon(
+                  selectedIcon.icon as IconName,
+                  selectedIcon.color
+                )}
               </div>
-              <div>
-                <div className="text-terminal-fg font-bold">
-                  {selectedIcon.name}
-                </div>
-                <div className="text-terminal-cyan font-mono text-sm">
-                  {selectedIcon.codepoint}
-                </div>
+              <div className="text-terminal-fg font-bold">
+                {selectedIcon.name}
+              </div>
+              <div className="text-terminal-cyan font-mono text-sm">
+                {selectedIcon.codepoint}
               </div>
             </div>
 
-            <div className="space-y-3">
-              <div className="bg-terminal-bg p-3 font-mono text-xs">
-                <div className="text-terminal-dim mb-1">
-                  // In shell (with Nerd Font)
-                </div>
-                <div className="text-terminal-green">
-                  echo -e "\u
-                  {selectedIcon.codepoint.replace('U+', '').toLowerCase()}{' '}
-                  {selectedIcon.name}"
-                </div>
+            <div className="font-mono text-xs text-terminal-dim space-y-1">
+              <div>
+                <span className="text-terminal-muted">Shell: </span>
+                <span className="text-terminal-green">
+                  echo -e "\u{selectedIcon.codepoint.replace('U+', '').toLowerCase()}"
+                </span>
               </div>
-
-              <div className="bg-terminal-bg p-3 font-mono text-xs">
-                <div className="text-terminal-dim mb-1">
-                  // In code (escape sequence)
-                </div>
-                <div>
-                  <span className="text-terminal-magenta">printf</span>
-                  <span className="text-terminal-yellow">(</span>
-                  <span className="text-terminal-green">
-                    "\\u{selectedIcon.codepoint.replace('U+', '').toLowerCase()}
-                    "
-                  </span>
-                  <span className="text-terminal-yellow">)</span>
-                </div>
+              <div>
+                <span className="text-terminal-muted">Code: </span>
+                <span className="text-terminal-magenta">printf</span>
+                <span className="text-terminal-yellow">(</span>
+                <span className="text-terminal-green">"\\u{selectedIcon.codepoint.replace('U+', '').toLowerCase()}"</span>
+                <span className="text-terminal-yellow">)</span>
               </div>
-
-              <div className="bg-terminal-bg p-3 font-mono text-xs">
-                <div className="text-terminal-dim mb-1">// Character info</div>
-                <div className="text-terminal-fg">
-                  Codepoint:{' '}
-                  <span className="text-terminal-cyan">
-                    {selectedIcon.codepoint}
-                  </span>
-                </div>
-                <div className="text-terminal-fg">
-                  Decimal:{' '}
-                  <span className="text-terminal-cyan">
-                    {parseInt(selectedIcon.codepoint.replace('U+', ''), 16)}
-                  </span>
-                </div>
+              <div>
+                <span className="text-terminal-muted">Decimal: </span>
+                <span className="text-terminal-cyan">
+                  {parseInt(selectedIcon.codepoint.replace('U+', ''), 16)}
+                </span>
               </div>
             </div>
           </div>
@@ -877,11 +851,11 @@ function IconSetsReference() {
         a different Unicode range.
       </p>
 
-      <div className="space-y-3">
+      <div className="divide-y divide-terminal-border">
         {iconSets.map((set) => (
           <div
             key={set.name}
-            className="flex flex-col md:flex-row md:items-center gap-3 bg-terminal-highlight p-3"
+            className="flex flex-col md:flex-row md:items-center gap-3 py-3"
           >
             <div className="md:w-32">
               <div className="text-terminal-fg font-bold text-sm">
