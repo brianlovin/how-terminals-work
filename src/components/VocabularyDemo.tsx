@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { TerminalWindow } from './TerminalWindow';
 
 type Term =
   | 'terminal'
@@ -136,7 +135,7 @@ function ArchitectureDiagram({
       terms: ['terminal-emulator', 'terminal'] as Term[],
       label: 'Terminal Emulator',
       examples: 'iTerm2, Ghostty, kitty',
-      color: 'cyan',
+      color: 'blue',
     },
     {
       id: 'pty',
@@ -173,12 +172,12 @@ function ArchitectureDiagram({
         <div
           className={`border-2 p-4 transition-all ${
             isHighlighted(['terminal-emulator', 'terminal'])
-              ? 'border-terminal-cyan bg-terminal-cyan/5'
-              : 'border-terminal-cyan/40'
+              ? 'border-terminal-blue bg-terminal-blue/5'
+              : 'border-terminal-blue/40'
           }`}
         >
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-terminal-cyan font-bold">
+            <span className="text-terminal-blue font-bold">
               Terminal Emulator
             </span>
             <span className="text-terminal-muted text-xs">
@@ -586,7 +585,7 @@ function CommandFlowDemo() {
             {currentStep?.label}
           </span>
         </div>
-        <div className="font-mono text-terminal-green bg-terminal-highlight p-2 border border-terminal-border">
+        <div className="font-mono text-terminal-green">
           {currentStep?.content}
         </div>
         <div className="text-terminal-muted text-sm">
@@ -615,10 +614,7 @@ function CommandFlowDemo() {
 }
 
 export function VocabularyDemo() {
-  const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
-  const [hoveredTerm, setHoveredTerm] = useState<Term | null>(null);
-
-  const activeTerm = hoveredTerm || selectedTerm;
+  const [activeTerm, setActiveTerm] = useState<Term>('terminal');
   const termData = activeTerm ? TERMS[activeTerm] : null;
 
   const termOrder: Term[] = [
@@ -635,48 +631,40 @@ export function VocabularyDemo() {
   return (
     <div className="space-y-8">
       {/* Glossary */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+      <div className="bg-terminal-highlight border border-terminal-border flex flex-col lg:flex-row">
         {/* Term list */}
-        <div>
-          <TerminalWindow>
-            <div className="font-mono text-sm space-y-1 min-h-[320px]">
-              {termOrder.map((term) => {
-                const data = TERMS[term];
-                const isActive = activeTerm === term;
-                return (
-                  <button
-                    key={term}
-                    onClick={() => setSelectedTerm(term)}
-                    onMouseEnter={() => setHoveredTerm(term)}
-                    onMouseLeave={() => setHoveredTerm(null)}
-                    className={`w-full text-left px-3 py-2 flex items-center gap-3 transition-all cursor-pointer ${
-                      isActive
-                        ? 'bg-terminal-green/20 border-l-2 border-terminal-green'
-                        : 'hover:bg-terminal-border/50 border-l-2 border-transparent'
-                    }`}
+        <div className="p-4 lg:border-r border-terminal-border lg:w-1/2">
+          <div className="font-mono text-sm space-y-1 min-h-[320px]">
+            {termOrder.map((term) => {
+              const data = TERMS[term];
+              const isActive = activeTerm === term;
+              return (
+                <div
+                  key={term}
+                  onMouseEnter={() => setActiveTerm(term)}
+                  className={`w-full text-left px-3 py-2 flex items-center gap-3 transition-all cursor-default ${
+                    isActive
+                      ? 'bg-terminal-border/50 border-l-2 border-terminal-fg'
+                      : 'border-l-2 border-transparent'
+                  }`}
+                >
+                  <span
+                    className={`text-xs uppercase tracking-wide w-16 ${CATEGORY_COLORS[data.category]}`}
                   >
-                    <span
-                      className={`text-xs uppercase tracking-wide w-16 ${CATEGORY_COLORS[data.category]}`}
-                    >
-                      {CATEGORY_LABELS[data.category]?.split(' ')[0]}
-                    </span>
-                    <span
-                      className={
-                        isActive ? 'text-terminal-green' : 'text-terminal-fg'
-                      }
-                    >
-                      {data.shortName || data.name}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </TerminalWindow>
+                    {CATEGORY_LABELS[data.category]?.split(' ')[0]}
+                  </span>
+                  <span className="text-terminal-fg">
+                    {data.shortName || data.name}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Term details */}
-        <div className="bg-terminal-highlight border border-terminal-border p-4 h-full">
-          {termData ? (
+        <div className="p-4 lg:w-1/2 border-t lg:border-t-0 border-terminal-border">
+          {termData && (
             <div className="space-y-4">
               <div>
                 <div
@@ -684,12 +672,12 @@ export function VocabularyDemo() {
                 >
                   {CATEGORY_LABELS[termData.category]}
                 </div>
-                <div className="text-terminal-fg text-lg font-bold">
+                <div className="text-terminal-fg text-base mt-2 font-bold">
                   {termData.name}
                 </div>
                 {termData.alsoKnownAs && (
                   <div className="text-terminal-muted text-xs">
-                    Also: {termData.alsoKnownAs.join(', ')}
+                    AKA: {termData.alsoKnownAs.join(', ')}
                   </div>
                 )}
               </div>
@@ -714,10 +702,6 @@ export function VocabularyDemo() {
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="h-full flex items-center p-8 text-center justify-center text-terminal-muted text-sm">
-              Select a term to see its definition
-            </div>
           )}
         </div>
       </div>
@@ -741,7 +725,7 @@ export function VocabularyDemo() {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-terminal-bg border border-terminal-border p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-fg font-bold text-sm">
               "I opened my terminal"
             </div>
@@ -754,7 +738,7 @@ export function VocabularyDemo() {
             </p>
           </div>
 
-          <div className="bg-terminal-bg border border-terminal-border p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-fg font-bold text-sm">
               "My terminal can't find the command"
             </div>
@@ -766,7 +750,7 @@ export function VocabularyDemo() {
             </p>
           </div>
 
-          <div className="bg-terminal-bg border border-terminal-border p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-fg font-bold text-sm">
               "bash vs zsh—which should I use?"
             </div>
@@ -779,7 +763,7 @@ export function VocabularyDemo() {
             </p>
           </div>
 
-          <div className="bg-terminal-bg border border-terminal-border p-4 space-y-2">
+          <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-fg font-bold text-sm">
               "Terminal settings vs shell config"
             </div>
