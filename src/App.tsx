@@ -9,6 +9,7 @@ import { FlowDiagram } from "./components/FlowDiagram";
 import { AdvancedTUIDemo } from "./components/AdvancedTUIDemo";
 import { IconsDemo } from "./components/IconsDemo";
 import { StateManagementDemo } from "./components/StateManagementDemo";
+import { TextSelectionDemo } from "./components/TextSelectionDemo";
 
 export function App() {
   return (
@@ -64,6 +65,11 @@ export function App() {
       <Section id="state" number={8} title="State Management"
         insight="When you press Shift+Tab to cycle modes in Claude Code, the terminal doesn't remember anything—your app tracks state in memory and redraws the UI whenever it changes.">
         <StateManagementDemo />
+      </Section>
+
+      <Section id="selection" number={9} title="Text Selection & Cursor Positioning"
+        insight="You can't click to move your cursor because the terminal handles text selection separately from the app's cursor. Option+Click works by simulating arrow keypresses—it's a hack, not native behavior.">
+        <TextSelectionDemo />
       </Section>
     </div>
   );
