@@ -1,26 +1,24 @@
 interface TerminalWindowProps {
-  title?: string;
   children: React.ReactNode;
   className?: string;
 }
 
 export function TerminalWindow({
-  title = 'terminal',
   children,
   className = '',
 }: TerminalWindowProps) {
   return (
     <div
-      className={`rounded-lg border border-terminal-border bg-terminal-highlight overflow-hidden ${className}`}
+      className={`border border-terminal-border bg-terminal-surface overflow-hidden ${className}`}
     >
-      <div className="flex items-center gap-2 px-3 py-3 bg-terminal-bg border-b border-terminal-border">
-        <div className="flex gap-2">
-          <div className="w-3 h-3 rounded-full bg-white/10" />
-          <div className="w-3 h-3 rounded-full bg-white/10" />
-          <div className="w-3 h-3 rounded-full bg-white/10" />
+      <div className="flex items-center px-3 py-2 bg-terminal-highlight border-b border-terminal-border">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-terminal-dim/40" />
+          <div className="w-2.5 h-2.5 rounded-full bg-terminal-dim/40" />
+          <div className="w-2.5 h-2.5 rounded-full bg-terminal-dim/40" />
         </div>
       </div>
-      <div className="p-4">{children}</div>
+      <div className="p-5">{children}</div>
     </div>
   );
 }

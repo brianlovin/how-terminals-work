@@ -4,20 +4,20 @@ import { TerminalWindow } from './TerminalWindow';
 // Standard 16-color ANSI escape codes (SGR - Select Graphic Rendition)
 const COLOR_SEQUENCES = [
   // Normal colors (30-37)
-  { display: '^[[30m', desc: 'Black', effect: 'black', color: '#0d1117' },
+  { display: '^[[30m', desc: 'Black', effect: 'black', color: '#0a0a0a' },
   { display: '^[[31m', desc: 'Red', effect: 'red', color: '#f85149' },
-  { display: '^[[32m', desc: 'Green', effect: 'green', color: '#3fb950' },
-  { display: '^[[33m', desc: 'Yellow', effect: 'yellow', color: '#d29922' },
-  { display: '^[[34m', desc: 'Blue', effect: 'blue', color: '#58a6ff' },
-  { display: '^[[35m', desc: 'Magenta', effect: 'magenta', color: '#bc8cff' },
-  { display: '^[[36m', desc: 'Cyan', effect: 'cyan', color: '#39c5cf' },
-  { display: '^[[37m', desc: 'White', effect: 'white', color: '#c9d1d9' },
+  { display: '^[[32m', desc: 'Green', effect: 'green', color: '#22c55e' },
+  { display: '^[[33m', desc: 'Yellow', effect: 'yellow', color: '#eab308' },
+  { display: '^[[34m', desc: 'Blue', effect: 'blue', color: '#3b82f6' },
+  { display: '^[[35m', desc: 'Magenta', effect: 'magenta', color: '#a855f7' },
+  { display: '^[[36m', desc: 'Cyan', effect: 'cyan', color: '#06b6d4' },
+  { display: '^[[37m', desc: 'White', effect: 'white', color: '#e5e5e5' },
   // Bright colors (90-97)
   {
     display: '^[[90m',
     desc: 'Bright Black',
     effect: 'brightBlack',
-    color: '#484f58',
+    color: '#525252',
   },
   {
     display: '^[[91m',
@@ -29,37 +29,37 @@ const COLOR_SEQUENCES = [
     display: '^[[92m',
     desc: 'Bright Green',
     effect: 'brightGreen',
-    color: '#56d364',
+    color: '#4ade80',
   },
   {
     display: '^[[93m',
     desc: 'Bright Yellow',
     effect: 'brightYellow',
-    color: '#e3b341',
+    color: '#facc15',
   },
   {
     display: '^[[94m',
     desc: 'Bright Blue',
     effect: 'brightBlue',
-    color: '#79c0ff',
+    color: '#60a5fa',
   },
   {
     display: '^[[95m',
     desc: 'Bright Magenta',
     effect: 'brightMagenta',
-    color: '#d2a8ff',
+    color: '#c084fc',
   },
   {
     display: '^[[96m',
     desc: 'Bright Cyan',
     effect: 'brightCyan',
-    color: '#56d4dd',
+    color: '#22d3ee',
   },
   {
     display: '^[[97m',
     desc: 'Bright White',
     effect: 'brightWhite',
-    color: '#f0f6fc',
+    color: '#fafafa',
   },
 ];
 
@@ -119,23 +119,23 @@ export function EscapeDemo() {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="space-y-6">
+    <div className="space-y-6">
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-5">
           {/* 16-Color Palette */}
           <div>
-            <h3 className="text-terminal-dim text-sm mb-3">
-              16-Color ANSI Palette
-            </h3>
+            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
+              16-Color Palette
+            </label>
             <div className="grid grid-cols-8 gap-1">
               {COLOR_SEQUENCES.slice(0, 8).map((seq) => (
                 <button
                   key={seq.effect}
                   onClick={() => handleColorClick(seq.effect)}
-                  className={`h-8 rounded border-2 transition-transform ${
+                  className={`h-7 transition-all ${
                     activeColor === seq.effect
-                      ? 'scale-110 border-white'
-                      : 'border-transparent'
+                      ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg'
+                      : 'hover:scale-110'
                   }`}
                   style={{ backgroundColor: seq.color }}
                   title={`${seq.desc} (${seq.display})`}
@@ -147,17 +147,17 @@ export function EscapeDemo() {
                 <button
                   key={seq.effect}
                   onClick={() => handleColorClick(seq.effect)}
-                  className={`h-8 rounded border-2 transition-transform ${
+                  className={`h-7 transition-all ${
                     activeColor === seq.effect
-                      ? 'scale-110 border-white'
-                      : 'border-transparent'
+                      ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg'
+                      : 'hover:scale-110'
                   }`}
                   style={{ backgroundColor: seq.color }}
                   title={`${seq.desc} (${seq.display})`}
                 />
               ))}
             </div>
-            <div className="flex justify-between text-[10px] text-terminal-dim mt-1 px-1">
+            <div className="flex justify-between text-[10px] text-terminal-dim mt-2 px-0.5">
               <span>Normal (30-37)</span>
               <span>Bright (90-97)</span>
             </div>
@@ -165,22 +165,24 @@ export function EscapeDemo() {
 
           {/* Style Sequences */}
           <div>
-            <h3 className="text-terminal-dim text-sm mb-3">Style Sequences</h3>
+            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
+              Style Sequences
+            </label>
             <div className="flex flex-wrap gap-2">
               {STYLE_SEQUENCES.map((seq) => (
                 <button
                   key={seq.effect}
                   onClick={() => toggleEffect(seq.effect)}
-                  className={`px-3 py-2 rounded-lg border transition-all text-sm ${
+                  className={`px-3 py-1.5 border transition-all text-sm ${
                     activeEffects.has(seq.effect)
-                      ? 'border-terminal-green bg-terminal-green/10'
-                      : 'border-terminal-border hover:border-terminal-dim'
+                      ? 'border-terminal-fg bg-terminal-fg/10 text-terminal-fg'
+                      : 'border-terminal-border text-terminal-muted hover:border-terminal-dim hover:text-terminal-fg'
                   }`}
                 >
-                  <code className="text-terminal-yellow font-bold text-xs">
+                  <code className="text-terminal-yellow text-xs">
                     {seq.display}
                   </code>
-                  <span className="text-terminal-dim ml-2">{seq.desc}</span>
+                  <span className="ml-2">{seq.desc}</span>
                 </button>
               ))}
             </div>
@@ -188,17 +190,19 @@ export function EscapeDemo() {
 
           {/* Cursor Sequences */}
           <div>
-            <h3 className="text-terminal-dim text-sm mb-3">Cursor Sequences</h3>
+            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
+              Cursor Sequences
+            </label>
             <div className="space-y-1">
               {CURSOR_SEQUENCES.map((seq) => (
                 <div
                   key={seq.effect}
-                  className="flex items-center justify-between px-3 py-2 rounded border border-terminal-border"
+                  className="flex items-center justify-between px-3 py-2 border border-terminal-border text-sm"
                 >
-                  <code className="text-terminal-yellow font-bold text-xs">
+                  <code className="text-terminal-yellow text-xs">
                     {seq.display}
                   </code>
-                  <span className="text-terminal-dim text-sm">{seq.desc}</span>
+                  <span className="text-terminal-muted">{seq.desc}</span>
                 </div>
               ))}
             </div>
@@ -206,16 +210,18 @@ export function EscapeDemo() {
         </div>
 
         <div>
-          <h3 className="text-terminal-dim text-sm mb-4">Live Preview</h3>
-          <TerminalWindow title="preview">
-            <div className="min-h-[200px] flex flex-col">
+          <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
+            Preview
+          </label>
+          <TerminalWindow>
+            <div className="min-h-[180px] flex flex-col">
               <div className="text-xs text-terminal-dim mb-4">
                 {getActiveSequences().length === 0
                   ? 'No escape sequences active'
                   : `Active: ${getActiveSequences().join(' ')}`}
               </div>
               <div className="flex-1 flex items-center justify-center">
-                <span className="text-2xl" style={getTextStyle()}>
+                <span className="text-xl" style={getTextStyle()}>
                   {demoText}
                 </span>
               </div>
@@ -224,43 +230,36 @@ export function EscapeDemo() {
                 value={demoText}
                 onChange={(e) => setDemoText(e.target.value)}
                 placeholder="Type something..."
-                className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2 text-terminal-fg focus:outline-none focus:border-terminal-green mt-4"
+                className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-sm text-terminal-fg placeholder:text-terminal-dim focus:outline-none focus:border-terminal-muted mt-4"
               />
             </div>
           </TerminalWindow>
 
           {/* Color info panel */}
           {activeColor && (
-            <div className="mt-4 bg-terminal-highlight rounded-lg p-4 space-y-2">
+            <div className="mt-4 bg-terminal-highlight border border-terminal-border px-4 py-3 text-sm">
               <div className="flex items-center gap-3">
                 <div
-                  className="w-8 h-8 rounded"
+                  className="w-6 h-6"
                   style={{ backgroundColor: getActiveColorObj()?.color }}
                 />
                 <div>
-                  <div className="text-terminal-fg font-bold">
+                  <span className="text-terminal-fg">
                     {getActiveColorObj()?.desc}
-                  </div>
-                  <code className="text-terminal-yellow text-sm">
+                  </span>
+                  <code className="text-terminal-yellow ml-2 text-xs">
                     {getActiveColorObj()?.display}
                   </code>
                 </div>
-              </div>
-              <div className="text-terminal-dim text-xs">
-                ANSI code{' '}
-                {getActiveColorObj()
-                  ?.display.replace('^[[', '')
-                  .replace('m', '')}{' '}
-                sets the foreground color.
               </div>
             </div>
           )}
         </div>
       </div>
 
-      <div className="text-terminal-dim text-sm">
-        <span className="text-terminal-yellow">^[</span> represents the{' '}
-        <span className="text-terminal-yellow">ESC</span> character (byte 0x1B).
+      <div className="text-terminal-muted text-sm">
+        <code className="text-terminal-yellow">^[</code> represents the{' '}
+        <code className="text-terminal-yellow">ESC</code> character (byte 0x1B).
         The 16-color palette uses codes 30-37 for normal colors and 90-97 for
         bright variants.
       </div>

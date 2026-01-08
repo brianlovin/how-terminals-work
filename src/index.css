@@ -2,42 +2,54 @@
 
 @theme {
   /* UI colors */
-  --color-terminal-bg: #0d1117;
-  --color-terminal-fg: #c9d1d9;
-  --color-terminal-dim: rgba(255, 255, 255, 0.45);
-  --color-terminal-border: #30363d;
-  --color-terminal-highlight: #161b22;
+  --color-terminal-bg: #0a0a0a;
+  --color-terminal-fg: #e5e5e5;
+  --color-terminal-muted: #a3a3a3;
+  --color-terminal-dim: #737373;
+  --color-terminal-border: #262626;
+  --color-terminal-highlight: #171717;
+  --color-terminal-surface: #141414;
 
   /* Standard 16-color ANSI palette */
   /* Normal colors (0-7) */
-  --color-terminal-black: #0d1117;
+  --color-terminal-black: #0a0a0a;
   --color-terminal-red: #f85149;
-  --color-terminal-green: #3fb950;
-  --color-terminal-yellow: #d29922;
-  --color-terminal-blue: #58a6ff;
-  --color-terminal-magenta: #bc8cff;
-  --color-terminal-cyan: #39c5cf;
-  --color-terminal-white: #c9d1d9;
+  --color-terminal-green: #22c55e;
+  --color-terminal-yellow: #eab308;
+  --color-terminal-blue: #3b82f6;
+  --color-terminal-magenta: #a855f7;
+  --color-terminal-cyan: #06b6d4;
+  --color-terminal-white: #e5e5e5;
 
   /* Bright colors (8-15) */
-  --color-terminal-bright-black: #484f58;
+  --color-terminal-bright-black: #525252;
   --color-terminal-bright-red: #ff7b72;
-  --color-terminal-bright-green: #56d364;
-  --color-terminal-bright-yellow: #e3b341;
-  --color-terminal-bright-blue: #79c0ff;
-  --color-terminal-bright-magenta: #d2a8ff;
-  --color-terminal-bright-cyan: #56d4dd;
-  --color-terminal-bright-white: #f0f6fc;
+  --color-terminal-bright-green: #4ade80;
+  --color-terminal-bright-yellow: #facc15;
+  --color-terminal-bright-blue: #60a5fa;
+  --color-terminal-bright-magenta: #c084fc;
+  --color-terminal-bright-cyan: #22d3ee;
+  --color-terminal-bright-white: #fafafa;
+
+  /* Spacing scale */
+  --spacing-section: 10rem;
 }
 
 @layer base {
   html {
-    @apply bg-terminal-bg text-terminal-fg;
-    font-family: 'Geist Mono', ui-monospace, monospace;
+    @apply bg-terminal-bg text-terminal-fg antialiased;
+    font-family: 'Geist Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace;
+    font-size: 16px;
+    line-height: 1.7;
+    letter-spacing: -0.01em;
   }
 
   body {
     @apply m-0 p-0 min-h-screen;
+  }
+
+  ::selection {
+    @apply bg-terminal-green/30 text-terminal-fg;
   }
 }
 

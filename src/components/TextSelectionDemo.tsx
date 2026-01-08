@@ -213,7 +213,7 @@ export function TextSelectionDemo() {
     <div className="space-y-8">
       {/* Interactive Demo */}
       <div className="space-y-4">
-        <TerminalWindow title="text-selection">
+        <TerminalWindow>
           <div className="space-y-4">
             {/* Mode Toggle */}
             <div className="flex items-center gap-4 text-sm">
@@ -224,7 +224,7 @@ export function TextSelectionDemo() {
                   setSelectedRange(null);
                   setShowArrowKeys([]);
                 }}
-                className={`px-3 py-1 rounded transition-colors ${
+                className={`px-3 py-1 transition-colors ${
                   mode === 'terminal'
                     ? 'bg-terminal-blue text-terminal-bg'
                     : 'border border-terminal-border hover:border-terminal-blue'
@@ -237,7 +237,7 @@ export function TextSelectionDemo() {
                   setMode('app');
                   setSelectedRange(null);
                 }}
-                className={`px-3 py-1 rounded transition-colors ${
+                className={`px-3 py-1 transition-colors ${
                   mode === 'app'
                     ? 'bg-terminal-green text-terminal-bg'
                     : 'border border-terminal-border hover:border-terminal-green'
@@ -316,7 +316,7 @@ export function TextSelectionDemo() {
                         <span className="text-terminal-dim text-sm">
                           Would copy:{' '}
                         </span>
-                        <code className="text-terminal-yellow text-xs bg-terminal-highlight px-2 py-1 rounded">
+                        <code className="text-terminal-yellow text-xs bg-terminal-highlight px-2 py-1">
                           {getSelectedText().slice(0, 50)}
                           {getSelectedText().length > 50 ? '...' : ''}
                         </code>
@@ -348,7 +348,7 @@ export function TextSelectionDemo() {
                         {showArrowKeys.map((arrow, i) => (
                           <span
                             key={i}
-                            className="inline-block px-2 py-0.5 bg-terminal-yellow/20 text-terminal-yellow rounded text-xs font-mono animate-pulse"
+                            className="inline-block px-2 py-0.5 bg-terminal-yellow/20 text-terminal-yellow text-xs font-mono animate-pulse"
                             style={{ animationDelay: `${i * 50}ms` }}
                           >
                             {arrow}
@@ -376,7 +376,7 @@ export function TextSelectionDemo() {
           </div>
         </TerminalWindow>
 
-        <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border rounded p-3">
+        <div className="text-terminal-dim text-sm bg-terminal-bg border border-terminal-border p-3">
           <span className="text-terminal-red">Try it:</span> In terminal mode,
           drag to select text. In app mode, hold{' '}
           <kbd className="bg-terminal-highlight px-1 rounded">Option</kbd> (Alt)
@@ -387,18 +387,18 @@ export function TextSelectionDemo() {
 
       {/* How it works explanation */}
       <div className="space-y-4">
-        <div className="text-sm text-terminal-dim">How It Works</div>
+        <label className="block text-terminal-dim text-xs uppercase tracking-wider">How It Works</label>
 
-        <div className="bg-terminal-bg border border-terminal-border rounded-lg p-4 space-y-4 min-h-[200px]">
-          <div className="text-terminal-red font-bold text-sm">
+        <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4 min-h-[200px]">
+          <div className="text-terminal-fg font-medium text-sm">
             {stepContent.title}
           </div>
-          <p className="text-terminal-fg text-sm leading-relaxed">
+          <p className="text-terminal-muted text-sm leading-relaxed">
             {stepContent.description}
           </p>
 
           {currentStep === 'terminal-selection' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">
                 // Terminal emulator handles selection
               </div>
@@ -430,7 +430,7 @@ export function TextSelectionDemo() {
           )}
 
           {currentStep === 'cursor-positioning' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">
                 // App controls cursor with escape sequences
               </div>
@@ -470,7 +470,7 @@ export function TextSelectionDemo() {
           )}
 
           {currentStep === 'option-click' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">
                 // Option+Click at (5, 15), cursor at (3, 5)
               </div>
@@ -502,7 +502,7 @@ export function TextSelectionDemo() {
           )}
 
           {currentStep === 'why-different' && (
-            <div className="bg-terminal-highlight rounded p-3 font-mono text-xs space-y-2">
+            <div className="bg-terminal-highlight p-3 font-mono text-xs space-y-2">
               <div className="text-terminal-dim">
                 // Terminal doesn't know what you're running:
               </div>
@@ -546,9 +546,9 @@ export function TextSelectionDemo() {
             <button
               key={step}
               onClick={() => setCurrentStep(step)}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${
+              className={`w-2 h-2 rounded-full transition-all ${
                 step === currentStep
-                  ? 'bg-terminal-green scale-125'
+                  ? 'bg-terminal-fg scale-125'
                   : 'bg-terminal-border hover:bg-terminal-dim'
               }`}
             />
@@ -561,7 +561,7 @@ export function TextSelectionDemo() {
               setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
             }
             disabled={currentStepIndex === 0}
-            className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
           >
             Back
           </button>
@@ -572,7 +572,7 @@ export function TextSelectionDemo() {
               )
             }
             disabled={currentStepIndex === steps.length - 1}
-            className="px-3 py-1.5 rounded border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
+            className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
           >
             Next
           </button>
@@ -580,13 +580,13 @@ export function TextSelectionDemo() {
       </div>
 
       {/* Key Insight Box */}
-      <div className="border border-terminal-border rounded-lg p-6 space-y-6">
+      <div className="border border-terminal-border p-6 space-y-6">
         <h3 className="text-terminal-red text-sm font-bold">
           Why You Can't Just Click to Move the Cursor
         </h3>
 
         <div className="flex flex-col md:flex-row items-stretch gap-4">
-          <div className="bg-terminal-highlight rounded p-4 flex-1">
+          <div className="bg-terminal-highlight p-4 flex-1">
             <div className="text-terminal-blue font-bold text-sm mb-2">
               What You Expect
             </div>
@@ -598,7 +598,7 @@ export function TextSelectionDemo() {
           <div className="flex items-center justify-center text-terminal-dim text-2xl">
             ≠
           </div>
-          <div className="bg-terminal-highlight rounded p-4 flex-1">
+          <div className="bg-terminal-highlight p-4 flex-1">
             <div className="text-terminal-yellow font-bold text-sm mb-2">
               What Actually Happens
             </div>
