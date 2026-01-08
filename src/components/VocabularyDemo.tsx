@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NumberedStepNavigation, SubsectionLabel, Button } from './shared';
 
 type Term =
   | 'terminal'
@@ -361,7 +362,7 @@ function ShellLandscape() {
           </p>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <div className="text-terminal-dim text-xs uppercase tracking-wide mb-1">
+              <div className="text-terminal-dim text-xs uppercase mb-1">
                 Config
               </div>
               <div className="text-terminal-cyan font-mono text-xs">
@@ -369,7 +370,7 @@ function ShellLandscape() {
               </div>
             </div>
             <div>
-              <div className="text-terminal-dim text-xs uppercase tracking-wide mb-1">
+              <div className="text-terminal-dim text-xs uppercase mb-1">
                 Default on
               </div>
               <div className="text-terminal-fg text-xs">
@@ -490,7 +491,7 @@ function TerminalLandscape() {
             {selected.description}
           </p>
           <div>
-            <div className="text-terminal-dim text-xs uppercase tracking-wide mb-2">
+            <div className="text-terminal-dim text-xs uppercase mb-2">
               Key features
             </div>
             <div className="flex flex-wrap gap-2">
@@ -561,23 +562,11 @@ function CommandFlowDemo() {
         Follow a Command
       </div>
 
-      <div className="flex items-center gap-2">
-        {steps.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setStep(i)}
-            className={`w-8 h-8 flex items-center justify-center border text-sm transition-all ${
-              i === step
-                ? 'border-terminal-green bg-terminal-green/20 text-terminal-green'
-                : i < step
-                  ? 'border-terminal-border text-terminal-muted'
-                  : 'border-terminal-border text-terminal-muted hover:border-terminal-muted'
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
+      <NumberedStepNavigation
+        totalSteps={steps.length}
+        currentStep={step}
+        onStepChange={setStep}
+      />
 
       <div className="bg-terminal-bg border border-terminal-border p-4 space-y-3">
         <div className="flex items-center gap-3">
@@ -594,20 +583,20 @@ function CommandFlowDemo() {
       </div>
 
       <div className="flex justify-between">
-        <button
+        <Button
+          size="sm"
           onClick={() => setStep(Math.max(0, step - 1))}
           disabled={step === 0}
-          className="px-3 py-1.5 border border-terminal-border text-sm disabled:opacity-30 disabled:cursor-not-allowed hover:border-terminal-green"
         >
           Previous
-        </button>
-        <button
+        </Button>
+        <Button
+          size="sm"
           onClick={() => setStep(Math.min(steps.length - 1, step + 1))}
           disabled={step === steps.length - 1}
-          className="px-3 py-1.5 border border-terminal-border text-sm disabled:opacity-30 disabled:cursor-not-allowed hover:border-terminal-green"
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -649,7 +638,7 @@ export function VocabularyDemo() {
                   }`}
                 >
                   <span
-                    className={`text-xs uppercase tracking-wide w-16 ${CATEGORY_COLORS[data.category]}`}
+                    className={`text-xs uppercase w-16 ${CATEGORY_COLORS[data.category]}`}
                   >
                     {CATEGORY_LABELS[data.category]?.split(' ')[0]}
                   </span>
@@ -668,7 +657,7 @@ export function VocabularyDemo() {
             <div className="space-y-4">
               <div>
                 <div
-                  className={`text-xs uppercase tracking-wide ${CATEGORY_COLORS[termData.category]}`}
+                  className={`text-xs uppercase ${CATEGORY_COLORS[termData.category]}`}
                 >
                   {CATEGORY_LABELS[termData.category]}
                 </div>
@@ -687,7 +676,7 @@ export function VocabularyDemo() {
               </p>
 
               <div className="space-y-2">
-                <div className="text-terminal-muted text-xs uppercase tracking-wide">
+                <div className="text-terminal-muted text-xs uppercase">
                   Examples
                 </div>
                 <div className="flex flex-wrap gap-2">

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TerminalWindow } from './TerminalWindow';
+import { SubsectionLabel, InfoPanel } from './shared';
 
 // Standard 16-color ANSI palette (matching index.css theme)
 const COLORS = {
@@ -58,9 +59,7 @@ export function CellZoom() {
 
         <div className="flex-1 space-y-5">
           <div>
-            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-              Character
-            </label>
+            <SubsectionLabel>Character</SubsectionLabel>
             <div className="flex flex-wrap gap-1">
               {chars.slice(0, 20).map((c) => (
                 <button
@@ -76,16 +75,14 @@ export function CellZoom() {
           </div>
 
           <div>
-            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-              Foreground
-            </label>
+            <SubsectionLabel>Foreground</SubsectionLabel>
             <div className="flex flex-wrap gap-1.5">
               {(Object.keys(COLORS) as Array<keyof typeof COLORS>).map(
                 (color) => (
                   <button
                     key={color}
                     onClick={() => setFg(color)}
-                    className={`w-6 h-6 transition-all focus:outline-none ${fg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : 'hover:scale-110'}`}
+                    className={`w-6 h-6 focus:outline-none ${fg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : ''}`}
                     style={{ backgroundColor: COLORS[color] }}
                     title={color}
                   />
@@ -95,16 +92,14 @@ export function CellZoom() {
           </div>
 
           <div>
-            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-              Background
-            </label>
+            <SubsectionLabel>Background</SubsectionLabel>
             <div className="flex flex-wrap gap-1.5">
               {(Object.keys(BG_COLORS) as Array<keyof typeof BG_COLORS>).map(
                 (color) => (
                   <button
                     key={color}
                     onClick={() => setBg(color)}
-                    className={`w-6 h-6 border transition-all focus:outline-none ${bg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : 'border-terminal-border hover:scale-110'}`}
+                    className={`w-6 h-6 border focus:outline-none border-terminal-border ${bg === color ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg' : ''}`}
                     style={{
                       backgroundColor:
                         color === 'none' ? '#0a0a0a' : BG_COLORS[color],
@@ -117,34 +112,40 @@ export function CellZoom() {
           </div>
 
           <div>
-            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-              Attributes
-            </label>
+            <SubsectionLabel>Attributes</SubsectionLabel>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer text-sm">
                 <input
                   type="checkbox"
                   checked={bold}
                   onChange={(e) => setBold(e.target.checked)}
-                  className="w-4 h-4 accent-terminal-fg"
+                  className="w-4 h-4 accent-terminal-fg border-0 outline-none"
                 />
-                <span className={`text-terminal-muted ${bold ? 'font-bold text-terminal-fg' : ''}`}>Bold</span>
+                <span
+                  className={`text-terminal-muted ${bold ? 'font-bold text-terminal-fg' : ''}`}
+                >
+                  Bold
+                </span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer text-sm">
                 <input
                   type="checkbox"
                   checked={underline}
                   onChange={(e) => setUnderline(e.target.checked)}
-                  className="w-4 h-4 accent-terminal-fg"
+                  className="w-4 h-4 accent-terminal-fg border-0 outline-none"
                 />
-                <span className={`text-terminal-muted ${underline ? 'underline text-terminal-fg' : ''}`}>Underline</span>
+                <span
+                  className={`text-terminal-muted ${underline ? 'underline text-terminal-fg' : ''}`}
+                >
+                  Underline
+                </span>
               </label>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-terminal-highlight border border-terminal-border px-4 py-3 text-sm">
+      <InfoPanel>
         <span className="text-terminal-dim">Cell: </span>
         <span className="text-terminal-fg font-medium">"{char}"</span>
         <span className="text-terminal-dim"> / </span>
@@ -167,7 +168,7 @@ export function CellZoom() {
             <span className="underline text-terminal-fg">underlined</span>
           </>
         )}
-      </div>
+      </InfoPanel>
     </div>
   );
 }

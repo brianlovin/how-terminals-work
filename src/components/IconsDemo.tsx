@@ -1,5 +1,11 @@
 import { useState } from 'react';
 import { TerminalWindow } from './TerminalWindow';
+import {
+  SubsectionLabel,
+  InfoPanel,
+  FeatureBox,
+  StepDotsNavigation,
+} from './shared';
 
 // SVG icon components that simulate Nerd Font glyphs
 const Icons = {
@@ -473,7 +479,7 @@ export function IconsDemo() {
 
         {/* Explanation */}
         <div className="space-y-4">
-          <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4">
+          <InfoPanel className="px-4 py-4 space-y-4">
             <div className="h-[180px] overflow-hidden space-y-4">
               <div className="text-terminal-red font-medium text-sm">
                 {stepContent.title}
@@ -580,42 +586,12 @@ export function IconsDemo() {
             </div>
 
             {/* Step navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
-              <button
-                onClick={() =>
-                  setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-                }
-                disabled={currentStepIndex === 0}
-                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-              >
-                Previous
-              </button>
-              <div className="flex items-center gap-2">
-                {steps.map((step) => (
-                  <button
-                    key={step}
-                    onClick={() => setCurrentStep(step)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      step === currentStep
-                        ? 'bg-terminal-fg scale-125'
-                        : 'bg-terminal-border hover:bg-terminal-dim'
-                    }`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={() =>
-                  setCurrentStep(
-                    steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-                  )
-                }
-                disabled={currentStepIndex === steps.length - 1}
-                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-              >
-                Next
-              </button>
-            </div>
-          </div>
+            <StepDotsNavigation
+              steps={steps}
+              currentStep={currentStep}
+              onStepChange={setCurrentStep}
+            />
+          </InfoPanel>
         </div>
       </div>
 
@@ -633,9 +609,7 @@ export function IconsDemo() {
           <div className="space-y-4">
             {categories.map((category) => (
               <div key={category} className="space-y-2">
-                <div className="text-terminal-dim text-xs uppercase tracking-wide">
-                  {category}
-                </div>
+                <SubsectionLabel className="mb-0">{category}</SubsectionLabel>
                 <div className="flex flex-wrap gap-2">
                   {NERD_FONT_ICONS.filter((i) => i.category === category).map(
                     (item) => (
@@ -733,46 +707,34 @@ export function IconsDemo() {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
-              <span>1</span>
-              <span>Single Codepoint</span>
-            </div>
+          <FeatureBox number={1} title="Single Codepoint">
             <p className="text-sm text-terminal-dim">
               Each Nerd Font icon is a single Unicode codepoint. The terminal
               sees it as one character, just like 'A' or '中'. One character =
               one cell.
             </p>
-          </div>
+          </FeatureBox>
 
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
-              <span>2</span>
-              <span>Font Glyphs</span>
-            </div>
+          <FeatureBox number={2} title="Font Glyphs">
             <p className="text-sm text-terminal-dim">
               The font file contains a glyph (vector drawing) for each
               codepoint. Nerd Fonts add thousands of icon glyphs sized to fit
               the terminal's cell dimensions.
             </p>
-          </div>
+          </FeatureBox>
 
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
-              <span>3</span>
-              <span>Cell-Sized Design</span>
-            </div>
+          <FeatureBox number={3} title="Cell-Sized Design">
             <p className="text-sm text-terminal-dim">
               Icon glyphs are designed to fit within a monospace cell. They're
               square or slightly rectangular to match the terminal's character
               grid perfectly.
             </p>
-          </div>
+          </FeatureBox>
         </div>
 
         {/* Character width comparison */}
         <div className="bg-terminal-highlight border border-terminal-border p-4 space-y-3">
-          <div className="text-terminal-red text-sm font-bold">
+          <div className="text-terminal-fg text-sm font-bold">
             Character Width in Terminals
           </div>
           <div className="font-mono text-sm space-y-2">

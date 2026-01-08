@@ -20,7 +20,7 @@ export function Section({
           <div className="text-terminal-dim tabular-nums mb-1">
             {String(number).padStart(2, '0')}
           </div>
-          <h2 className="text-terminal-green font-medium tracking-tight mb-3">
+          <h2 className="text-terminal-green font-medium mb-3">
             {title}
           </h2>
           <p className="text-terminal-muted leading-relaxed text-pretty">

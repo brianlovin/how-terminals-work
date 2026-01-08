@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TerminalWindow } from './TerminalWindow';
+import { SubsectionLabel, InfoPanel } from './shared';
 
 // Standard 16-color ANSI escape codes (SGR - Select Graphic Rendition)
 const COLOR_SEQUENCES = [
@@ -124,33 +125,31 @@ export function EscapeDemo() {
         <div className="space-y-5">
           {/* 16-Color Palette */}
           <div>
-            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-              16-Color Palette
-            </label>
-            <div className="grid grid-cols-8 gap-1">
+            <SubsectionLabel>16-Color Palette</SubsectionLabel>
+            <div className="grid grid-cols-8 gap-2">
               {COLOR_SEQUENCES.slice(0, 8).map((seq) => (
                 <button
                   key={seq.effect}
                   onClick={() => handleColorClick(seq.effect)}
-                  className={`h-7 transition-all ${
+                  className={`h-7 ${
                     activeColor === seq.effect
                       ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg'
-                      : 'hover:scale-110'
+                      : ''
                   }`}
                   style={{ backgroundColor: seq.color }}
                   title={`${seq.desc} (${seq.display})`}
                 />
               ))}
             </div>
-            <div className="grid grid-cols-8 gap-1 mt-1">
+            <div className="grid grid-cols-8 gap-2 mt-2">
               {COLOR_SEQUENCES.slice(8).map((seq) => (
                 <button
                   key={seq.effect}
                   onClick={() => handleColorClick(seq.effect)}
-                  className={`h-7 transition-all ${
+                  className={`h-7 ${
                     activeColor === seq.effect
                       ? 'ring-2 ring-terminal-fg ring-offset-2 ring-offset-terminal-bg'
-                      : 'hover:scale-110'
+                      : ''
                   }`}
                   style={{ backgroundColor: seq.color }}
                   title={`${seq.desc} (${seq.display})`}
@@ -165,9 +164,7 @@ export function EscapeDemo() {
 
           {/* Style Sequences */}
           <div>
-            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-              Style Sequences
-            </label>
+            <SubsectionLabel>Style Sequences</SubsectionLabel>
             <div className="flex flex-wrap gap-2">
               {STYLE_SEQUENCES.map((seq) => (
                 <button
@@ -190,9 +187,7 @@ export function EscapeDemo() {
 
           {/* Cursor Sequences */}
           <div>
-            <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-              Cursor Sequences
-            </label>
+            <SubsectionLabel>Cursor Sequences</SubsectionLabel>
             <div className="space-y-1">
               {CURSOR_SEQUENCES.map((seq) => (
                 <div
@@ -210,9 +205,7 @@ export function EscapeDemo() {
         </div>
 
         <div>
-          <label className="block text-terminal-dim text-xs uppercase tracking-wider mb-2">
-            Preview
-          </label>
+          <SubsectionLabel>Preview</SubsectionLabel>
           <TerminalWindow>
             <div className="min-h-[180px] flex flex-col">
               <div className="text-xs text-terminal-dim mb-4">
@@ -237,7 +230,7 @@ export function EscapeDemo() {
 
           {/* Color info panel */}
           {activeColor && (
-            <div className="mt-4 bg-terminal-highlight border border-terminal-border px-4 py-3 text-sm">
+            <InfoPanel className="mt-4">
               <div className="flex items-center gap-3">
                 <div
                   className="w-6 h-6"
@@ -252,7 +245,7 @@ export function EscapeDemo() {
                   </code>
                 </div>
               </div>
-            </div>
+            </InfoPanel>
           )}
         </div>
       </div>

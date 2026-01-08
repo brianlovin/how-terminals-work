@@ -110,10 +110,10 @@ export function MouseDemo() {
           </div>
 
           {lastClick && mouseEnabled ? (
-            <div className="bg-terminal-bg p-4 space-y-3">
+            <div className="p-4 space-y-3">
               <div className="grid grid-cols-3 gap-4 text-center text-sm">
                 <div>
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                  <div className="text-terminal-dim text-xs uppercase mb-1">
                     Position
                   </div>
                   <div className="text-terminal-fg">
@@ -121,7 +121,7 @@ export function MouseDemo() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                  <div className="text-terminal-dim text-xs uppercase mb-1">
                     Button
                   </div>
                   <div className="text-terminal-yellow">
@@ -129,7 +129,7 @@ export function MouseDemo() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-terminal-dim text-xs uppercase tracking-wider mb-1">
+                  <div className="text-terminal-dim text-xs uppercase mb-1">
                     Sequence
                   </div>
                   <code className="text-terminal-cyan">

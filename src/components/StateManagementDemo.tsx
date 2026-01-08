@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { TerminalWindow } from './TerminalWindow';
+import { StepDotsNavigation, FeatureBox } from './shared';
 
 // Simulating different modes like Claude Code's accept edits / plan mode toggle
 type Mode = 'accept' | 'plan' | 'chat';
@@ -400,41 +401,11 @@ export function StateManagementDemo() {
           </div>
 
           {/* Step navigation */}
-          <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
-            <button
-              onClick={() =>
-                setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-              }
-              disabled={currentStepIndex === 0}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-            >
-              Previous
-            </button>
-            <div className="flex items-center gap-2">
-              {steps.map((step) => (
-                <button
-                  key={step}
-                  onClick={() => setCurrentStep(step)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    step === currentStep
-                      ? 'bg-terminal-fg scale-125'
-                      : 'bg-terminal-border hover:bg-terminal-dim'
-                  }`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={() =>
-                setCurrentStep(
-                  steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-                )
-              }
-              disabled={currentStepIndex === steps.length - 1}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-            >
-              Next
-            </button>
-          </div>
+          <StepDotsNavigation
+            steps={steps}
+            currentStep={currentStep}
+            onStepChange={setCurrentStep}
+          />
         </div>
       </div>
 
@@ -445,41 +416,32 @@ export function StateManagementDemo() {
         </h3>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="bg-terminal-highlight p-4 flex-1">
-            <div className="text-terminal-fg font-bold text-sm mb-2">
-              1. Input
-            </div>
+          <FeatureBox number={1} title="Input" className="flex-1">
             <div className="text-terminal-dim text-sm">
               User presses Shift+Tab
             </div>
             <div className="font-mono text-xs mt-2 text-terminal-yellow">
               ESC [ Z
             </div>
-          </div>
+          </FeatureBox>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
-          <div className="bg-terminal-highlight p-4 flex-1">
-            <div className="text-terminal-fg font-bold text-sm mb-2">
-              2. Process
-            </div>
+          <FeatureBox number={2} title="Process" className="flex-1">
             <div className="text-terminal-dim text-sm">
               App recognizes sequence
             </div>
             <div className="font-mono text-xs mt-2 text-terminal-cyan">
               mode = nextMode()
             </div>
-          </div>
+          </FeatureBox>
           <div className="text-terminal-dim text-2xl hidden md:block"></div>
-          <div className="bg-terminal-highlight p-4 flex-1">
-            <div className="text-terminal-fg font-bold text-sm mb-2">
-              3. Render
-            </div>
+          <FeatureBox number={3} title="Render" className="flex-1">
             <div className="text-terminal-dim text-sm">
               Redraw mode indicator
             </div>
             <div className="font-mono text-xs mt-2 text-terminal-green">
               print(indicator)
             </div>
-          </div>
+          </FeatureBox>
         </div>
 
         <div className="text-terminal-dim text-sm">

@@ -226,7 +226,7 @@ export function FlowDiagram() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: The layer diagram */}
         <div className="space-y-3">
-          <label className="block text-terminal-yellow text-xs uppercase tracking-wider mb-3">
+          <label className="block text-terminal-yellow text-xs uppercase mb-3">
             Terminal Stack
           </label>
 
@@ -381,7 +381,7 @@ export function FlowDiagram() {
 
         {/* Right: What you see */}
         <div className="space-y-4">
-          <label className="block text-terminal-yellow text-xs uppercase tracking-wider mb-3">
+          <label className="block text-terminal-yellow text-xs uppercase mb-3">
             Output
           </label>
           <TerminalWindow>

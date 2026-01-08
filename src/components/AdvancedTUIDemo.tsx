@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { TerminalWindow } from './TerminalWindow';
+import { StepDotsNavigation, FeatureBox } from './shared';
 
 // Box drawing characters used in TUIs
 const BOX = {
@@ -530,41 +531,11 @@ export function AdvancedTUIDemo() {
             </div>
 
             {/* Step navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
-              <button
-                onClick={() =>
-                  setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-                }
-                disabled={currentStepIndex === 0}
-                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-              >
-                Previous
-              </button>
-              <div className="flex items-center gap-2">
-                {steps.map((step) => (
-                  <button
-                    key={step}
-                    onClick={() => setCurrentStep(step)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      step === currentStep
-                        ? 'bg-terminal-fg scale-125'
-                        : 'bg-terminal-border hover:bg-terminal-dim'
-                    }`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={() =>
-                  setCurrentStep(
-                    steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-                  )
-                }
-                disabled={currentStepIndex === steps.length - 1}
-                className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-30 disabled:cursor-not-allowed text-sm"
-              >
-                Next
-              </button>
-            </div>
+            <StepDotsNavigation
+              steps={steps}
+              currentStep={currentStep}
+              onStepChange={setCurrentStep}
+            />
           </div>
         </div>
       </div>
@@ -576,46 +547,34 @@ export function AdvancedTUIDemo() {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
-              <span>1</span>
-              <span>Layout Engine</span>
-            </div>
+          <FeatureBox number={1} title="Layout Engine">
             <p className="text-sm text-terminal-dim">
               The TUI maintains a tree of regions (like a DOM). Each region
               knows its bounds and can have children. When the container
               resizes, bounds propagate down the tree.
             </p>
-          </div>
+          </FeatureBox>
 
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
-              <span>2</span>
-              <span>Event Dispatch</span>
-            </div>
+          <FeatureBox number={2} title="Event Dispatch">
             <p className="text-sm text-terminal-dim">
               Input events (keys, mouse) go to the focused region first. If
               unhandled, they bubble up. Mouse clicks hit-test against region
               bounds to determine which region was clicked.
             </p>
-          </div>
+          </FeatureBox>
 
-          <div className="bg-terminal-highlight p-4 space-y-2">
-            <div className="flex text-sm items-center gap-2 text-terminal-fg font-bold">
-              <span>3</span>
-              <span>Render Loop</span>
-            </div>
+          <FeatureBox number={3} title="Render Loop">
             <p className="text-sm text-terminal-dim">
               Each region renders to a buffer (2D array of cells). Buffers merge
               into a final screen buffer. Only changed cells get written to the
               terminal, minimizing escape sequences.
             </p>
-          </div>
+          </FeatureBox>
         </div>
 
         {/* Box drawing character reference */}
         <div className="bg-terminal-highlight border border-terminal-border p-4 space-y-3">
-          <div className="text-terminal-red text-sm font-bold">
+          <div className="text-terminal-fg text-sm font-bold">
             Box Drawing Characters
           </div>
           <div className="font-mono text-sm grid grid-cols-2 md:grid-cols-4 gap-4">
