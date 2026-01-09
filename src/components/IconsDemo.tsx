@@ -450,7 +450,7 @@ export function IconsDemo() {
         {/* Explanation */}
         <div className="space-y-4">
           <InfoPanel className="px-4 py-4 space-y-4">
-            <div className="h-[180px] overflow-hidden space-y-4">
+            <div className="h-[180px] overflow-y-auto space-y-4">
               <div className="text-terminal-red font-medium text-sm">
                 {stepContent.title}
               </div>
