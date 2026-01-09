@@ -14,6 +14,7 @@ import { IconsDemo } from './components/IconsDemo';
 import { StateManagementDemo } from './components/StateManagementDemo';
 import { TextSelectionDemo } from './components/TextSelectionDemo';
 import { VocabularyDemo } from './components/VocabularyDemo';
+import { CapabilityDiscoveryDemo } from './components/CapabilityDiscoveryDemo';
 
 export function App() {
   return (
@@ -137,8 +138,17 @@ export function App() {
       </Section>
 
       <Section
-        id="vocabulary"
+        id="capability-discovery"
         number={13}
+        title="Capability Discovery"
+        insight="Before a program can use mouse tracking or 256 colors, it has to ask: what can this terminal do? The TERM variable and escape sequence queries let programs discover—and enable—terminal features."
+      >
+        <CapabilityDiscoveryDemo />
+      </Section>
+
+      <Section
+        id="vocabulary"
+        number={14}
         title="Terminal Vocabulary"
         insight="Terminal, shell, console, CLI—these words get thrown around interchangeably, but they mean different things. Understanding the distinction helps you know which tool to configure when something isn't working."
       >
