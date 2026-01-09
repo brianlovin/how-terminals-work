@@ -241,10 +241,17 @@ export function StateManagementDemo() {
       {/* How it works explanation */}
       <div className="space-y-4">
         <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4">
-          <div className="h-[280px] overflow-y-auto space-y-4">
+          <div className="flex items-start justify-between gap-4">
             <div className="text-terminal-red font-medium text-sm">
               {stepContent.title}
             </div>
+            <StepDotsNavigation
+              steps={steps}
+              currentStep={currentStep}
+              onStepChange={setCurrentStep}
+            />
+          </div>
+          <div className="space-y-4">
             <p className="text-terminal-muted text-sm leading-relaxed">
               {stepContent.description}
             </p>
@@ -399,13 +406,6 @@ export function StateManagementDemo() {
               </div>
             )}
           </div>
-
-          {/* Step navigation */}
-          <StepDotsNavigation
-            steps={steps}
-            currentStep={currentStep}
-            onStepChange={setCurrentStep}
-          />
         </div>
       </div>
 

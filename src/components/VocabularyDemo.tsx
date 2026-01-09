@@ -562,11 +562,27 @@ function CommandFlowDemo() {
         Follow a Command
       </div>
 
-      <NumberedStepNavigation
-        totalSteps={steps.length}
-        currentStep={step}
-        onStepChange={setStep}
-      />
+      <div className="flex gap-2">
+        <Button
+          size="sm"
+          onClick={() => setStep(Math.max(0, step - 1))}
+          disabled={step === 0}
+        >
+          Previous
+        </Button>
+        <NumberedStepNavigation
+          totalSteps={steps.length}
+          currentStep={step}
+          onStepChange={setStep}
+        />
+        <Button
+          size="sm"
+          onClick={() => setStep(Math.min(steps.length - 1, step + 1))}
+          disabled={step === steps.length - 1}
+        >
+          Next
+        </Button>
+      </div>
 
       <div className="bg-terminal-bg border border-terminal-border p-4 space-y-3">
         <div className="flex items-center gap-3">
@@ -580,23 +596,6 @@ function CommandFlowDemo() {
         <div className="text-terminal-muted text-sm">
           {currentStep?.description}
         </div>
-      </div>
-
-      <div className="flex justify-between">
-        <Button
-          size="sm"
-          onClick={() => setStep(Math.max(0, step - 1))}
-          disabled={step === 0}
-        >
-          Previous
-        </Button>
-        <Button
-          size="sm"
-          onClick={() => setStep(Math.min(steps.length - 1, step + 1))}
-          disabled={step === steps.length - 1}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );
@@ -713,7 +712,7 @@ export function VocabularyDemo() {
           Common Confusions
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="bg-terminal-highlight p-4 space-y-2">
             <div className="text-terminal-fg font-bold text-sm">
               "I opened my terminal"
@@ -769,9 +768,8 @@ export function VocabularyDemo() {
               "How does Up arrow recall previous commands?"
             </div>
             <p className="text-terminal-muted text-sm">
-              That's your{' '}
-              <span className="text-terminal-green">shell</span>, not your
-              terminal. The shell keeps a history file (like{' '}
+              That's your <span className="text-terminal-green">shell</span>,
+              not your terminal. The shell keeps a history file (like{' '}
               <span className="text-terminal-cyan">~/.zsh_history</span>) and
               sends recalled commands back to the terminal for display.
             </p>
@@ -783,9 +781,10 @@ export function VocabularyDemo() {
             </div>
             <p className="text-terminal-muted text-sm">
               Your shell reads{' '}
-              <span className="text-terminal-cyan">.zshrc</span> once at startup.
-              Existing shells already loaded their config. Opening a new terminal
-              starts a fresh shell that reads your updated file. (Or run{' '}
+              <span className="text-terminal-cyan">.zshrc</span> once at
+              startup. Existing shells already loaded their config. Opening a
+              new terminal starts a fresh shell that reads your updated file.
+              (Or run{' '}
               <span className="text-terminal-green">source ~/.zshrc</span> to
               reload without restarting.)
             </p>
