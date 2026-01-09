@@ -247,19 +247,19 @@ export function AlternateScreenDemo() {
 
       {/* Explainer */}
       <InfoPanel className="p-4 space-y-4">
-        <div className="min-h-[100px] space-y-3">
+        <div className="flex items-start justify-between gap-4">
           <div className="text-terminal-red font-medium text-sm">
             {stepContent.title}
           </div>
-          <p className="text-terminal-muted text-sm leading-relaxed">
-            {stepContent.description}
-          </p>
+          <StepDotsNavigation
+            steps={steps}
+            currentStep={currentStep}
+            onStepChange={setCurrentStep}
+          />
         </div>
-        <StepDotsNavigation
-          steps={steps}
-          currentStep={currentStep}
-          onStepChange={setCurrentStep}
-        />
+        <p className="text-terminal-muted text-sm leading-relaxed">
+          {stepContent.description}
+        </p>
       </InfoPanel>
 
       {/* Without Alternate Screen */}

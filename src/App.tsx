@@ -18,15 +18,12 @@ import { VocabularyDemo } from './components/VocabularyDemo';
 export function App() {
   return (
     <div className="min-h-screen px-5 md:px-8">
-      {/* Hero */}
-      <header className="pt-16 pb-12 max-w-2xl mx-auto border-b border-terminal-border mb-16">
-        <h1 className="text-2xl font-semibold text-terminal-fg mb-3">
-          How Terminals Work
-        </h1>
-        <p className="text-terminal-muted text-xl text-pretty leading-relaxed max-w-2xl">
-          An interactive guide to understanding terminals
-        </p>
-      </header>
+      <Section
+        id="header"
+        number={0}
+        title="How Terminals Work"
+        insight="An interactive guide to understanding terminals"
+      />
 
       <Section
         id="grid"

@@ -1,5 +1,3 @@
-import { Button } from './Button';
-
 interface StepDotsNavigationProps<T extends string> {
   steps: T[];
   currentStep: T;
@@ -7,47 +5,73 @@ interface StepDotsNavigationProps<T extends string> {
   showBorder?: boolean;
 }
 
+// Chevron icons as inline SVGs
+function ChevronLeft({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M10 12L6 8L10 4" />
+    </svg>
+  );
+}
+
+function ChevronRight({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 12L10 8L6 4" />
+    </svg>
+  );
+}
+
 export function StepDotsNavigation<T extends string>({
   steps,
   currentStep,
   onStepChange,
-  showBorder = true,
 }: StepDotsNavigationProps<T>) {
   const currentStepIndex = steps.indexOf(currentStep);
 
   return (
-    <div
-      className={`flex items-center justify-between ${showBorder ? 'pt-4 border-t border-terminal-border' : ''}`}
-    >
-      <Button
-        size="sm"
+    <div className="flex items-center gap-1">
+      <button
         onClick={() => onStepChange(steps[Math.max(0, currentStepIndex - 1)]!)}
         disabled={currentStepIndex === 0}
+        className="p-1 text-terminal-dim hover:text-terminal-fg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        aria-label="Previous"
       >
-        Previous
-      </Button>
-      <div className="flex items-center gap-2">
-        {steps.map((step) => (
-          <button
-            key={step}
-            onClick={() => onStepChange(step)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              step === currentStep
-                ? 'bg-terminal-fg scale-125'
-                : 'bg-terminal-dim hover:bg-terminal-muted'
-            }`}
-          />
-        ))}
-      </div>
-      <Button
-        size="sm"
+        <ChevronLeft />
+      </button>
+      <span className="text-xs text-terminal-dim tabular-nums min-w-[3ch] text-center">
+        {currentStepIndex + 1}/{steps.length}
+      </span>
+      <button
         onClick={() =>
           onStepChange(steps[Math.min(steps.length - 1, currentStepIndex + 1)]!)
         }
         disabled={currentStepIndex === steps.length - 1}
+        className="p-1 text-terminal-dim hover:text-terminal-fg disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        aria-label="Next"
       >
-        Next
-      </Button>
+        <ChevronRight />
+      </button>
     </div>
   );
 }

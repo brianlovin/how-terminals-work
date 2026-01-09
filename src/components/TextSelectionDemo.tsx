@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { TerminalWindow } from './TerminalWindow';
+import { StepDotsNavigation } from './shared';
 
 type SelectionMode = 'terminal' | 'app';
 
@@ -203,7 +204,6 @@ export function TextSelectionDemo() {
   }, [selectedRange]);
 
   const steps = Object.keys(EXPLAINER_STEPS) as ExplainerStep[];
-  const currentStepIndex = steps.indexOf(currentStep);
   const stepContent = EXPLAINER_STEPS[currentStep];
 
   // Get max line length for grid
@@ -377,10 +377,17 @@ export function TextSelectionDemo() {
       {/* How it works explanation */}
       <div className="space-y-4">
         <div className="bg-terminal-highlight border border-terminal-border px-4 py-4 space-y-4">
-          <div className="h-[200px] overflow-hidden space-y-4">
+          <div className="flex items-start justify-between gap-4">
             <div className="text-terminal-red font-medium text-sm">
               {stepContent.title}
             </div>
+            <StepDotsNavigation
+              steps={steps}
+              currentStep={currentStep}
+              onStepChange={setCurrentStep}
+            />
+          </div>
+          <div className="space-y-4">
             <p className="text-terminal-muted text-sm leading-relaxed">
               {stepContent.description}
             </p>
@@ -531,43 +538,6 @@ export function TextSelectionDemo() {
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Step navigation */}
-          <div className="flex items-center justify-between pt-4 border-t border-terminal-border">
-            <button
-              onClick={() =>
-                setCurrentStep(steps[Math.max(0, currentStepIndex - 1)]!)
-              }
-              disabled={currentStepIndex === 0}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-            >
-              Previous
-            </button>
-            <div className="flex items-center gap-2">
-              {steps.map((step) => (
-                <button
-                  key={step}
-                  onClick={() => setCurrentStep(step)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    step === currentStep
-                      ? 'bg-terminal-fg scale-125'
-                      : 'bg-terminal-dim hover:bg-terminal-muted'
-                  }`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={() =>
-                setCurrentStep(
-                  steps[Math.min(steps.length - 1, currentStepIndex + 1)]!
-                )
-              }
-              disabled={currentStepIndex === steps.length - 1}
-              className="px-3 py-1.5 border border-terminal-border hover:border-terminal-green disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-            >
-              Next
-            </button>
           </div>
         </div>
       </div>
