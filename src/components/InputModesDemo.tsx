@@ -28,12 +28,12 @@ const EXPLAINER_STEPS: Record<
   difference: {
     title: 'Why Two Modes?',
     description:
-      "Cooked mode lets the terminal handle basic editing (backspace, line recall) so every program doesn't have to implement it. Raw mode gives programs full control over input—essential for editors, games, and TUIs that need instant key response.",
+      "Your terminal always sends the same bytes—the difference is how the kernel processes them. In cooked mode, the kernel's line discipline buffers input and handles editing. In raw mode, bytes pass straight through to the program. This lets simple programs get free line editing, while complex TUIs get full control.",
   },
   examples: {
     title: 'Real-World Examples',
     description:
-      'Your shell (bash/zsh) uses cooked mode—type, edit, then press Enter. Vim uses raw mode—press j and you immediately move down. SSH uses raw mode to forward your keys. Even Ctrl+C works differently: in cooked mode, the terminal handles it; in raw mode, the program must.',
+      'Your shell (bash/zsh) uses cooked mode—type, edit, then press Enter. Vim uses raw mode—press j and you immediately move down. SSH uses raw mode to forward your keys. Even Ctrl+C works differently: in cooked mode, the line discipline generates SIGINT; in raw mode, the byte reaches the program directly.',
   },
 };
 
@@ -235,15 +235,18 @@ export function InputModesDemo() {
                   <div className="flex items-start gap-3">
                     <span className="text-terminal-cyan">1.</span>
                     <span className="text-terminal-muted">
-                      You type characters. They go into a{' '}
-                      <span className="text-terminal-yellow">line buffer</span>.
+                      You type characters. The kernel's{' '}
+                      <span className="text-terminal-yellow">
+                        line discipline
+                      </span>{' '}
+                      buffers them.
                     </span>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="text-terminal-cyan">2.</span>
                     <span className="text-terminal-muted">
-                      <span className="text-terminal-yellow">Backspace</span>{' '}
-                      removes characters from the buffer.
+                      <span className="text-terminal-yellow">Backspace</span>:
+                      the line discipline removes a character from the buffer.
                     </span>
                   </div>
                   <div className="flex items-start gap-3">
@@ -284,8 +287,8 @@ export function InputModesDemo() {
                   <div className="flex items-start gap-3">
                     <span className="text-terminal-cyan">2.</span>
                     <span className="text-terminal-muted">
-                      <span className="text-terminal-yellow">No buffer</span>—no
-                      line editing by the terminal.
+                      <span className="text-terminal-yellow">No buffering</span>
+                      —the line discipline passes bytes straight through.
                     </span>
                   </div>
                   <div className="flex items-start gap-3">
@@ -355,8 +358,8 @@ export function InputModesDemo() {
               </tr>
               <tr className="border-b border-terminal-border/50">
                 <td className="py-2">Ctrl+C</td>
-                <td className="py-2">Terminal sends SIGINT</td>
-                <td className="py-2">Program receives ^C</td>
+                <td className="py-2">Line discipline generates SIGINT</td>
+                <td className="py-2">Program receives 0x03</td>
               </tr>
               <tr className="border-b border-terminal-border/50">
                 <td className="py-2">Arrow keys</td>

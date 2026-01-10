@@ -69,7 +69,7 @@ export function App() {
         id="signals"
         number={5}
         title="Signals"
-        insight="Ctrl+C doesn't type a character—it sends a signal. These special key combos are intercepted by the terminal and translated into OS-level events that interrupt or control programs."
+        insight="Ctrl+C doesn't type a character—it triggers a signal. Your terminal sends a byte (0x03), but the kernel's line discipline intercepts it and generates SIGINT before the program ever sees it."
       >
         <SignalsDemo />
       </Section>

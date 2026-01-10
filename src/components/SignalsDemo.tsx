@@ -7,7 +7,7 @@ import {
   StepDotsNavigation,
 } from './shared';
 
-type Signal = 'SIGINT' | 'SIGTSTP' | 'EOF';
+type Signal = 'SIGINT' | 'SIGTSTP';
 
 interface SignalInfo {
   key: string;
@@ -38,16 +38,6 @@ const SIGNALS: SignalInfo[] = [
     example:
       'Suspend vim with Ctrl+Z, run another command, then type `fg` to return.',
   },
-  {
-    key: 'Ctrl+D',
-    signal: 'EOF',
-    name: 'End of File',
-    action: 'Signal end of input',
-    description:
-      "Sends EOF (end of file) to indicate you're done typing input. In a shell, this logs you out. In programs reading input, it signals there's no more data coming.",
-    example:
-      'Type Ctrl+D in an empty shell prompt to close the terminal session.',
-  },
 ];
 
 type ExplainerStep = 'what' | 'how' | 'path' | 'handling';
@@ -59,17 +49,17 @@ const EXPLAINER_STEPS: Record<
   what: {
     title: 'What Are Signals?',
     description:
-      "Signals are a way for the operating system to communicate with running programs. When you press Ctrl+C, you're not typing a character—you're asking the terminal to send a signal to interrupt the current program.",
+      'Signals are a way for the operating system to communicate with running programs. When you press Ctrl+C, your terminal sends a byte (0x03) to the PTY—but the kernel intercepts it and converts it into a signal before your program ever sees it.',
   },
   how: {
-    title: 'How Signals Differ from Keypresses',
+    title: 'The Line Discipline',
     description:
-      'Regular keys (like "a" or Enter) send character data to the program. Signal keys are intercepted by the terminal driver before they reach the program. The terminal translates them into OS-level signals.',
+      "The kernel's PTY has a component called the line discipline. It inspects every byte passing through. When it sees 0x03 (Ctrl+C) and signal handling is enabled, it generates SIGINT instead of passing the byte to the program. This happens in the kernel, not in your terminal emulator.",
   },
   path: {
     title: 'The Signal Path',
     description:
-      'When you press Ctrl+C: 1) The terminal recognizes the key combo. 2) Instead of sending bytes, it tells the kernel to send SIGINT. 3) The kernel delivers the signal to the foreground process. 4) The process handles or dies.',
+      'When you press Ctrl+C: 1) Your terminal sends byte 0x03 to the PTY master. 2) The kernel line discipline intercepts it. 3) Instead of forwarding the byte, it sends SIGINT to the foreground process group. 4) The process handles or terminates.',
   },
   handling: {
     title: 'Signal Handling',
@@ -81,7 +71,7 @@ const EXPLAINER_STEPS: Record<
 export function SignalsDemo() {
   const [selectedSignal, setSelectedSignal] = useState<SignalInfo>(SIGNALS[0]);
   const [terminalState, setTerminalState] = useState<
-    'idle' | 'running' | 'interrupted' | 'suspended' | 'exited'
+    'idle' | 'running' | 'interrupted' | 'suspended'
   >('idle');
   const [output, setOutput] = useState<string[]>(['$ ']);
   const [currentStep, setCurrentStep] = useState<ExplainerStep>('what');
@@ -107,9 +97,6 @@ export function SignalsDemo() {
         '[1]+  Stopped                 sleep 100',
         '$ ',
       ]);
-    } else if (signal === 'EOF') {
-      setTerminalState('exited');
-      setOutput((prev) => [...prev, 'logout']);
     }
   }, []);
 
@@ -242,13 +229,6 @@ export function SignalsDemo() {
               >
                 Ctrl+Z
               </Button>
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={() => simulateSignal('EOF')}
-              >
-                Ctrl+D
-              </Button>
               <Button size="sm" variant="secondary" onClick={resetTerminal}>
                 Reset
               </Button>
@@ -261,16 +241,13 @@ export function SignalsDemo() {
                   className={
                     terminalState === 'interrupted'
                       ? 'text-terminal-red'
-                      : terminalState === 'suspended'
-                        ? 'text-terminal-yellow'
-                        : 'text-terminal-cyan'
+                      : 'text-terminal-yellow'
                   }
                 >
                   {terminalState === 'interrupted' &&
                     'Process interrupted (killed)'}
                   {terminalState === 'suspended' &&
                     'Process suspended (use `fg` to resume)'}
-                  {terminalState === 'exited' && 'Session ended (logout)'}
                 </span>
               </div>
             )}
@@ -344,38 +321,29 @@ export function SignalsDemo() {
               <div>
                 <span className="text-terminal-yellow">Ctrl+C</span>
                 <span className="text-terminal-dim"> → </span>
+                <span className="text-terminal-cyan">0x03</span>
+                <span className="text-terminal-dim"> → </span>
                 <span className="text-terminal-red">SIGINT</span>
-                <span className="text-terminal-muted">
-                  {' '}
-                  (OS signal to process)
-                </span>
               </div>
               <div>
                 <span className="text-terminal-yellow">Ctrl+Z</span>
                 <span className="text-terminal-dim"> → </span>
-                <span className="text-terminal-red">SIGTSTP</span>
-                <span className="text-terminal-muted">
-                  {' '}
-                  (OS signal to process)
-                </span>
-              </div>
-              <div>
-                <span className="text-terminal-yellow">Ctrl+D</span>
+                <span className="text-terminal-cyan">0x1A</span>
                 <span className="text-terminal-dim"> → </span>
-                <span className="text-terminal-red">EOF</span>
-                <span className="text-terminal-muted">
-                  {' '}
-                  (end of input stream)
-                </span>
+                <span className="text-terminal-red">SIGTSTP</span>
+              </div>
+              <div className="text-terminal-dim text-xs mt-2">
+                Bytes intercepted by line discipline → converted to signals
               </div>
             </div>
           </div>
         </div>
 
         <p className="text-terminal-dim text-sm">
-          Regular keys become bytes that flow to the program. Signal keys are
-          intercepted by the terminal and translated into OS-level events that
-          can interrupt or control processes.
+          Regular keys become bytes that flow through the PTY to the program.
+          Signal keys also become bytes, but the kernel's line discipline
+          intercepts them and generates OS signals before they reach the
+          program.
         </p>
       </div>
     </div>
